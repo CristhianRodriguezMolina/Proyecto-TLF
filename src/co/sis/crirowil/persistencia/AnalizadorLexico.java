@@ -1,6 +1,8 @@
 package co.sis.crirowil.persistencia;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class AnalizadorLexico {
 
@@ -36,6 +38,118 @@ public class AnalizadorLexico {
 			obtenerSgteCaracter();
 		}
 		
+		Collections.sort((List<Token>) listaTokens);
+		
+	}
+	
+	public boolean esFinSentencia() {
+		
+		if( caracterActual=='@' ) {
+			String palabra = "";
+			int fila = filaActual;
+			int columna = colActual;
+			
+			//Transición
+			palabra+=caracterActual;
+			obtenerSgteCaracter();
+			
+			listaTokens.add(new Token(Categoria.FIN_SENTENCIA, palabra, fila, columna));
+			return true;
+			
+		}
+		
+		//RI
+		return false;	
+	}
+	
+	public boolean esLlaves() {
+		
+		if( caracterActual=='{' || caracterActual=='}' ) {
+			String palabra = "";
+			int fila = filaActual;
+			int columna = colActual;
+			
+			//Transición
+			palabra+=caracterActual;
+			obtenerSgteCaracter();
+			
+			if(palabra.equals("{")) {
+				listaTokens.add(new Token(Categoria.LLAVES_ABRE, palabra, fila, columna));
+			}else {
+				listaTokens.add(new Token(Categoria.LLAVES_CIERRA, palabra, fila, columna));
+			}			
+			
+			return true;
+			
+		}
+		
+		//RI
+		return false;	
+	}
+	
+	public boolean esParentesis() {
+		
+		if( caracterActual=='(' || caracterActual==')' ) {
+			String palabra = "";
+			int fila = filaActual;
+			int columna = colActual;
+			
+			//Transición
+			palabra+=caracterActual;
+			obtenerSgteCaracter();
+			
+			if(palabra.equals("(")) {
+				listaTokens.add(new Token(Categoria.PARENTESIS_ABRE, palabra, fila, columna));
+			}else {
+				listaTokens.add(new Token(Categoria.PARENTESIS_CIERRA, palabra, fila, columna));
+			}			
+			
+			return true;
+			
+		}
+		
+		//RI
+		return false;	
+	}
+	
+	public boolean esTerminal() {
+		
+		if( caracterActual=='@' ) {
+			String palabra = "";
+			int fila = filaActual;
+			int columna = colActual;
+			
+			//Transición
+			palabra+=caracterActual;
+			obtenerSgteCaracter();
+			
+			listaTokens.add(new Token(Categoria.FIN_SENTENCIA, palabra, fila, columna));
+			return true;
+			
+		}
+		
+		//RI
+		return false;	
+	}
+	
+	public boolean esSeparador() {
+		
+		if( caracterActual==',' ) {
+			String palabra = "";
+			int fila = filaActual;
+			int columna = colActual;
+			
+			//Transición
+			palabra+=caracterActual;
+			obtenerSgteCaracter();
+			
+			listaTokens.add(new Token(Categoria.SEPARADOR, palabra, fila, columna));
+			return true;
+			
+		}
+		
+		//RI
+		return false;	
 	}
 	
 	public boolean esOperadorAsignacion() {
