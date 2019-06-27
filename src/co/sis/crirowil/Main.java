@@ -1,5 +1,6 @@
 package co.sis.crirowil;
 
+import co.sis.crirowil.persistencia.AnalizadorLexico;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -10,7 +11,14 @@ public class Main extends Application {
 		 * @param args
 		 */
 		public static void main(String[] args) {
-			launch(args);
+			
+			String codigoFuente = "34524535.fgdgf.345.fdtrertert,sdg";
+			AnalizadorLexico al = new AnalizadorLexico(codigoFuente);
+			al.analizar();
+			
+			System.out.println(al.getListaTokens());
+			
+			//launch(args);
 		}
 		
 		/**

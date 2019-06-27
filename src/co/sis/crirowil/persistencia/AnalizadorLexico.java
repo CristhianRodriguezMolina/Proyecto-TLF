@@ -25,6 +25,7 @@ public class AnalizadorLexico {
 				continue;
 			}
 			
+			if(esReal()) continue;
 			if(esEntero()) continue;
 			if(esIdentificador()) continue;
 			
@@ -32,6 +33,50 @@ public class AnalizadorLexico {
 			obtenerSgteCaracter();
 		}
 		
+	}
+	
+	public boolean esReal() {
+		
+		if( Character.isDigit(caracterActual) || caracterActual == '.' ) {
+			String palabra = "";
+			int fila = filaActual;
+			int columna = colActual;
+			
+			//Transición
+			palabra+=caracterActual;
+			obtenerSgteCaracter();
+			
+			if(palabra.equals(".")) {
+				while( Character.isDigit(caracterActual) ) {
+					palabra+=caracterActual;
+					obtenerSgteCaracter();				
+				}			
+			}else if(Character.isDigit(caracterActual)) {
+				//Este flag verifica que ya se haya pasado una vez por un punto ('.'), ya que obivamente un real solo tiene un punto
+				boolean flag = false;
+				
+				while( Character.isDigit(caracterActual) || caracterActual == '.' && !flag ) {
+					if(caracterActual == '.') {
+						flag = true;
+					}
+					
+					palabra+=caracterActual;
+					obtenerSgteCaracter();						
+				}				
+			}		
+						
+			if(palabra.contains(".") && palabra.length()>1) {
+				listaTokens.add(new Token(Categoria.REAL, palabra, fila, columna));
+			}else{
+				listaTokens.add(new Token(Categoria.ENTERO, palabra, fila, columna));
+			}
+			
+			return true;
+			
+		}
+		
+		//RI
+		return false;	
 	}
 	
 	public boolean esEntero() {
