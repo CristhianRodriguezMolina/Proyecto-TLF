@@ -26,13 +26,66 @@ public class AnalizadorLexico {
 			}
 			
 			if(esReal()) continue;
-			if(esEntero()) continue;
+			if(esNatural()) continue;
+			if(esOperadorAsignacion()) continue;
+			if(esOperadorAritmetico()) continue;
 			if(esIdentificador()) continue;
 			
 			listaTokens.add(new Token(Categoria.DESCONOCIDO, ""+caracterActual, filaActual, colActual));
 			obtenerSgteCaracter();
 		}
 		
+	}
+	
+	public boolean esOperadorAsignacion() {
+		
+		if( caracterActual=='+' || caracterActual=='-' || caracterActual=='*' || caracterActual=='/' || caracterActual=='%' || caracterActual=='^' || caracterActual=='-' ) {
+			String palabra = "";
+			int fila = filaActual;
+			int columna = colActual;
+			
+			//Transición
+			palabra+=caracterActual;
+			obtenerSgteCaracter();
+			
+			if(!palabra.equals("=") && palabra.equals(caracterActual+"")) {
+				palabra+=caracterActual;
+				obtenerSgteCaracter();	
+				
+				listaTokens.add(new Token(Categoria.OPERADOR_ASIGNACION, palabra, fila, columna));
+				return true;
+			}else if(!palabra.equals("=")) {
+				obtenerAntCaracter();
+				return false;
+			}
+			
+			listaTokens.add(new Token(Categoria.OPERADOR_ASIGNACION, palabra, fila, columna));
+			return true;
+			
+		}
+		
+		//RI
+		return false;	
+	}
+	
+	public boolean esOperadorAritmetico() {
+		
+		if( caracterActual=='+' || caracterActual=='-' || caracterActual=='*' || caracterActual=='/' || caracterActual=='%' || caracterActual=='^' ) {
+			String palabra = "";
+			int fila = filaActual;
+			int columna = colActual;
+			
+			//Transición
+			palabra+=caracterActual;
+			obtenerSgteCaracter();
+			
+			listaTokens.add(new Token(Categoria.OPERADOR_ARITMETICO, palabra, fila, columna));
+			return true;
+			
+		}
+		
+		//RI
+		return false;	
 	}
 	
 	public boolean esReal() {
@@ -46,7 +99,7 @@ public class AnalizadorLexico {
 			palabra+=caracterActual;
 			obtenerSgteCaracter();
 			
-			if(palabra.equals(".")) {
+			if(palabra.equals(".") && Character.isDigit(caracterActual)) {
 				while( Character.isDigit(caracterActual) ) {
 					palabra+=caracterActual;
 					obtenerSgteCaracter();				
@@ -63,7 +116,10 @@ public class AnalizadorLexico {
 					palabra+=caracterActual;
 					obtenerSgteCaracter();						
 				}				
-			}		
+			}else {
+				obtenerAntCaracter();
+				return false;
+			}
 						
 			if(palabra.contains(".") && palabra.length()>1) {
 				listaTokens.add(new Token(Categoria.REAL, palabra, fila, columna));
@@ -79,7 +135,7 @@ public class AnalizadorLexico {
 		return false;	
 	}
 	
-	public boolean esEntero() {
+	public boolean esNatural() {
 		
 		if( Character.isDigit(caracterActual) ) {
 			String palabra = "";
@@ -145,6 +201,22 @@ public class AnalizadorLexico {
 			caracterActual = codigoFuente.charAt(posActual);	
 		}else {
 			caracterActual = finCodigo;
+		}
+				
+		
+	}
+	
+	public void obtenerAntCaracter() {
+		
+		posActual--;
+		
+		if(posActual>=0) {
+			
+			colActual++;
+						
+			caracterActual = codigoFuente.charAt(posActual);	
+		}else {
+			caracterActual = codigoFuente.charAt(0);
 		}
 				
 		

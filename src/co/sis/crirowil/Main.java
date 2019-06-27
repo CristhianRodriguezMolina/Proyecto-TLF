@@ -12,7 +12,7 @@ public class Main extends Application {
 		 */
 		public static void main(String[] args) {
 			
-			String codigoFuente = "34524535.fgdgf.345.fdtrertert,sdg";
+			String codigoFuente = ".asdasd345^=24535.fgdg=f.345\n.fdtrer++=tert,sdg.";
 			AnalizadorLexico al = new AnalizadorLexico(codigoFuente);
 			al.analizar();
 			
