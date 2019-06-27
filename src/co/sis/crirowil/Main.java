@@ -12,10 +12,9 @@ public class Main extends Application {
 		 */
 		public static void main(String[] args) {
 			
-			String codigoFuente = "34524535.fgdgf.345.fdtrertert,sdg";
+			String codigoFuente = "yya345245yy35.oofgdgf.y.345.fdtrertert,sdg";
 			AnalizadorLexico al = new AnalizadorLexico(codigoFuente);
-			al.analizar();
-			
+			al.analizar();			
 			System.out.println(al.getListaTokens());
 			
 			//launch(args);

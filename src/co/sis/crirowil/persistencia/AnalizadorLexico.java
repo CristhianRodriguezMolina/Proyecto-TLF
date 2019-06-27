@@ -25,6 +25,7 @@ public class AnalizadorLexico {
 				continue;
 			}
 			
+			if(esOperadorLogico()) continue;
 			if(esReal()) continue;
 			if(esEntero()) continue;
 			if(esIdentificador()) continue;
@@ -77,6 +78,59 @@ public class AnalizadorLexico {
 		
 		//RI
 		return false;	
+	}
+	
+	
+	public boolean esOperadorLogico()
+	{
+		if(caracterActual == 'y')
+		{
+			String palabra = "";
+			int fila = filaActual;
+			int columna = colActual;
+			
+			palabra+= caracterActual;
+			obtenerSgteCaracter();
+			if(caracterActual == 'y')
+			{
+				palabra+=caracterActual;
+				obtenerSgteCaracter();
+				listaTokens.add(new Token(Categoria.OPERADOR_LOGICO, palabra, fila, columna));
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+			
+			
+		}
+		else if(caracterActual == 'o')
+		{
+			String palabra = "";
+			int fila = filaActual;
+			int columna = colActual;
+			
+			palabra+= caracterActual;
+			obtenerSgteCaracter();
+			if(caracterActual == 'o')
+			{
+				palabra+=caracterActual;
+				obtenerSgteCaracter();
+				listaTokens.add(new Token(Categoria.OPERADOR_LOGICO, palabra, fila, columna));
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+			
+		}
+			
+		
+		
+		//RI
+		return false;
 	}
 	
 	public boolean esEntero() {
