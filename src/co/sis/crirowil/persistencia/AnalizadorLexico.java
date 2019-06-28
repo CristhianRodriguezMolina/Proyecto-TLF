@@ -27,20 +27,27 @@ public class AnalizadorLexico {
 				obtenerSgteCaracter();
 				continue;
 			}
-//			if (esHexadecimal())
-//				continue;
-//			if (esOperadorLogico())
-//				continue;
+
+			if (esLlaves())
+				continue;
+			if (esParentesis())
+				continue;
+			if(esHexadecimal())
+				continue;
+			if (esOperadorLogico())
+				continue;
 			if (esReal())
 				continue;
-//			if (esNatural())
+			if (esNatural())
+				continue;
+			if (esOperadorAsignacion())
+				continue;
+			if (esOperadorAritmetico())
+				continue;
+//			if (esPalabraReservada())
 //				continue;
-//			if (esOperadorAsignacion())
-//				continue;
-//			if (esOperadorAritmetico())
-//				continue;
-//			if (esIdentificador())
-//				continue;
+			if (esIdentificador())
+				continue;
 
 			listaTokens.add(new Token(Categoria.DESCONOCIDO, "" + caracterActual, filaActual, colActual));
 			obtenerSgteCaracter();
@@ -266,6 +273,7 @@ public class AnalizadorLexico {
 				caracterActual = caracterActualTemp;
 				filaActual = fila;
 				colActual = columna;
+				
 				return false;
 			}
 
@@ -303,6 +311,7 @@ public class AnalizadorLexico {
 
 		if (Character.isDigit(caracterActual) || caracterActual == '.') {
 			String palabra = "";
+			char caracterActualTemp = caracterActual;
 			int fila = filaActual;
 			int columna = colActual;
 
@@ -315,12 +324,12 @@ public class AnalizadorLexico {
 					palabra += caracterActual;
 					obtenerSgteCaracter();
 				}
-			} else if (Character.isDigit(caracterActual)) {
+			} else if (Character.isDigit(palabra.charAt(0))) {
 				// Este flag verifica que ya se haya pasado una vez por un punto ('.'), ya que
 				// obivamente un real solo tiene un punto
 				boolean flag = false;
 
-				while (Character.isDigit(caracterActual) || caracterActual == '.' && !flag) {
+				while (Character.isDigit(caracterActual) || (caracterActual == '.' && !flag)) {
 					if (caracterActual == '.') {
 						flag = true;
 					}
@@ -328,15 +337,16 @@ public class AnalizadorLexico {
 					palabra += caracterActual;
 					obtenerSgteCaracter();
 				}
-			} else {
-				listaTokens.add(new Token(Categoria.DESCONOCIDO, palabra, fila, columna));
-				return false;
 			}
 
 			if (palabra.contains(".") && palabra.length() > 1) {
 				listaTokens.add(new Token(Categoria.REAL, palabra, fila, columna));
 			} else {
-				listaTokens.add(new Token(Categoria.ENTERO, palabra, fila, columna));
+				caracterActual = caracterActualTemp;
+				filaActual = fila;
+				colActual = columna;
+
+				return false;
 			}
 
 			return true;
@@ -353,6 +363,7 @@ public class AnalizadorLexico {
 			char caracterActualTemp = caracterActual;
 			int fila = filaActual;
 			int columna = colActual;
+			
 			palabra += caracterActual;
 			obtenerSgteCaracter();
 			if (palabra.equals(caracterActual + "")) {
