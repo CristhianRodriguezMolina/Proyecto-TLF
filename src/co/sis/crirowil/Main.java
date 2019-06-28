@@ -20,7 +20,7 @@ public class Main extends Application {
  				"	real numero3 = .45@\r\n" + 
  				"	real numero4 = 456.@\r\n" + 
  				"	cadena = \"hola mundo\"@\r\n" + 
- 				"	ciclo(entero i = 0; i < 50; i+=1)\r\n" + 
+ 				"	ciclo(entero i = 0@ i < 50@ i+=1)\r\n" + 
  				"	{\r\n" + 
  				"		cadena temp = \"\"@\r\n" + 
  				"		entero res = numero2*numero3@\r\n" + 
