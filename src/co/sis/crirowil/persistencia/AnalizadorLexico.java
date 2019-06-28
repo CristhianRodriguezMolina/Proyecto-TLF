@@ -52,7 +52,7 @@ public class AnalizadorLexico {
 			obtenerSgteCaracter();
 		}
 
-		Collections.sort((List<Token>) listaTokens);
+		//Collections.sort((List<Token>) listaTokens);
 
 	}
 
@@ -104,7 +104,7 @@ public class AnalizadorLexico {
 
 		if (Character.isLetter(caracterActual)) {
 			String palabra = "";
-			char caracterActualTemp = caracterActual;
+			int posTemp = posActual;
 			int fila = filaActual;
 			int columna = colActual;
 
@@ -125,7 +125,8 @@ public class AnalizadorLexico {
 			if (contenidoArregloReservadas(palabra)) {
 				listaTokens.add(new Token(Categoria.PALABRA_RESERVADA, palabra, fila, columna));
 			} else {
-				caracterActual = caracterActualTemp;
+				posActual = posTemp; 
+				caracterActual = codigoFuente.charAt(posActual);
 				filaActual = fila;
 				colActual = columna;
 
@@ -310,7 +311,7 @@ public class AnalizadorLexico {
 
 		if (Character.isDigit(caracterActual) || caracterActual == '.') {
 			String palabra = "";
-			char caracterActualTemp = caracterActual;
+			int posTemp = posActual;
 			int fila = filaActual;
 			int columna = colActual;
 
@@ -341,7 +342,8 @@ public class AnalizadorLexico {
 			if (palabra.contains(".") && palabra.length() > 1) {
 				listaTokens.add(new Token(Categoria.REAL, palabra, fila, columna));
 			} else {
-				caracterActual = caracterActualTemp;
+				posActual = posTemp; 
+				caracterActual = codigoFuente.charAt(posActual);
 				filaActual = fila;
 				colActual = columna;
 
@@ -359,7 +361,7 @@ public class AnalizadorLexico {
 	public boolean esOperadorLogico() {
 		if (caracterActual == 'y' || caracterActual == 'o') {
 			String palabra = "";
-			char caracterActualTemp = caracterActual;
+			int posTemp = posActual;
 			int fila = filaActual;
 			int columna = colActual;
 
@@ -371,7 +373,8 @@ public class AnalizadorLexico {
 				listaTokens.add(new Token(Categoria.OPERADOR_LOGICO, palabra, fila, columna));
 				return true;
 			} else {
-				caracterActual = caracterActualTemp;
+				posActual = posTemp; 
+				caracterActual = codigoFuente.charAt(posActual);
 				filaActual = fila;
 				colActual = columna;
 				return false;
