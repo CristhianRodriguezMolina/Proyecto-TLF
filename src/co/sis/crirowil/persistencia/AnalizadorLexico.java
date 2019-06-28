@@ -247,7 +247,10 @@ public class AnalizadorLexico {
 			palabra += caracterActual;
 			obtenerSgteCaracter();
 
-			if (palabra.equals(caracterActual + "") && (palabra.equals("+") || palabra.equals("-"))) {
+			if(palabra.equals("=")) {
+				listaTokens.add(new Token(Categoria.OPERADOR_ASIGNACION, palabra, fila, columna));
+				return true;
+			}else if (palabra.equals(caracterActual + "") && (palabra.equals("+") || palabra.equals("-"))) {
 				palabra += caracterActual;
 				obtenerSgteCaracter();
 			} else if (!palabra.equals("=") && caracterActual == '=') {			
