@@ -23,7 +23,7 @@ public class AnalizadorLexico {
 
 		while (caracterActual != finCodigo) {
 
-			if (caracterActual == ' ' || caracterActual == '\n' || caracterActual == '\t') {
+			if (caracterActual == ' ' || caracterActual == '\n' || caracterActual == '\t' || caracterActual == '\r') {
 				obtenerSgteCaracter();
 				continue;
 			}
