@@ -27,12 +27,11 @@ public class AnalizadorLexico {
 				obtenerSgteCaracter();
 				continue;
 			}
-
 			if (esLlaves())
 				continue;
 			if (esParentesis())
 				continue;
-			if(esHexadecimal())
+			if (esHexadecimal())
 				continue;
 			if (esOperadorLogico())
 				continue;
@@ -44,8 +43,8 @@ public class AnalizadorLexico {
 				continue;
 			if (esOperadorAritmetico())
 				continue;
-//			if (esPalabraReservada())
-//				continue;
+			if (esPalabraReservada())
+				continue;
 			if (esIdentificador())
 				continue;
 
@@ -273,7 +272,7 @@ public class AnalizadorLexico {
 				caracterActual = caracterActualTemp;
 				filaActual = fila;
 				colActual = columna;
-				
+
 				return false;
 			}
 
@@ -363,7 +362,7 @@ public class AnalizadorLexico {
 			char caracterActualTemp = caracterActual;
 			int fila = filaActual;
 			int columna = colActual;
-			
+
 			palabra += caracterActual;
 			obtenerSgteCaracter();
 			if (palabra.equals(caracterActual + "")) {
