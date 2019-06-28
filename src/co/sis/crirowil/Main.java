@@ -13,7 +13,7 @@ public class Main extends Application {
 		public static void main(String[] args) {
 			
 
-			String codigoFuente = ".GAWLVK;;AWKRG´{{}787/58}*======***sdasd3***45^=24531//212@5.fgdg=f.345\n.fdt@rer++=`{{{[[[^tert,sdg.";
+			String codigoFuente = ".GAWLVK;;cicloAWKenteroRG´{{}787/58}*======***sdarealsd3***45^=24531//212@5.fgdg=f.345\n.fdt@rer++=`{{{[[[^tert,sdg.";
 			AnalizadorLexico al = new AnalizadorLexico(codigoFuente);
 			al.analizar();			
 			System.out.println(al.getListaTokens());
