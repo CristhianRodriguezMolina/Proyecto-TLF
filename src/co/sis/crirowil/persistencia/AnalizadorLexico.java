@@ -154,7 +154,7 @@ public class AnalizadorLexico {
 	
 	public boolean esOperadorAsignacion() {
 		
-		if( caracterActual=='+' || caracterActual=='-' || caracterActual=='*' || caracterActual=='/' || caracterActual=='%' || caracterActual=='^' || caracterActual=='-' ) {
+		if( caracterActual=='+' || caracterActual=='=' || caracterActual=='*' || caracterActual=='/' || caracterActual=='%' || caracterActual=='^' || caracterActual=='-' ) {
 			String palabra = "";
 			int fila = filaActual;
 			int columna = colActual;
@@ -232,7 +232,7 @@ public class AnalizadorLexico {
 					obtenerSgteCaracter();						
 				}				
 			}else {
-				obtenerAntCaracter();
+				listaTokens.add(new Token(Categoria.DESCONOCIDO,palabra,fila,columna));
 				return false;
 			}
 						
@@ -379,9 +379,9 @@ public class AnalizadorLexico {
 		
 		posActual--;
 		
-		if(posActual>=0) {
+		if(posActual > 0) {
 			
-			colActual++;
+			colActual--;
 						
 			caracterActual = codigoFuente.charAt(posActual);	
 		}else {
