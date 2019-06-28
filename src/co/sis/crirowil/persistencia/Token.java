@@ -1,6 +1,6 @@
 package co.sis.crirowil.persistencia;
 
-public class Token {
+public class Token implements Comparable<Token> {
 
 	private Categoria categoria;
 	private String palabra;
@@ -17,7 +17,29 @@ public class Token {
 	@Override
 	public String toString() {
 		return "Token [categoria=" + categoria + ", palabra=" + palabra + ", fila=" + fila + ", columna=" + columna
-				+ "]";
+				+ "]\n";
 	}
+
+	@Override
+	public int compareTo(Token o) {
+		return categoria.getClass().getSimpleName().compareTo(o.getCategoria().getClass().getSimpleName());
+	}
+
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
+
+	public String getPalabra() {
+		return palabra;
+	}
+
+	public void setPalabra(String palabra) {
+		this.palabra = palabra;
+	}
+	
 	
 }
