@@ -45,7 +45,7 @@ public class AnalizadorLexico {
 			int fila = filaActual;
 			int columna = colActual;
 			
-			//Transición
+			//Transicion
 			palabra+=caracterActual;
 			obtenerSgteCaracter();
 			
@@ -76,7 +76,7 @@ public class AnalizadorLexico {
 			int fila = filaActual;
 			int columna = colActual;
 			
-			//Transición
+			//Transicion
 			palabra+=caracterActual;
 			obtenerSgteCaracter();
 			
@@ -126,10 +126,8 @@ public class AnalizadorLexico {
 				listaTokens.add(new Token(Categoria.REAL, palabra, fila, columna));
 			}else{
 				listaTokens.add(new Token(Categoria.ENTERO, palabra, fila, columna));
-			}
-			
-			return true;
-			
+			}			
+			return true;		
 		}
 		
 		//RI
@@ -157,9 +155,7 @@ public class AnalizadorLexico {
 			else
 			{
 				return false;
-			}
-			
-			
+			}			
 		}
 		else if(caracterActual == 'o')
 		{
