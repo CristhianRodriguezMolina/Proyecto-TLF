@@ -8,6 +8,7 @@ public class AnalizadorLexico {
 
 	private String codigoFuente;
 	private ArrayList<Token> listaTokens;
+	private String[] palabrasReservadas = {"ciclo", "metodo", "cadena", "entero", "real", "devolver", "importar"};
 	private char caracterActual, finCodigo;
 	private int posActual, colActual, filaActual;
 
@@ -89,6 +90,54 @@ public class AnalizadorLexico {
 	public boolean isLetraHexa(char caracter) 
 	{
 		return caracter >= 65 && caracter <= 70 ? true : false;
+	}
+	
+	public boolean contenidoArregloReservadas(String palabra) {
+		for (int i = 0; i < palabrasReservadas.length; i++) {
+			if(palabrasReservadas[i].equals(palabra)) {
+				return true;
+			}
+		} 	
+		return false;
+	}	
+	
+	public boolean esPalabraReservada() {
+		
+		if( Character.isLetter(caracterActual) ) {
+			String palabra = "";
+			char caracterActualTemp = caracterActual; 
+			int fila = filaActual;
+			int columna = colActual;
+			
+			//Transición
+			palabra+=caracterActual;
+			obtenerSgteCaracter();
+			
+			boolean flag = true;
+			while( Character.isLetter(caracterActual) && flag==true ) {
+				palabra+=caracterActual;
+				obtenerSgteCaracter();		
+				
+				if(contenidoArregloReservadas(palabra)) {
+					break;
+				}
+			}			
+			
+			if(contenidoArregloReservadas(palabra)) {
+				listaTokens.add(new Token(Categoria.PALABRA_RESERVADA, palabra, fila, columna));
+			}else {
+				caracterActual = caracterActualTemp;
+				filaActual = fila;
+				colActual = columna;
+				
+				return false;
+			}
+			
+			return true;			
+		}
+		
+		//RI
+		return false;	
 	}
 	
 	public boolean esFinSentencia() {
@@ -206,21 +255,24 @@ public class AnalizadorLexico {
 		if (caracterActual == '+' || caracterActual == '=' || caracterActual == '*' || caracterActual == '/'
 				|| caracterActual == '%' || caracterActual == '^' || caracterActual == '-') {
 			String palabra = "";
+			char caracterActualTemp = caracterActual;
 			int fila = filaActual;
 			int columna = colActual;
 
 			// Transición
 			palabra += caracterActual;
 			obtenerSgteCaracter();
-
-			if (!palabra.equals("=") && palabra.equals(caracterActual + "")) {
-				palabra += caracterActual;
-				obtenerSgteCaracter();
-
+			
+			if(palabra.equals(caracterActual+"") && (palabra.equals("+") || palabra.equals("-"))) {
+				palabra+=caracterActual;
+				obtenerSgteCaracter();	
+				
 				listaTokens.add(new Token(Categoria.OPERADOR_ASIGNACION, palabra, fila, columna));
 				return true;
-			} else if (!palabra.equals("=")) {
-				obtenerAntCaracter();
+			}else if(!palabra.equals("=")) {
+				caracterActual = caracterActualTemp;
+				filaActual = fila;
+				colActual = columna;
 				return false;
 			}
 
@@ -301,40 +353,51 @@ public class AnalizadorLexico {
 		// RI
 		return false;
 	}
-
-	public boolean esOperadorLogico() {
-		if (caracterActual == 'y') {
+	
+	public boolean esOperadorLogico()
+	{
+		if(caracterActual == 'y' || caracterActual == 'o')
+		{
 			String palabra = "";
-			int fila = filaActual;
-			int columna = colActual;
-
-			palabra += caracterActual;
-			obtenerSgteCaracter();
-			if (caracterActual == 'y') {
-				palabra += caracterActual;
-				obtenerSgteCaracter();
-				listaTokens.add(new Token(Categoria.OPERADOR_LOGICO, palabra, fila, columna));
-				return true;
-			} else {
-				return false;
-			}
-
-		} else if (caracterActual == 'o') {
-			String palabra = "";
+			char caracterActualTemp = caracterActual;
 			int fila = filaActual;
 			int columna = colActual;
 			palabra += caracterActual;
 			obtenerSgteCaracter();
-			if (caracterActual == 'o') {
-				palabra += caracterActual;
-				obtenerSgteCaracter();
-				listaTokens.add(new Token(Categoria.OPERADOR_LOGICO, palabra, fila, columna));
-				return true;
-			} else {
+			if(palabra.equals(caracterActual+""))
+			{
+				palabra+=caracterActual;
+				obtenerSgteCaracter();				
+			}
+			else
+			{
+				caracterActual = caracterActualTemp;
+				filaActual = fila;
+				colActual = columna;
+				
 				return false;
 			}
+			
+			listaTokens.add(new Token(Categoria.OPERADOR_LOGICO, palabra, fila, columna));
+			return true;
 		}
-		// RI
+//		else if (caracterActual == 'o') {
+//			String palabra = "";
+//			int fila = filaActual;
+//			int columna = colActual;
+//
+//			palabra += caracterActual;
+//			obtenerSgteCaracter();
+//			if (caracterActual == 'o') {
+//				palabra += caracterActual;
+//				obtenerSgteCaracter();
+//				listaTokens.add(new Token(Categoria.OPERADOR_LOGICO, palabra, fila, columna));
+//				return true;
+//			} else {
+//				return false;
+//			}
+//
+//		}
 		return false;
 	}
 
