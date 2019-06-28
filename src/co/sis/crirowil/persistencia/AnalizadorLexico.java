@@ -263,7 +263,7 @@ public class AnalizadorLexico {
 		if (caracterActual == '+' || caracterActual == '=' || caracterActual == '*' || caracterActual == '/'
 				|| caracterActual == '%' || caracterActual == '^' || caracterActual == '-') {
 			String palabra = "";
-			char caracterActualTemp = caracterActual;
+			int posTemp = posActual;
 			int fila = filaActual;
 			int columna = colActual;
 
@@ -278,7 +278,8 @@ public class AnalizadorLexico {
 				listaTokens.add(new Token(Categoria.OPERADOR_ASIGNACION, palabra, fila, columna));
 				return true;
 			} else if (!palabra.equals("=")) {
-				caracterActual = caracterActualTemp;
+				posActual = posTemp; 
+				caracterActual = codigoFuente.charAt(posActual);
 				filaActual = fila;
 				colActual = columna;
 				
