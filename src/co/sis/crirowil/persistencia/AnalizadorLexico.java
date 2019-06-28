@@ -8,7 +8,7 @@ public class AnalizadorLexico {
 
 	private String codigoFuente;
 	private ArrayList<Token> listaTokens;
-	private String[] palabrasReservadas = { "ciclo", "metodo", "cadena", "entero", "real", "devolver", "importar" };
+	private String[] palabrasReservadas = { "ciclo", "metodo", "cadena", "entero", "real", "devolver", "importar", "sisas", "nonas", "nonasis", "nada" };
 	private char caracterActual, finCodigo;
 	private int posActual, colActual, filaActual;
 
@@ -27,6 +27,10 @@ public class AnalizadorLexico {
 				obtenerSgteCaracter();
 				continue;
 			}
+			if(esTerminal()) 
+				continue;
+			if(esSeparador())
+				continue;
 			if (esLlaves())
 				continue;
 			if (esParentesis())
@@ -140,26 +144,6 @@ public class AnalizadorLexico {
 		return false;
 	}
 
-	public boolean esFinSentencia() {
-
-		if (caracterActual == '@') {
-			String palabra = "";
-			int fila = filaActual;
-			int columna = colActual;
-
-			// Transición
-			palabra += caracterActual;
-			obtenerSgteCaracter();
-
-			listaTokens.add(new Token(Categoria.FIN_SENTENCIA, palabra, fila, columna));
-			return true;
-
-		}
-
-		// RI
-		return false;
-	}
-
 	public boolean esLlaves() {
 
 		if (caracterActual == '{' || caracterActual == '}') {
@@ -221,7 +205,7 @@ public class AnalizadorLexico {
 			palabra += caracterActual;
 			obtenerSgteCaracter();
 
-			listaTokens.add(new Token(Categoria.FIN_SENTENCIA, palabra, fila, columna));
+			listaTokens.add(new Token(Categoria.TERMINAL, palabra, fila, columna));
 			return true;
 
 		}
@@ -266,10 +250,10 @@ public class AnalizadorLexico {
 			if (palabra.equals(caracterActual + "") && (palabra.equals("+") || palabra.equals("-"))) {
 				palabra += caracterActual;
 				obtenerSgteCaracter();
-
-				listaTokens.add(new Token(Categoria.OPERADOR_ASIGNACION, palabra, fila, columna));
-				return true;
-			} else if (!palabra.equals("=")) {
+			} else if (!palabra.equals("=") && caracterActual == '=') {			
+				palabra += caracterActual;
+				obtenerSgteCaracter();		
+			}else {			
 				posActual = posTemp; 
 				caracterActual = codigoFuente.charAt(posActual);
 				filaActual = fila;
