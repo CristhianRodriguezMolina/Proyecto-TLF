@@ -32,6 +32,8 @@ public class AnalizadorLexico {
 				continue;
 			if (esParentesis())
 				continue;
+			if(esHexadecimal())
+				continue;
 			if (esOperadorLogico())
 				continue;
 			if (esReal())
@@ -53,6 +55,48 @@ public class AnalizadorLexico {
 
 		Collections.sort((List<Token>) listaTokens);
 
+	}
+	
+	public boolean esHexadecimal() 
+	{
+		String palabra = "";
+		int posTemp = posActual;
+		int fila = filaActual;
+		int columna = colActual;
+		if(caracterActual == 'h') 
+		{
+			palabra += caracterActual;
+			obtenerSgteCaracter();
+			
+			if(caracterActual == 'x') 
+			{
+				palabra += caracterActual;
+				obtenerSgteCaracter();
+				if(Character.isDigit(caracterActual) || isLetraHexa(caracterActual)) 
+				{
+					palabra += caracterActual;
+					obtenerSgteCaracter();
+					while(Character.isDigit(caracterActual) || isLetraHexa(caracterActual)) 
+					{
+						palabra += caracterActual;
+						obtenerSgteCaracter();
+					}
+					System.out.println("a�ada " + palabra);
+					listaTokens.add(new Token(Categoria.HEXADECIMAL, palabra, fila, columna));
+					return true;	
+				}
+			}
+		}
+		posActual = posTemp;
+		filaActual = fila;
+		colActual = columna;
+		caracterActual = codigoFuente.charAt(posActual);
+		return false;
+	}
+	
+	public boolean isLetraHexa(char caracter) 
+	{
+		return caracter >= 65 && caracter <= 70 ? true : false;
 	}
 
 	public boolean contenidoArregloReservadas(String palabra) {
@@ -236,7 +280,7 @@ public class AnalizadorLexico {
 				caracterActual = caracterActualTemp;
 				filaActual = fila;
 				colActual = columna;
-
+				
 				return false;
 			}
 
@@ -319,16 +363,19 @@ public class AnalizadorLexico {
 		// RI
 		return false;
 	}
-
-	public boolean esOperadorLogico() {
-		if (caracterActual == 'y' || caracterActual == 'o') {
+	
+	public boolean esOperadorLogico()
+	{
+		if(caracterActual == 'y' || caracterActual == 'o')
+		{
 			String palabra = "";
 			char caracterActualTemp = caracterActual;
 			int fila = filaActual;
 			int columna = colActual;
-
+			
 			palabra += caracterActual;
 			obtenerSgteCaracter();
+			
 			if (palabra.equals(caracterActual + "")) {
 				palabra += caracterActual;
 				obtenerSgteCaracter();
