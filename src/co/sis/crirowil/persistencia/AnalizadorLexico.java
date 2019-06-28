@@ -44,8 +44,8 @@ public class AnalizadorLexico {
 				continue;
 			if (esOperadorAritmetico())
 				continue;
-			if (esPalabraReservada())
-				continue;
+//			if (esPalabraReservada())
+//				continue;
 			if (esIdentificador())
 				continue;
 
