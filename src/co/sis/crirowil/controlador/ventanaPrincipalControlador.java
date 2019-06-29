@@ -25,12 +25,23 @@ public class ventanaPrincipalControlador {
 		 */
 		@FXML
 		private void initialize() {
-
+			
+			textArea.setText(".GAWLVK;;AW\"BIENVENIDO\"KRG´{{}787/58}*======***sdasd3***45^=24531//212@5.fgdg=f.345\n.fdt@rer++=`{{{[[[^tert,sdg.");
 		}
 
 	
 
 	
+		/**
+		 * Este metodo captura el codigo ingresado y lo pasa al manejador de escenarios.
+		 */
+		@FXML
+		private void analizar()
+		{
+			String codigoFuente = textArea.getText();
+			manejador.analizar(codigoFuente);
+		}
+		
 		/**
 		 * Permite cerrar la ventana de editar y crear
 		 */

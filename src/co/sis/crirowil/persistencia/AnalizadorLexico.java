@@ -27,12 +27,15 @@ public class AnalizadorLexico {
 				continue;
 			}
 			
+			
 			if(esOperadorLogico()) continue;
 			if(esReal()) continue;
 			if(esNatural()) continue;
 			if(esOperadorAsignacion()) continue;
 			if(esOperadorAritmetico()) continue;
+			if(esComentario()) continue;
 			if(esIdentificador()) continue;
+			if(esCadenaCaracteres()) continue;
 			
 			listaTokens.add(new Token(Categoria.DESCONOCIDO, ""+caracterActual, filaActual, colActual));
 			obtenerSgteCaracter();
@@ -60,6 +63,129 @@ public class AnalizadorLexico {
 		
 		//RI
 		return false;	
+	}
+	
+	
+	public boolean esComentario()
+	{
+		if(caracterActual == '$')
+		{
+			String palabra = "";
+			int fila = filaActual;
+			int columna = colActual;
+			int posTemp = posActual;
+			
+			palabra+=caracterActual;
+			obtenerSgteCaracter();
+			
+			
+			if(caracterActual == '$')
+			{
+				palabra+=caracterActual;
+				obtenerSgteCaracter();
+			
+				
+				while(caracterActual != '$' && caracterActual != finCodigo)
+				{
+					palabra += caracterActual;
+					obtenerSgteCaracter();
+				}
+				
+				if(caracterActual == '$')
+				{
+					palabra+=caracterActual;
+					obtenerSgteCaracter();
+					if(caracterActual == '$')
+					{
+						palabra+=caracterActual;
+						obtenerSgteCaracter();
+						listaTokens.add(new Token(Categoria.COMENTARIO,palabra,fila,columna));
+						return true;
+					}
+					else
+					{
+						
+						this.caracterActual = codigoFuente.charAt(posTemp);	// Se regresa al caracter que lo inicio todo
+						this.posActual = posTemp;							//Se regresa a la pos del caracter	
+						this.filaActual = fila;								//Se regresa a la fila del carater
+						this.colActual = columna;							//Se regresa a la columna del caracter
+						return false;
+					}
+				}
+				else
+				{
+					
+					this.caracterActual = codigoFuente.charAt(posTemp);		//Lo de arriba
+					this.posActual = posTemp;
+					this.filaActual = fila;
+					this.colActual = columna;
+					return false;
+				}
+			}
+			else
+			{
+				obtenerAntCaracter();
+				return false;
+						
+			}
+			
+		}
+		
+	return false;
+		
+		
+	}
+	
+	
+	public boolean esCadenaCaracteres() {
+		
+		if(caracterActual == 34)
+		{
+			String palabra = "";
+			int fila = filaActual;
+			int columna = colActual;
+			
+			palabra+= caracterActual;
+//			System.out.println("Empiezo: "+caracterActual);
+			obtenerSgteCaracter();
+			
+			int aDevolverse = 1; // Este numero solo se aplicara en caso de que haya una comilla doble y nunca se cierre. 
+			
+			while(caracterActual != 34 && caracterActual != finCodigo)
+			{
+				aDevolverse++;	
+				palabra+=caracterActual;
+				obtenerSgteCaracter();
+					
+			}
+			
+			if(caracterActual != finCodigo)
+			{
+				
+				if(caracterActual == 34)
+				{
+					palabra+=caracterActual;
+					obtenerSgteCaracter();
+					listaTokens.add(new Token(Categoria.CADENA_CARACTERES,palabra,fila,columna));
+					return true;
+				}
+			}
+			else
+			{
+				for(int i = 0 ; i < aDevolverse ; i++) //Se devuelve solo hasta el caracter siguiente de la comilla doble abierta peronunca cerrada
+				{
+					obtenerAntCaracter();
+				}
+				
+				
+//				System.out.println("Como no hay fin de cadena, regreso al caracter "+caracterActual);
+				return false;
+				
+			}
+			
+			
+		}
+		return false;
 	}
 	
 	public boolean esLlaves() {

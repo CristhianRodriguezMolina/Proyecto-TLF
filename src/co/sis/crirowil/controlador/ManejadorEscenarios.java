@@ -3,7 +3,9 @@ package co.sis.crirowil.controlador;
 import java.io.IOException;
 
 
+
 import co.sis.crirowil.Main;
+import co.sis.crirowil.persistencia.AnalizadorLexico;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -41,6 +43,9 @@ public class ManejadorEscenarios {
 			loader.setLocation(Main.class.getResource("./vista/ventanaPrincipal.fxml"));
 
 			anchorPanel = (AnchorPane) loader.load();
+			
+			ventanaPrincipalControlador controlador = loader.getController();
+			controlador.setManejador(this);
 
 			// se carga la escena
 			Scene scene = new Scene(anchorPanel);
@@ -53,6 +58,19 @@ public class ManejadorEscenarios {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Este metodo envia el codigo fuente al analizador lexico 
+	 * @param cFuente
+	 */
+	public void analizar(String cFuente)
+	{
+		AnalizadorLexico al = new AnalizadorLexico(cFuente);
+		al.analizar();			
+		System.out.println(al.getListaTokens());
+	
+	}
+	
 	
 	
 

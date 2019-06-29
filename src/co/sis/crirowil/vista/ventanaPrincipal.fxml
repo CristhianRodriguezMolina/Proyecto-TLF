@@ -5,11 +5,22 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.sis.crirowil.controlador.ventanaPrincipalControlador">
-   <children>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="225.0" layoutY="38.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="ANALIZADOR LÉXICO" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0" />
-      <TextArea fx:id="textArea" layoutX="14.0" layoutY="58.0" prefHeight="239.0" prefWidth="566.0" AnchorPane.bottomAnchor="103.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
-      <Button fx:id="btnAnalizar" layoutX="39.0" layoutY="334.0" mnemonicParsing="false" text="Analizar" AnchorPane.bottomAnchor="41.0" AnchorPane.leftAnchor="39.0" />
-   </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity"
+	minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+	prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1"
+	xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="co.sis.crirowil.controlador.ventanaPrincipalControlador">
+	<children>
+		<Label alignment="CENTER" contentDisplay="CENTER"
+			layoutX="225.0" layoutY="38.0" maxHeight="1.7976931348623157E308"
+			maxWidth="1.7976931348623157E308" text="ANALIZADOR LÉXICO"
+			textAlignment="CENTER" AnchorPane.leftAnchor="0.0"
+			AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0" />
+		<TextArea fx:id="textArea" layoutX="14.0" layoutY="58.0"
+			prefHeight="239.0" prefWidth="566.0" AnchorPane.bottomAnchor="103.0"
+			AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+		<Button fx:id="btnAnalizar" layoutX="39.0" layoutY="334.0"
+			mnemonicParsing="false" onAction="#analizar" text="Analizar"
+			AnchorPane.bottomAnchor="41.0" AnchorPane.leftAnchor="39.0" />
+	</children>
 </AnchorPane>

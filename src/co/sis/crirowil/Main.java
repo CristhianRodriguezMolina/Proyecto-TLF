@@ -16,19 +16,6 @@ public class Main extends Application {
 		 */
 		public static void main(String[] args) {
 			
-
-
-//			String codigoFuente = ".GAWLVK;;AWKRG´{{}787/58}*======***sdasd3***45^=24531//212@5.fgdg=f.345\n.fdt@rer++=`{{{[[[^tert,sdg.";
-//			AnalizadorLexico al = new AnalizadorLexico(codigoFuente);
-//			al.analizar();			
-//			System.out.println(al.getListaTokens());
-
-			
-//			String codigoFuente = ".asdasd345^==24535.oo.o.fgdg=f.345\n.fdtrer++=tert,sdg.";
-//			AnalizadorLexico al = new AnalizadorLexico(codigoFuente);
-//			al.analizar();			
-//			System.out.println(al.getListaTokens());
-			
 			launch(args);
 		}
 		
@@ -38,7 +25,6 @@ public class Main extends Application {
 		@Override
 		public void start(Stage primaryStage) {
 			
-			System.out.println("LLego");
 			new ManejadorEscenarios(primaryStage);
 		}
 	
