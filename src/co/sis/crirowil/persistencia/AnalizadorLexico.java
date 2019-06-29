@@ -506,6 +506,7 @@ public class AnalizadorLexico {
 			String palabra = "";
 			int fila = filaActual;
 			int columna = colActual;
+			int posTemp = posActual;
 			
 			palabra+= caracterActual;
 
