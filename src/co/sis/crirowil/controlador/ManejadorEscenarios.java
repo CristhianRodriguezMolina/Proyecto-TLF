@@ -1,12 +1,14 @@
 package co.sis.crirowil.controlador;
 
 import java.io.IOException;
-
-
+import java.util.ArrayList;
 
 import co.sis.crirowil.Main;
+import co.sis.crirowil.modelo.TokenObservable;
 import co.sis.crirowil.persistencia.AnalizadorLexico;
+import co.sis.crirowil.persistencia.Token;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -27,6 +29,11 @@ public class ManejadorEscenarios {
 	private AnchorPane anchorPanel;
 	
 	/**
+	 * Lista de tokens observables
+	 */
+	private ObservableList<TokenObservable> tokensObservables;
+	
+	/**
 	 * Recibe el escenario principal de la aplicacion
 	 * 
 	 * @param escenario inicial
@@ -44,7 +51,7 @@ public class ManejadorEscenarios {
 
 			anchorPanel = (AnchorPane) loader.load();
 			
-			ventanaPrincipalControlador controlador = loader.getController();
+			VentanaPrincipalControlador controlador = loader.getController();
 			controlador.setManejador(this);
 
 			// se carga la escena
@@ -68,7 +75,28 @@ public class ManejadorEscenarios {
 		AnalizadorLexico al = new AnalizadorLexico(cFuente);
 		al.analizar();			
 		System.out.println(al.getListaTokens());
-	
+		ArrayList<Token> tokens = al.getListaTokens();
+		ObservableList<TokenObservable> tokensObservablesTemp = FXCollections.observableArrayList();
+		for(Token token: tokens) 
+		{
+			tokensObservablesTemp.add(new TokenObservable(token));
+			
+		}
+		setTokensObservables(tokensObservablesTemp);
+	}
+
+	/**
+	 * @return the tokensObservables
+	 */
+	public ObservableList<TokenObservable> getTokensObservables() {
+		return tokensObservables;
+	}
+
+	/**
+	 * @param tokensObservables the tokensObservables to set
+	 */
+	public void setTokensObservables(ObservableList<TokenObservable> tokensObservables) {
+		this.tokensObservables = tokensObservables;
 	}
 	
 	

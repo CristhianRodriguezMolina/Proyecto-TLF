@@ -1,7 +1,6 @@
 package co.sis.crirowil.persistencia;
 
 public class Token implements Comparable<Token> {
-
 	private Categoria categoria;
 	private String palabra;
 	private int fila, columna;
