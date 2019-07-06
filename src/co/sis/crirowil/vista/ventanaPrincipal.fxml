@@ -11,7 +11,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="468.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.sis.crirowil.controlador.VentanaPrincipalControlador">
 	<children>
 		<Label alignment="CENTER" contentDisplay="CENTER" layoutX="225.0" layoutY="38.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="ANALIZADOR LÉXICO" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0" />
-		<Button fx:id="btnAnalizar" layoutX="14.0" layoutY="354.0" mnemonicParsing="false" onAction="#analizar" text="Analizar" AnchorPane.bottomAnchor="21.0" AnchorPane.leftAnchor="14.0" />
+		<Button layoutX="14.0" layoutY="354.0" mnemonicParsing="false" onAction="#analizar" text="Analizar" AnchorPane.bottomAnchor="21.0" AnchorPane.leftAnchor="14.0" />
       <SplitPane dividerPositions="0.4982758620689655" layoutX="10.0" layoutY="55.0" prefHeight="354.0" prefWidth="582.0" AnchorPane.bottomAnchor="59.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="55.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">

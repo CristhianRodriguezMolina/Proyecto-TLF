@@ -15,6 +15,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+/**
+ * Controlador que me permite manejar todos lo escenarios
+ * @author Wilmar Stiven Valencia Cardona
+ * @author Juan Manuel Roa Mejia
+ * @author Cristhian Camilo Rodriguez Molina
+ * @version 1.0
+ */
 public class ManejadorEscenarios {
 	
 	
@@ -98,11 +105,32 @@ public class ManejadorEscenarios {
 	public void setTokensObservables(ObservableList<TokenObservable> tokensObservables) {
 		this.tokensObservables = tokensObservables;
 	}
-	
-	
-	
 
-	
-	
-	
+	/**
+	 * @return the escenario
+	 */
+	public Stage getEscenario() {
+		return escenario;
+	}
+
+	/**
+	 * @param escenario the escenario to set
+	 */
+	public void setEscenario(Stage escenario) {
+		this.escenario = escenario;
+	}
+
+	/**
+	 * @return the anchorPanel
+	 */
+	public AnchorPane getAnchorPanel() {
+		return anchorPanel;
+	}
+
+	/**
+	 * @param anchorPanel the anchorPanel to set
+	 */
+	public void setAnchorPanel(AnchorPane anchorPanel) {
+		this.anchorPanel = anchorPanel;
+	}	
 }

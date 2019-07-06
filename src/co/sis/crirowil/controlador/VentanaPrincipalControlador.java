@@ -3,20 +3,26 @@ package co.sis.crirowil.controlador;
 import co.sis.crirowil.modelo.TokenObservable;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 
+/**
+ * Controlador que me permite maneja la ventana principal
+ * @author Wilmar Stiven Valencia Cardona
+ * @author Juan Manuel Roa Mejia
+ * @author Cristhian Camilo Rodriguez Molina
+ * @version 1.0
+ */
 public class VentanaPrincipalControlador {
 
 		
 		
+	/**
+	 * Relacion al textArea a disposicion del usuario
+	 */
     @FXML
     private TextArea textArea;
-
-    @FXML
-    private Button btnAnalizar;
     
     /**
 	 * Tabla donde se almacena la informacion de los tokens
@@ -50,36 +56,43 @@ public class VentanaPrincipalControlador {
 		palabraColumna.setCellValueFactory(TokenCelda -> TokenCelda.getValue().getPalabra());			
 		
 		textArea.setText("importar mundo@\r\n" + 
- 				"\r\n" + 
- 				"$$Comentario de prueba$$\r\n" + 
- 				"metodo main(args, resp)\r\n" + 
- 				"{\r\n" + 
- 				"	entero numero1 = 345@\r\n" + 
- 				"	real numero2 = 5.63@\r\n" + 
- 				"	real numero3 = .45@\r\n" + 
- 				"	real numero4 = 456.@\r\n" + 
- 				"	cadena = \"hola mundo\"@\r\n" + 
- 				"	ciclo(entero i = 0@ i < 50@ i+=1)\r\n" + 
- 				"	{\r\n" + 
- 				"		cadena temp = \"\"@\r\n" + 
- 				"		entero res = numero2*numero3@\r\n" + 
- 				"		entero res1 *= numero1^numero4@\r\n" + 
- 				"		string res2 = \"hola\" + \"mundo\" + \"\"@\r\n" + 
- 				"		sisas(numero1 >= numero 3)\r\n" + 
- 				"		{\r\n" + 
- 				"			cadena hexa = hx123456789ABCDEF + \"\"@\r\n" + 
- 				"		}\r\n" + 
- 				"		nonasis(numero3 == numero4 yy 5<4 oo n4<3) \r\n" + 
- 				"		{\r\n" + 
- 				"\r\n" + 
- 				"		}\r\n" + 
- 				"		nonas\r\n" + 
- 				"		{\r\n" + 
- 				"\r\n" + 
- 				"		}\r\n" + 
- 				"	}\r\n" + 
- 				"	devolver nada@\r\n" + 
- 				"}");
+				"\r\n" + 
+				"$$Comentario de prueba$$\r\n" + 
+				"metodo main(args, resp)\r\n" + 
+				"{\r\n" + 
+				"	entero numero1 = 345@\r\n" + 
+				"	real numero2 = 5.63@\r\n" + 
+				"	real numero3 = .45@\r\n" + 
+				"	real numero4 = 456.@\r\n" + 
+				"	real numero5 *= numero1@\r\n" + 
+				"	real numero6 /= numero2@\r\n" + 
+				"	real numero7 -= numero3@\r\n" + 
+				"	real numero8 ^= numero4@\r\n" + 
+				"	entero o = 1@\r\n" + 
+				"	entero y = 0 + o@\r\n" + 
+				"	entero numero9 = numero2 - numero3 %= 2@\r\n" + 
+				"	cadena = \"hola mundo\"@\r\n" + 
+				"	ciclo(entero i = 0@ i < 50@ i+=1)\r\n" + 
+				"	{\r\n" + 
+				"		cadena temp = \"\"@\r\n" + 
+				"		entero res = numero2*numero3@\r\n" + 
+				"		entero res1 *= numero1^numero4@\r\n" + 
+				"		string res2 = \"hola\" + \"mundo\" + \"\"@\r\n" + 
+				"		sisas((numero1 >= numero 3 oo numero2 > 3) yy numero1 <= 5.4)\r\n" + 
+				"		{\r\n" + 
+				"			cadena hexa = hx123456789ABCDEF + \"\"@\r\n" + 
+				"		}\r\n" + 
+				"		nonas sisas(numero3 == numero4 yy 5<4 oo numero2 % 2 == 0) \r\n" + 
+				"		{\r\n" + 
+				"\r\n" + 
+				"		}\r\n" + 
+				"		nonas\r\n" + 
+				"		{\r\n" + 
+				"\r\n" + 
+				"		}\r\n" + 
+				"	}\r\n" + 
+				"	devolver nada@\r\n" + 
+				"}");
 	}
 	
 	/**

@@ -6,9 +6,10 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 /**
- * Permite transformar una persona en formato observable
- * 
- * @author EinerZG
+ * Permite Transforma un Token a formato Observale
+ * @author Wilmar Stiven Valencia Cardona
+ * @author Juan Manuel Roa Mejia
+ * @author Cristhian Camilo Rodriguez Molina
  * @version 1.0
  */
 public class TokenObservable {
