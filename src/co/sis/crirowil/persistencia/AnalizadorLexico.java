@@ -44,6 +44,8 @@ public class AnalizadorLexico {
 				continue;
 			if (esNatural())
 				continue;
+			if (esOperadorRelacional())
+				continue;
 			if (esOperadorAsignacion())
 				continue;
 			if (esOperadorAritmetico())
@@ -356,6 +358,40 @@ public class AnalizadorLexico {
 			obtenerSgteCaracter();
 
 			listaTokens.add(new Token(Categoria.SEPARADOR, palabra, fila, columna));
+			return true;
+
+		}
+
+		// RI
+		return false;
+	}
+	
+	public boolean esOperadorRelacional() {
+
+		if (caracterActual == '<' || caracterActual == '>' || caracterActual == '=' || caracterActual == '!') {
+			String palabra = "";
+			int posTemp = posActual;
+			int fila = filaActual;
+			int columna = colActual;
+
+
+			// Transición
+			palabra += caracterActual;
+			obtenerSgteCaracter();
+
+			if(caracterActual == '=') {
+				palabra += caracterActual;
+				obtenerSgteCaracter();	
+			}else if ((palabra.equals("=") || palabra.equals("!"))  && caracterActual != '=') {
+				posActual = posTemp; 
+				caracterActual = codigoFuente.charAt(posActual);
+				filaActual = fila;
+				colActual = columna;
+
+				return false;
+			}
+
+			listaTokens.add(new Token(Categoria.OPERADOR_RELACIONAL, palabra, fila, columna));
 			return true;
 
 		}
