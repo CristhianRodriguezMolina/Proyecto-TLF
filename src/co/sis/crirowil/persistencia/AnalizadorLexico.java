@@ -441,6 +441,10 @@ public class AnalizadorLexico {
 		return false;
 	}
 	
+	/**
+	 * Metodo que me permite identificar un caracter o caracteres como token tipo Categoria.OPERADOR_RELACIONAL
+	 * @return true si un caracter o caracteres corresponden a Categoria.OPERADOR_RELACIONAL
+	 */
 	public boolean esOperadorRelacional() {
 
 		if (caracterActual == '<' || caracterActual == '>' || caracterActual == '=' || caracterActual == '!') {
@@ -691,39 +695,8 @@ public class AnalizadorLexico {
 		return false;
 	}
 	
-	/**
-	 * Metodo que me permite identificar un caracter o caracteres como token tipo Categoria.OPERADOR_RELACIONAL
-	 * @return true si un caracter o caracteres corresponden a Categoria.OPERADOR_RELACIONAL
-	 */
-	public boolean isOperadorRelacional() 
-	{
-		String palabra = "";
-		int posTemp = posActual;
-		int fila = filaActual;
-		int columna = colActual;
-		if (caracterActual == '>' || caracterActual == '<' || caracterActual == '=') {
-
-
-			// Transición
-			palabra += caracterActual;
-			obtenerSgteCaracter();
-
-			if(caracterActual == '=') {
-				palabra += caracterActual;
-				obtenerSgteCaracter();
-			}
-
-			listaTokens.add(new Token(Categoria.OPERADOR_RELACIONAL, palabra, fila, columna));
-			return true;
-
-		}
-		posActual = posTemp; 
-		caracterActual = codigoFuente.charAt(posActual);
-		filaActual = fila;
-		colActual = columna;
-
-		return false;
-	}
+	
+	
 
 	/**
 	 * Metodo que me permite obtener el siguiente caracter en secuencia o que le procede al actual omitiendo saltos de linea y tabulaciones
