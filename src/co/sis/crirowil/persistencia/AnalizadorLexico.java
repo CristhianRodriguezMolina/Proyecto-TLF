@@ -3,7 +3,9 @@ package co.sis.crirowil.persistencia;
 import java.util.ArrayList;
 
 /**
- * Clase que analiza los tokens del lenguaje de programacion dado un codigo fuente
+ * Clase que analiza los tokens del lenguaje de programacion dado un codigo
+ * fuente
+ * 
  * @author Wilmar Stiven Valencia Cardona
  * @author Juan Manuel Roa Mejia
  * @author Cristhian Camilo Rodriguez Molina
@@ -15,28 +17,29 @@ public class AnalizadorLexico {
 	 * Cadena de textos donde se van a identificar los tokens
 	 */
 	private String codigoFuente;
-	
+
 	/**
 	 * Guarda los tokens ya analizados
 	 */
 	private ArrayList<Token> listaTokens;
-	
+
 	/**
 	 * Arreglo que guarda las palabras reservadas del lenguaje
 	 */
-	private String[] palabrasReservadas = { "ciclo", "metodo", "cadena", "entero", "real", "devolver", "importar", "sisas", "nonas", "nada" };
-	
+	private String[] palabrasReservadas = { "ciclo", "metodo", "cadena", "entero", "real", "devolver", "importar",
+			"sisas", "nonas", "nada" };
+
 	/**
 	 * Variable que guarda el caracter que esta Actualmente en revision
 	 */
 	private char caracterActual;
 	private char finCodigo;
-	
+
 	/**
-	 * Variable que guarda la posicion del caracterActual 
+	 * Variable que guarda la posicion del caracterActual
 	 */
 	private int posActual;
-	
+
 	/**
 	 * Variables que guardan la fila y columna del token encontrado
 	 */
@@ -44,6 +47,7 @@ public class AnalizadorLexico {
 
 	/**
 	 * Constructor
+	 * 
 	 * @param codigoFuente
 	 */
 	public AnalizadorLexico(String codigoFuente) {
@@ -54,7 +58,8 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * Metodo que analiza el codigo fuente y define el tipo de los token segun con las categorias que cuenta el lenguaje 
+	 * Metodo que analiza el codigo fuente y define el tipo de los token segun con
+	 * las categorias que cuenta el lenguaje
 	 */
 	public void analizar() {
 
@@ -66,9 +71,9 @@ public class AnalizadorLexico {
 				continue;
 			}
 
-			if(esTerminal()) 
+			if (esTerminal())
 				continue;
-			if(esSeparador())
+			if (esSeparador())
 				continue;
 			if (esLlaves())
 				continue;
@@ -90,60 +95,79 @@ public class AnalizadorLexico {
 				continue;
 			if (esPalabraReservada())
 				continue;
-			if(esComentario())
+			if (esComentario())
 				continue;
 			if (esIdentificador())
 				continue;
-			if(esCadenaCaracteres())
+			if (esCadenaCaracteres())
 				continue;
 
-			//Si el caracter actual no pertenece a ninguna categoria reconocida por el lenguaje, lo guarda como algo desconocido
+			// Si el caracter actual no pertenece a ninguna categoria reconocida por el
+			// lenguaje, lo guarda como algo desconocido
 			listaTokens.add(new Token(Categoria.DESCONOCIDO, "" + caracterActual, filaActual, colActual));
 
 			obtenerSgteCaracter();
 		}
 
-		//Collections.sort((List<Token>) listaTokens);
+		// Collections.sort((List<Token>) listaTokens);
 
 	}
 
 	/**
-	 * Metodo que me permite idenificar una secuencia de caracteres como token tipo  Categoria.HEXADECIMAL
+	 * Metodo que me permite idenificar una secuencia de caracteres como token tipo
+	 * Categoria.HEXADECIMAL
+	 * 
 	 * @return true si pertence a la Categoria.HEXADECIMAL
 	 */
 	public boolean esHexadecimal() {
+		
+		
+		//RI
+		if (caracterActual != 'h') 
+		{
+			return false;
+		}
+		
+		// variables Temporales
 		String palabra = "";
 		int posTemp = posActual;
 		int fila = filaActual;
 		int columna = colActual;
-		if (caracterActual == 'h') {
+		
+		// Transicion 1
+		hacerTransacion(palabra, caracterActual);
+
+		//Transicion 2
+		if (caracterActual != 'x') 
+		{
+			hacerBT(posTemp, fila, columna);
+			return false;
+		}
+		
+		hacerTransacion(palabra, caracterActual);
+		
+		//BT
+		if(Character.isDigit(caracterActual) || isLetraHexa(caracterActual)) 
+		{
+			
+		}
+		
+		//Bucle
+		obtenerSgteCaracter();
+		while (Character.isDigit(caracterActual) || isLetraHexa(caracterActual)) {
 			palabra += caracterActual;
 			obtenerSgteCaracter();
-
-			if (caracterActual == 'x') {
-				palabra += caracterActual;
-				obtenerSgteCaracter();
-				if (Character.isDigit(caracterActual) || isLetraHexa(caracterActual)) {
-					palabra += caracterActual;
-					obtenerSgteCaracter();
-					while (Character.isDigit(caracterActual) || isLetraHexa(caracterActual)) {
-						palabra += caracterActual;
-						obtenerSgteCaracter();
-					}
-					listaTokens.add(new Token(Categoria.HEXADECIMAL, palabra, fila, columna));
-					return true;
-				}
-			}
 		}
-		posActual = posTemp;
-		filaActual = fila;
-		colActual = columna;
-		caracterActual = codigoFuente.charAt(posActual);
-		return false;
+		
+		//AA
+		listaTokens.add(new Token(Categoria.HEXADECIMAL, palabra, fila, columna));
+		return true;
 	}
 
 	/**
-	 * Metodo que me permite identificar si un caracter es de tipo hexaDecimal (A, B, C, D, E, F)
+	 * Metodo que me permite identificar si un caracter es de tipo hexaDecimal (A,
+	 * B, C, D, E, F)
+	 * 
 	 * @param caracter caracter a indentificar como hexadecimal
 	 * @return truen si es un caracter de tipo hexadecimal
 	 */
@@ -152,8 +176,10 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * Metodo que segun una palabra, indica si pertenece a las palbras reservadas del lenguaje
-	 * @param palabra,  palabra para indentificar como palabra reservada
+	 * Metodo que segun una palabra, indica si pertenece a las palbras reservadas
+	 * del lenguaje
+	 * 
+	 * @param palabra, palabra para indentificar como palabra reservada
 	 * @return true si pertenece al arreglo de palabras reservadas
 	 */
 	public boolean contenidoArregloReservadas(String palabra) {
@@ -166,8 +192,11 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * Metodo que me permite identificar una secuencia de caracteres como token tipo Categoria.PALABRA_RESERVADA 
-	 * @return true si la secuencia de caracteres corresponden a Categoria.PALABRA_RESERVADA
+	 * Metodo que me permite identificar una secuencia de caracteres como token tipo
+	 * Categoria.PALABRA_RESERVADA
+	 * 
+	 * @return true si la secuencia de caracteres corresponden a
+	 *         Categoria.PALABRA_RESERVADA
 	 */
 	public boolean esPalabraReservada() {
 
@@ -194,7 +223,7 @@ public class AnalizadorLexico {
 			if (contenidoArregloReservadas(palabra)) {
 				listaTokens.add(new Token(Categoria.PALABRA_RESERVADA, palabra, fila, columna));
 			} else {
-				posActual = posTemp; 
+				posActual = posTemp;
 				caracterActual = codigoFuente.charAt(posActual);
 				filaActual = fila;
 				colActual = columna;
@@ -209,135 +238,123 @@ public class AnalizadorLexico {
 		return false;
 	}
 
-	
 	/**
-	 * Metodo que me permite identificar una secuencia de caracteres como token Categoria.COMENTARIO 
-	 * @return true si la secuencia de caracteres corresponden a Categoria.COMENTARIO
+	 * Metodo que me permite identificar una secuencia de caracteres como token
+	 * Categoria.COMENTARIO
+	 * 
+	 * @return true si la secuencia de caracteres corresponden a
+	 *         Categoria.COMENTARIO
 	 */
-	public boolean esComentario()
-	{
-		if(caracterActual == '$')
-		{
+	public boolean esComentario() {
+		if (caracterActual == '$') {
 			String palabra = "";
 			int fila = filaActual;
 			int columna = colActual;
 			int posTemp = posActual;
-			
-			palabra+=caracterActual;
+
+			palabra += caracterActual;
 			obtenerSgteCaracter();
-			
-			
-			if(caracterActual == '$')
-			{
-				palabra+=caracterActual;
+
+			if (caracterActual == '$') {
+				palabra += caracterActual;
 				obtenerSgteCaracter();
-			
-				
-				while(caracterActual != '$' && caracterActual != finCodigo)
-				{
+
+				while (caracterActual != '$' && caracterActual != finCodigo) {
 					palabra += caracterActual;
 					obtenerSgteCaracter();
 				}
-				
-				if(caracterActual == '$')
-				{
-					palabra+=caracterActual;
+
+				if (caracterActual == '$') {
+					palabra += caracterActual;
 					obtenerSgteCaracter();
-					if(caracterActual == '$')
-					{
-						palabra+=caracterActual;
+					if (caracterActual == '$') {
+						palabra += caracterActual;
 						obtenerSgteCaracter();
-						listaTokens.add(new Token(Categoria.COMENTARIO,palabra,fila,columna));
+						listaTokens.add(new Token(Categoria.COMENTARIO, palabra, fila, columna));
 						return true;
-					}
-					else
-					{
-						
-						this.caracterActual = codigoFuente.charAt(posTemp);	// Se regresa al caracter que lo inicio todo
-						this.posActual = posTemp;							//Se regresa a la pos del caracter	
-						this.filaActual = fila;								//Se regresa a la fila del carater
-						this.colActual = columna;							//Se regresa a la columna del caracter
+					} else {
+
+						this.caracterActual = codigoFuente.charAt(posTemp); // Se regresa al caracter que lo inicio todo
+						this.posActual = posTemp; // Se regresa a la pos del caracter
+						this.filaActual = fila; // Se regresa a la fila del carater
+						this.colActual = columna; // Se regresa a la columna del caracter
 						return false;
 					}
-				}
-				else
-				{
-					
-					this.caracterActual = codigoFuente.charAt(posTemp);		//Lo de arriba
+				} else {
+
+					this.caracterActual = codigoFuente.charAt(posTemp); // Lo de arriba
 					this.posActual = posTemp;
 					this.filaActual = fila;
 					this.colActual = columna;
 					return false;
 				}
-			}
-			else
-			{
+			} else {
 				obtenerAntCaracter();
 				return false;
-						
+
 			}
-			
+
 		}
-		
-	return false;
-		
-		
+
+		return false;
+
 	}
-	
+
 	/**
-	 * Metodo que me permite identificar una secuencia de caracteres como token tipo Categoria.CADENA_CARACTERES 
-	 * @return true si la secuencia de caracteres corresponden a Categoria.CADENA_CARACTERES
+	 * Metodo que me permite identificar una secuencia de caracteres como token tipo
+	 * Categoria.CADENA_CARACTERES
+	 * 
+	 * @return true si la secuencia de caracteres corresponden a
+	 *         Categoria.CADENA_CARACTERES
 	 */
 	public boolean esCadenaCaracteres() {
-		
-		if(caracterActual == 34)
-		{
+
+		if (caracterActual == 34) {
 			String palabra = "";
 			int fila = filaActual;
 			int columna = colActual;
-			
-			palabra+= caracterActual;
+
+			palabra += caracterActual;
 			obtenerSgteCaracter();
-			
-			int aDevolverse = 1; // Este numero solo se aplicara en caso de que haya una comilla doble y nunca se cierre. 
-			
-			while(caracterActual != 34 && caracterActual != finCodigo)
-			{
-				aDevolverse++;	
-				palabra+=caracterActual;
+
+			int aDevolverse = 1; // Este numero solo se aplicara en caso de que haya una comilla doble y nunca se
+									// cierre.
+
+			while (caracterActual != 34 && caracterActual != finCodigo) {
+				aDevolverse++;
+				palabra += caracterActual;
 				obtenerSgteCaracter();
-					
+
 			}
-			
-			if(caracterActual != finCodigo)
-			{
-				
-				if(caracterActual == 34)
-				{
-					palabra+=caracterActual;
+
+			if (caracterActual != finCodigo) {
+
+				if (caracterActual == 34) {
+					palabra += caracterActual;
 					obtenerSgteCaracter();
-					listaTokens.add(new Token(Categoria.CADENA_CARACTERES,palabra,fila,columna));
+					listaTokens.add(new Token(Categoria.CADENA_CARACTERES, palabra, fila, columna));
 					return true;
 				}
-			}
-			else
-			{
-				for(int i = 0 ; i < aDevolverse ; i++) //Se devuelve solo hasta el caracter siguiente de la comilla doble abierta peronunca cerrada
+			} else {
+				for (int i = 0; i < aDevolverse; i++) // Se devuelve solo hasta el caracter siguiente de la comilla
+														// doble abierta peronunca cerrada
 				{
 					obtenerAntCaracter();
 				}
 				return false;
-				
+
 			}
-			
-			
+
 		}
 		return false;
 	}
-	
+
 	/**
-	 * Metodo que me permite identificar un caracter como token tipo Categoria.LLAVES_ABRE o Categoria.LLAVES_CIERRA
-	 * @return true si un caracter corresponden a Categoria.LLAVES_ABRE o Categoria.LLAVES_CIERRA
+	 * Metodo que me permite identificar un caracter como token tipo
+	 * Categoria.LLAVES_ABRE o Categoria.LLAVES_CIERRA
+	 * 
+	 * @return true si un caracter corresponden a Categoria.LLAVES_ABRE o
+	 *         Categoria.LLAVES_CIERRA
 	 */
 	public boolean esLlaves() {
 
@@ -365,8 +382,11 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * Metodo que me permite identificar un caracter como token tipo Categoria.PARENTESIS_ABRE o Categoria.PARENTESIS_CIERRA
-	 * @return true si un caracter corresponden a Categoria.PARENTESIS_ABRE o Categoria.PARENTESIS_CIERRA
+	 * Metodo que me permite identificar un caracter como token tipo
+	 * Categoria.PARENTESIS_ABRE o Categoria.PARENTESIS_CIERRA
+	 * 
+	 * @return true si un caracter corresponden a Categoria.PARENTESIS_ABRE o
+	 *         Categoria.PARENTESIS_CIERRA
 	 */
 	public boolean esParentesis() {
 
@@ -394,7 +414,9 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * Metodo que me permite identificar un caracter como token tipo Categoria.TERMINAL
+	 * Metodo que me permite identificar un caracter como token tipo
+	 * Categoria.TERMINAL
+	 * 
 	 * @return true si un caracter corresponden a Categoria.TERMINAL
 	 */
 	public boolean esTerminal() {
@@ -418,7 +440,9 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * Metodo que me permite identificar un caracter como token tipo Categoria.SEPARADOR
+	 * Metodo que me permite identificar un caracter como token tipo
+	 * Categoria.SEPARADOR
+	 * 
 	 * @return true si un caracter corresponden a Categoria.SEPARADOR
 	 */
 	public boolean esSeparador() {
@@ -440,10 +464,13 @@ public class AnalizadorLexico {
 		// RI
 		return false;
 	}
-	
+
 	/**
-	 * Metodo que me permite identificar un caracter o caracteres como token tipo Categoria.OPERADOR_RELACIONAL
-	 * @return true si un caracter o caracteres corresponden a Categoria.OPERADOR_RELACIONAL
+	 * Metodo que me permite identificar un caracter o caracteres como token tipo
+	 * Categoria.OPERADOR_RELACIONAL
+	 * 
+	 * @return true si un caracter o caracteres corresponden a
+	 *         Categoria.OPERADOR_RELACIONAL
 	 */
 	public boolean esOperadorRelacional() {
 
@@ -453,16 +480,15 @@ public class AnalizadorLexico {
 			int fila = filaActual;
 			int columna = colActual;
 
-
 			// Transición
 			palabra += caracterActual;
 			obtenerSgteCaracter();
 
-			if(caracterActual == '=') {
+			if (caracterActual == '=') {
 				palabra += caracterActual;
-				obtenerSgteCaracter();	
-			}else if ((palabra.equals("=") || palabra.equals("!"))  && caracterActual != '=') {
-				posActual = posTemp; 
+				obtenerSgteCaracter();
+			} else if ((palabra.equals("=") || palabra.equals("!")) && caracterActual != '=') {
+				posActual = posTemp;
 				caracterActual = codigoFuente.charAt(posActual);
 				filaActual = fila;
 				colActual = columna;
@@ -480,8 +506,11 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * Metodo que me permite identificar un caracter o caracteres como token tipo Categoria.OPERADOR_ASIGNACION
-	 * @return true si un caracter o caracteres corresponden a Categoria.OPERADOR_ASIGNACION
+	 * Metodo que me permite identificar un caracter o caracteres como token tipo
+	 * Categoria.OPERADOR_ASIGNACION
+	 * 
+	 * @return true si un caracter o caracteres corresponden a
+	 *         Categoria.OPERADOR_ASIGNACION
 	 */
 	public boolean esOperadorAsignacion() {
 
@@ -492,22 +521,21 @@ public class AnalizadorLexico {
 			int fila = filaActual;
 			int columna = colActual;
 
-
 			// Transición
 			palabra += caracterActual;
 			obtenerSgteCaracter();
 
-			if(palabra.equals("=")) {
+			if (palabra.equals("=")) {
 				listaTokens.add(new Token(Categoria.OPERADOR_ASIGNACION, palabra, fila, columna));
 				return true;
-			}else if (palabra.equals(caracterActual + "") && (palabra.equals("+") || palabra.equals("-"))) {
+			} else if (palabra.equals(caracterActual + "") && (palabra.equals("+") || palabra.equals("-"))) {
 				palabra += caracterActual;
 				obtenerSgteCaracter();
-			} else if (!palabra.equals("=") && caracterActual == '=') {			
+			} else if (!palabra.equals("=") && caracterActual == '=') {
 				palabra += caracterActual;
-				obtenerSgteCaracter();		
-			}else {			
-				posActual = posTemp; 
+				obtenerSgteCaracter();
+			} else {
+				posActual = posTemp;
 				caracterActual = codigoFuente.charAt(posActual);
 				filaActual = fila;
 				colActual = columna;
@@ -525,7 +553,9 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * Metodo que me permite identificar un caracter como token tipo Categoria.OPERADOR_ARITMETICO
+	 * Metodo que me permite identificar un caracter como token tipo
+	 * Categoria.OPERADOR_ARITMETICO
+	 * 
 	 * @return true si un caracter corresponden a Categoria.OPERADOR_ARITMETICO
 	 */
 	public boolean esOperadorAritmetico() {
@@ -535,7 +565,6 @@ public class AnalizadorLexico {
 			String palabra = "";
 			int fila = filaActual;
 			int columna = colActual;
-
 
 			// Transición
 			palabra += caracterActual;
@@ -551,7 +580,9 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * Metodo que me permite identificar una secuencia de caracteres como token Categoria.REAL 
+	 * Metodo que me permite identificar una secuencia de caracteres como token
+	 * Categoria.REAL
+	 * 
 	 * @return true si la secuencia de caracteres corresponden a Categoria.REAL
 	 */
 	public boolean esReal() {
@@ -590,7 +621,7 @@ public class AnalizadorLexico {
 				listaTokens.add(new Token(Categoria.REAL, palabra, fila, columna));
 
 			} else {
-				posActual = posTemp; 
+				posActual = posTemp;
 				caracterActual = codigoFuente.charAt(posActual);
 				filaActual = fila;
 				colActual = columna;
@@ -607,8 +638,11 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * Metodo que me permite identificar una secuencia de caracteres como token Categoria.OPERADOR_LOGICO 
-	 * @return true si la secuencia de caracteres corresponden a Categoria.OPERADOR_LOGICO
+	 * Metodo que me permite identificar una secuencia de caracteres como token
+	 * Categoria.OPERADOR_LOGICO
+	 * 
+	 * @return true si la secuencia de caracteres corresponden a
+	 *         Categoria.OPERADOR_LOGICO
 	 */
 	public boolean esOperadorLogico() {
 		String palabra = "";
@@ -617,19 +651,17 @@ public class AnalizadorLexico {
 		int columna = colActual;
 		if (caracterActual == 'y' || caracterActual == 'o') {
 
-			
-			palabra+= caracterActual;
+			palabra += caracterActual;
 			obtenerSgteCaracter();
-			String charTemp = caracterActual+""; 
-			if(palabra.equals(charTemp))
-			{
-				palabra+=caracterActual;
+			String charTemp = caracterActual + "";
+			if (palabra.equals(charTemp)) {
+				palabra += caracterActual;
 				obtenerSgteCaracter();
 				listaTokens.add(new Token(Categoria.OPERADOR_LOGICO, palabra, fila, columna));
 				return true;
 			}
 		}
-		posActual = posTemp; 
+		posActual = posTemp;
 		caracterActual = codigoFuente.charAt(posActual);
 		filaActual = fila;
 		colActual = columna;
@@ -637,7 +669,9 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * Metodo que me permite identificar una secuencia de caracteres como token Categoria.ENTERO 
+	 * Metodo que me permite identificar una secuencia de caracteres como token
+	 * Categoria.ENTERO
+	 * 
 	 * @return true si la secuencia de caracteres corresponden a Categoria.ENTERO
 	 */
 	public boolean esNatural() {
@@ -666,8 +700,11 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * Metodo que me permite identificar una secuencia de caracteres como token Categoria.IDENTIFICADOR 
-	 * @return true si la secuencia de caracteres corresponden a Categoria.IDENTIFICADOR
+	 * Metodo que me permite identificar una secuencia de caracteres como token
+	 * Categoria.IDENTIFICADOR
+	 * 
+	 * @return true si la secuencia de caracteres corresponden a
+	 *         Categoria.IDENTIFICADOR
 	 */
 	public boolean esIdentificador() {
 
@@ -694,12 +731,10 @@ public class AnalizadorLexico {
 		// RI
 		return false;
 	}
-	
-	
-	
 
 	/**
-	 * Metodo que me permite obtener el siguiente caracter en secuencia o que le procede al actual omitiendo saltos de linea y tabulaciones
+	 * Metodo que me permite obtener el siguiente caracter en secuencia o que le
+	 * procede al actual omitiendo saltos de linea y tabulaciones
 	 */
 	public void obtenerSgteCaracter() {
 
@@ -722,7 +757,8 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * Metodo que me permite obtener el siguiente caracter en secuencia o que le precede al actual
+	 * Metodo que me permite obtener el siguiente caracter en secuencia o que le
+	 * precede al actual
 	 */
 	public void obtenerAntCaracter() {
 
@@ -741,10 +777,35 @@ public class AnalizadorLexico {
 
 	/**
 	 * Permite obtener el la lista de tokens
+	 * 
 	 * @return lista de tokens
 	 */
 	public ArrayList<Token> getListaTokens() {
 		return listaTokens;
 	}
-
+	
+	/**
+	 * Metodo que me permite Hacer BackTracking
+	 * @param posInicial
+	 * @param fila
+	 * @param columna
+	 */
+	public void hacerBT(int posInicial, int fila, int columna) {
+		posActual = posInicial;
+		filaActual = fila;
+		colActual = columna;
+		caracterActual = codigoFuente.charAt(posInicial);		
+	}
+	
+	/**
+	 * Me permite hacer una transicion, a�adiendo el caracter actual
+	 * @param palabra
+	 * @param letra
+	 * @return
+	 */
+	public void hacerTransacion(String palabra, char letra) 
+	{
+		obtenerSgteCaracter();
+		palabra += letra;
+	}
 }
