@@ -71,8 +71,8 @@ public class AnalizadorLexico {
 				continue;
 			}
 
-			if (esHexadecimal())
-				continue;
+//			if (esHexadecimal())
+//				continue;
 //			if (esTerminal())
 //				continue;
 //			if (esSeparador())
@@ -99,8 +99,8 @@ public class AnalizadorLexico {
 //				continue;
 //			if (esIdentificador())
 //				continue;
-//			if (esCadenaCaracteres())
-//				continue;
+			if (esCadenaCaracteres())
+				continue;
 
 			// Si el caracter actual no pertenece a ninguna categoria reconocida por el
 			// lenguaje, lo guarda como algo desconocido
@@ -120,48 +120,44 @@ public class AnalizadorLexico {
 	 * @return true si pertence a la Categoria.HEXADECIMAL
 	 */
 	public boolean esHexadecimal() {
-		
-		
-		//RI
-		if (caracterActual != 'h') 
-		{
+
+		// RI
+		if (caracterActual != 'h') {
 			return false;
 		}
-		
+
 		// Variables Temporales
 		String palabra = "";
 		int posTemp = posActual;
 		int fila = filaActual;
 		int columna = colActual;
-		
+
 		// Transicion 1
 		palabra = hacerTransacion(palabra, caracterActual);
 
 		// BT
-		if (caracterActual != 'x') 
-		{
+		if (caracterActual != 'x') {
 			hacerBT(posTemp, fila, columna);
 			return false;
 		}
-		
-		//Transicion 2
+
+		// Transicion 2
 		palabra = hacerTransacion(palabra, caracterActual);
-		
-		//BT
-		if(!(Character.isDigit(caracterActual) || isLetraHexa(caracterActual))) 
-		{
+
+		// BT
+		if (!(Character.isDigit(caracterActual) || isLetraHexa(caracterActual))) {
 			hacerBT(posTemp, fila, columna);
 			return false;
 		}
-		
-		//Bucle
+
+		// Bucle
 		palabra = hacerTransacion(palabra, caracterActual);
-		
+
 		while (Character.isDigit(caracterActual) || isLetraHexa(caracterActual)) {
 			palabra = hacerTransacion(palabra, caracterActual);
 		}
-		
-		//AA
+
+		// AA
 		listaTokens.add(new Token(Categoria.HEXADECIMAL, palabra, fila, columna));
 		return true;
 	}
@@ -209,13 +205,11 @@ public class AnalizadorLexico {
 			int columna = colActual;
 
 			// Transicion
-			palabra += caracterActual;
-			obtenerSgteCaracter();
+			palabra = hacerTransacion(palabra, caracterActual);
 
 			boolean flag = true;
 			while (Character.isLetter(caracterActual) && flag == true) {
-				palabra += caracterActual;
-				obtenerSgteCaracter();
+				palabra = hacerTransacion(palabra, caracterActual);
 
 				if (contenidoArregloReservadas(palabra)) {
 					break;
@@ -311,44 +305,53 @@ public class AnalizadorLexico {
 	 */
 	public boolean esCadenaCaracteres() {
 
-		if (caracterActual == 34) {
-			String palabra = "";
-			int fila = filaActual;
-			int columna = colActual;
-
-			palabra += caracterActual;
-			obtenerSgteCaracter();
-
-			int aDevolverse = 1; // Este numero solo se aplicara en caso de que haya una comilla doble y nunca se
-									// cierre.
-
-			while (caracterActual != 34 && caracterActual != finCodigo) {
-				aDevolverse++;
-				palabra += caracterActual;
-				obtenerSgteCaracter();
-
-			}
-
-			if (caracterActual != finCodigo) {
-
-				if (caracterActual == 34) {
-					palabra += caracterActual;
-					obtenerSgteCaracter();
-					listaTokens.add(new Token(Categoria.CADENA_CARACTERES, palabra, fila, columna));
-					return true;
-				}
-			} else {
-				for (int i = 0; i < aDevolverse; i++) // Se devuelve solo hasta el caracter siguiente de la comilla
-														// doble abierta peronunca cerrada
-				{
-					obtenerAntCaracter();
-				}
-				return false;
-
-			}
-
+		// 32 = caracter de "
+		// RI
+		if (caracterActual != 34) {
+			return false;
 		}
-		return false;
+
+		String palabra = "";
+		int posTemp = posActual;
+		int fila = filaActual;
+		int columna = colActual;
+
+		// Transicion 1
+		palabra = hacerTransacion(palabra, caracterActual);
+
+		// Bucle
+		while (caracterActual != 34 && caracterActual != finCodigo) {
+
+			if (caracterActual == 92) {
+				palabra = hacerTransacion(palabra, caracterActual);
+
+				// RE
+				if (caracterActual != '\\' && caracterActual != 'n' && caracterActual != 't' && caracterActual != '"'
+						&& caracterActual != 'f' && caracterActual != 'b' && caracterActual != 'r'
+						&& caracterActual != '\'') {
+					// ERROR
+					System.out.println("error");
+					return false;
+				}
+
+				palabra = hacerTransacion(palabra, caracterActual);
+			} else {
+				palabra = hacerTransacion(palabra, caracterActual);
+			}
+		}
+
+		if (caracterActual != finCodigo) {
+
+			palabra = hacerTransacion(palabra, caracterActual);
+			listaTokens.add(new Token(Categoria.CADENA_CARACTERES, palabra, fila, columna));
+			return true;
+
+		} else {
+
+			// ERROR
+			System.out.println("error");
+			return false;
+		}
 	}
 
 	/**
@@ -785,9 +788,10 @@ public class AnalizadorLexico {
 	public ArrayList<Token> getListaTokens() {
 		return listaTokens;
 	}
-	
+
 	/**
 	 * Metodo que me permite Hacer BackTracking
+	 * 
 	 * @param posInicial
 	 * @param fila
 	 * @param columna
@@ -796,17 +800,17 @@ public class AnalizadorLexico {
 		posActual = posInicial;
 		filaActual = fila;
 		colActual = columna;
-		caracterActual = codigoFuente.charAt(posInicial);		
+		caracterActual = codigoFuente.charAt(posInicial);
 	}
-	
+
 	/**
-	 * Me permite hacer una transicion, añadiendo el caracter actual
+	 * Me permite hacer una transicion, aï¿½adiendo el caracter actual
+	 * 
 	 * @param palabra
 	 * @param letra
 	 * @return
 	 */
-	public String hacerTransacion(String palabra, char letra) 
-	{
+	public String hacerTransacion(String palabra, char letra) {
 		obtenerSgteCaracter();
 		palabra += letra;
 		return palabra;
