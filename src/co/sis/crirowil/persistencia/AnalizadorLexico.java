@@ -71,36 +71,36 @@ public class AnalizadorLexico {
 				continue;
 			}
 
-			if (esTerminal())
-				continue;
-			if (esSeparador())
-				continue;
-			if (esLlaves())
-				continue;
-			if (esParentesis())
-				continue;
 			if (esHexadecimal())
 				continue;
-			if (esOperadorLogico())
-				continue;
-			if (esReal())
-				continue;
-			if (esNatural())
-				continue;
-			if (esOperadorRelacional())
-				continue;
-			if (esOperadorAsignacion())
-				continue;
-			if (esOperadorAritmetico())
-				continue;
-			if (esPalabraReservada())
-				continue;
-			if (esComentario())
-				continue;
-			if (esIdentificador())
-				continue;
-			if (esCadenaCaracteres())
-				continue;
+//			if (esTerminal())
+//				continue;
+//			if (esSeparador())
+//				continue;
+//			if (esLlaves())
+//				continue;
+//			if (esParentesis())
+//				continue;
+//			if (esOperadorLogico())
+//				continue;
+//			if (esReal())
+//				continue;
+//			if (esNatural())
+//				continue;
+//			if (esOperadorRelacional())
+//				continue;
+//			if (esOperadorAsignacion())
+//				continue;
+//			if (esOperadorAritmetico())
+//				continue;
+//			if (esPalabraReservada())
+//				continue;
+//			if (esComentario())
+//				continue;
+//			if (esIdentificador())
+//				continue;
+//			if (esCadenaCaracteres())
+//				continue;
 
 			// Si el caracter actual no pertenece a ninguna categoria reconocida por el
 			// lenguaje, lo guarda como algo desconocido
@@ -128,35 +128,37 @@ public class AnalizadorLexico {
 			return false;
 		}
 		
-		// variables Temporales
+		// Variables Temporales
 		String palabra = "";
 		int posTemp = posActual;
 		int fila = filaActual;
 		int columna = colActual;
 		
 		// Transicion 1
-		hacerTransacion(palabra, caracterActual);
+		palabra = hacerTransacion(palabra, caracterActual);
 
-		//Transicion 2
+		// BT
 		if (caracterActual != 'x') 
 		{
 			hacerBT(posTemp, fila, columna);
 			return false;
 		}
 		
-		hacerTransacion(palabra, caracterActual);
+		//Transicion 2
+		palabra = hacerTransacion(palabra, caracterActual);
 		
 		//BT
-		if(Character.isDigit(caracterActual) || isLetraHexa(caracterActual)) 
+		if(!(Character.isDigit(caracterActual) || isLetraHexa(caracterActual))) 
 		{
-			
+			hacerBT(posTemp, fila, columna);
+			return false;
 		}
 		
 		//Bucle
-		obtenerSgteCaracter();
+		palabra = hacerTransacion(palabra, caracterActual);
+		
 		while (Character.isDigit(caracterActual) || isLetraHexa(caracterActual)) {
-			palabra += caracterActual;
-			obtenerSgteCaracter();
+			palabra = hacerTransacion(palabra, caracterActual);
 		}
 		
 		//AA
@@ -803,9 +805,10 @@ public class AnalizadorLexico {
 	 * @param letra
 	 * @return
 	 */
-	public void hacerTransacion(String palabra, char letra) 
+	public String hacerTransacion(String palabra, char letra) 
 	{
 		obtenerSgteCaracter();
 		palabra += letra;
+		return palabra;
 	}
 }
