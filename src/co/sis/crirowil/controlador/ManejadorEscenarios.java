@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import co.sis.crirowil.Main;
+import co.sis.crirowil.modelo.ErrorLexicoObservable;
 import co.sis.crirowil.modelo.TokenObservable;
 import co.sis.crirowil.persistencia.AnalizadorLexico;
+import co.sis.crirowil.persistencia.ErrorLexico;
 import co.sis.crirowil.persistencia.Token;
+import co.sis.crirowil.persistencia.Utilidades;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -40,6 +43,12 @@ public class ManejadorEscenarios {
 	 */
 	private ObservableList<TokenObservable> tokensObservables;
 	
+	
+	/**
+	 * Lista de errores lexicos observables
+	 */
+	private ObservableList<ErrorLexicoObservable> erroresObservables;
+	
 	/**
 	 * Recibe el escenario principal de la aplicacion
 	 * 
@@ -50,7 +59,7 @@ public class ManejadorEscenarios {
 		this.escenario = escenario;
 		try {
 			// se inicializa el escenario
-			escenario.setTitle("Analizador Lexico de la Universidad del Quindío");
+			escenario.setTitle("Analizador Lexico de la Universidad del Quindï¿½o");
 
 			// se carga la vista
 			FXMLLoader loader = new FXMLLoader();
@@ -79,17 +88,28 @@ public class ManejadorEscenarios {
 	 */
 	public void analizar(String cFuente)
 	{
-		AnalizadorLexico al = new AnalizadorLexico(cFuente);
-		al.analizar();			
+		AnalizadorLexico al = new AnalizadorLexico(cFuente);		
+		try {
+			al.analizar();
+		} catch (ErrorLexico e) {
+			Utilidades.mostrarMensaje("Error Lexico", e.getMessage());
+		}			
 		System.out.println(al.getListaTokens());
+		System.out.println(al.getListaErrores());
 		ArrayList<Token> tokens = al.getListaTokens();
+		ArrayList<ErrorLexico> errores = al.getListaErrores();
 		ObservableList<TokenObservable> tokensObservablesTemp = FXCollections.observableArrayList();
+		ObservableList<ErrorLexicoObservable> erroresObservablesTemp = FXCollections.observableArrayList();
 		for(Token token: tokens) 
 		{
-			tokensObservablesTemp.add(new TokenObservable(token));
-			
+			tokensObservablesTemp.add(new TokenObservable(token));			
+		}
+		for(ErrorLexico error: errores) 
+		{
+			erroresObservablesTemp.add(new ErrorLexicoObservable(error));			
 		}
 		setTokensObservables(tokensObservablesTemp);
+		setErroresObservables(erroresObservablesTemp);
 	}
 
 	/**
@@ -104,6 +124,22 @@ public class ManejadorEscenarios {
 	 */
 	public void setTokensObservables(ObservableList<TokenObservable> tokensObservables) {
 		this.tokensObservables = tokensObservables;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public ObservableList<ErrorLexicoObservable> getErroresObservables() {
+		return erroresObservables;
+	}
+
+	/**
+	 * 
+	 * @param erroresObservables
+	 */
+	public void setErroresObservables(ObservableList<ErrorLexicoObservable> erroresObservables) {
+		this.erroresObservables = erroresObservables;
 	}
 
 	/**

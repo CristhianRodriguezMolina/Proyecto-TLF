@@ -1,5 +1,6 @@
 package co.sis.crirowil.controlador;
 
+import co.sis.crirowil.modelo.ErrorLexicoObservable;
 import co.sis.crirowil.modelo.TokenObservable;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -40,6 +41,17 @@ public class VentanaPrincipalControlador {
 	@FXML
 	private TableColumn<TokenObservable, String> palabraColumna;
     
+	/**
+	 * Tabla donde se almacenan los errores lexicos que se encuentren
+	 */
+	@FXML
+    private TableView<ErrorLexicoObservable> tablaErrores;
+	/**
+	 * 
+	 */
+	@FXML
+	private TableColumn<ErrorLexicoObservable, String> errorColumna;
+		
     /**
 	 * instancia del manejador de los escenario
 	 */
@@ -54,6 +66,7 @@ public class VentanaPrincipalControlador {
 	private void initialize() {
 		categoriaColumna.setCellValueFactory(TokenCelda -> TokenCelda.getValue().getCategoria());
 		palabraColumna.setCellValueFactory(TokenCelda -> TokenCelda.getValue().getPalabra());			
+		//errorColumna.setCellValueFactory(ErrorCelda -> ErrorCelda.getValue().getMensaje());
 		
 		textArea.setText("importar mundo@\r\n" + 
 				"\r\n" + 
@@ -101,16 +114,23 @@ public class VentanaPrincipalControlador {
 	public void refrescarTabla()
 	{
 		tablaTokens.getItems().clear();
+		tablaErrores.getItems().clear();
+		ObservableList<ErrorLexicoObservable> ErroresObservables = manejador.getErroresObservables();
 		ObservableList<TokenObservable> TokensObservables = manejador.getTokensObservables();
 		
 		for (TokenObservable TokenObs : TokensObservables) {
 			tablaTokens.getItems().add(TokenObs);
+		}
+		for (ErrorLexicoObservable ErrorOb : ErroresObservables) {
+			tablaErrores.getItems().add(ErrorOb);
 		}
 		
 		tablaTokens.getColumns().get(0).setVisible(false);
 		tablaTokens.getColumns().get(0).setVisible(true);
 		tablaTokens.getColumns().get(1).setVisible(false);
 		tablaTokens.getColumns().get(1).setVisible(true);
+		tablaErrores.getColumns().get(0).setVisible(false);
+		tablaErrores.getColumns().get(0).setVisible(true);
 	}
 
 	
