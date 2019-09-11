@@ -71,8 +71,14 @@ public class AnalizadorLexico {
 				continue;
 			}
 
-			if (esHexadecimal())
+			if (esOperadorAritmetico())
 				continue;
+//			if (esComentarioBloque())
+//				continue;
+//			if (esComentarioLinea())
+//				continue;
+//			if (esHexadecimal())
+//				continue;
 //			if (esTerminal())
 //				continue;
 //			if (esSeparador())
@@ -91,11 +97,7 @@ public class AnalizadorLexico {
 //				continue;
 //			if (esOperadorAsignacion())
 //				continue;
-//			if (esOperadorAritmetico())
-//				continue;
 //			if (esPalabraReservada())
-//				continue;
-//			if (esComentario())
 //				continue;
 //			if (esIdentificador())
 //				continue;
@@ -120,77 +122,46 @@ public class AnalizadorLexico {
 	 * @return true si pertence a la Categoria.HEXADECIMAL
 	 */
 	public boolean esHexadecimal() {
-		
-		
-		//RI
-		if (caracterActual != 'h') 
-		{
+
+		// RI
+		if (caracterActual != 'h') {
 			return false;
 		}
-		
+
 		// Variables Temporales
 		String palabra = "";
 		int posTemp = posActual;
 		int fila = filaActual;
 		int columna = colActual;
-		
+
 		// Transicion 1
-		palabra = hacerTransacion(palabra, caracterActual);
+		palabra = hacerTransicion(palabra, caracterActual);
 
 		// BT
-		if (caracterActual != 'x') 
-		{
+		if (caracterActual != 'x') {
 			hacerBT(posTemp, fila, columna);
 			return false;
 		}
-		
-		//Transicion 2
-		palabra = hacerTransacion(palabra, caracterActual);
-		
-		//BT
-		if(!(Character.isDigit(caracterActual) || isLetraHexa(caracterActual))) 
-		{
+
+		// Transicion 2
+		palabra = hacerTransicion(palabra, caracterActual);
+
+		// BT
+		if (!(Character.isDigit(caracterActual) || isLetraHexa(caracterActual))) {
 			hacerBT(posTemp, fila, columna);
 			return false;
 		}
-		
-		//Bucle
-		palabra = hacerTransacion(palabra, caracterActual);
-		
+
+		// Bucle
+		palabra = hacerTransicion(palabra, caracterActual);
+
 		while (Character.isDigit(caracterActual) || isLetraHexa(caracterActual)) {
-			palabra = hacerTransacion(palabra, caracterActual);
+			palabra = hacerTransicion(palabra, caracterActual);
 		}
-		
-		//AA
+
+		// AA
 		listaTokens.add(new Token(Categoria.HEXADECIMAL, palabra, fila, columna));
 		return true;
-	}
-
-	/**
-	 * Metodo que me permite identificar si un caracter es de tipo hexaDecimal (A,
-	 * B, C, D, E, F)
-	 * 
-	 * @param caracter caracter a indentificar como hexadecimal
-	 * @return truen si es un caracter de tipo hexadecimal
-	 */
-	public boolean isLetraHexa(char caracter) {
-		return caracter >= 65 && caracter <= 70 ? true : false;
-	}
-
-	/**
-	 * Metodo que segun una palabra, indica si pertenece a las palbras reservadas
-	 * del lenguaje
-	 * 
-	 * @param palabra, palabra para indentificar como palabra reservada
-	 * @return true si pertenece al arreglo de palabras reservadas
-	 */
-	public boolean contenidoArregloReservadas(String palabra) {
-		for (int i = 0; i < palabrasReservadas.length; i++) {
-			if (palabrasReservadas[i].equals(palabra)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	/**
@@ -242,63 +213,86 @@ public class AnalizadorLexico {
 
 	/**
 	 * Metodo que me permite identificar una secuencia de caracteres como token
-	 * Categoria.COMENTARIO
+	 * Categoria.COMENTARIO_LINEA
 	 * 
 	 * @return true si la secuencia de caracteres corresponden a
-	 *         Categoria.COMENTARIO
+	 *         Categoria.COMENTARIO_LINEA
 	 */
-	public boolean esComentario() {
-		if (caracterActual == '$') {
-			String palabra = "";
-			int fila = filaActual;
-			int columna = colActual;
-			int posTemp = posActual;
+	public boolean esComentarioLinea() {
 
-			palabra += caracterActual;
-			obtenerSgteCaracter();
-
-			if (caracterActual == '$') {
-				palabra += caracterActual;
-				obtenerSgteCaracter();
-
-				while (caracterActual != '$' && caracterActual != finCodigo) {
-					palabra += caracterActual;
-					obtenerSgteCaracter();
-				}
-
-				if (caracterActual == '$') {
-					palabra += caracterActual;
-					obtenerSgteCaracter();
-					if (caracterActual == '$') {
-						palabra += caracterActual;
-						obtenerSgteCaracter();
-						listaTokens.add(new Token(Categoria.COMENTARIO, palabra, fila, columna));
-						return true;
-					} else {
-
-						this.caracterActual = codigoFuente.charAt(posTemp); // Se regresa al caracter que lo inicio todo
-						this.posActual = posTemp; // Se regresa a la pos del caracter
-						this.filaActual = fila; // Se regresa a la fila del carater
-						this.colActual = columna; // Se regresa a la columna del caracter
-						return false;
-					}
-				} else {
-
-					this.caracterActual = codigoFuente.charAt(posTemp); // Lo de arriba
-					this.posActual = posTemp;
-					this.filaActual = fila;
-					this.colActual = columna;
-					return false;
-				}
-			} else {
-				obtenerAntCaracter();
-				return false;
-
-			}
-
+		// RI
+		if (caracterActual != '#') {
+			return false;
 		}
 
-		return false;
+		// Variables Temporales
+		String palabra = "";
+		int fila = filaActual;
+		int columna = colActual;
+		int posTemp = posActual;
+
+		// Bucle
+		while (caracterActual != '\n' && caracterActual != finCodigo) {
+			palabra = hacerTransicion(palabra, caracterActual);
+		}
+		listaTokens.add(new Token(Categoria.COMENTARIO_LINEA, palabra, fila, columna));
+		return true;
+
+	}
+
+	/**
+	 * Metodo que me permite identificar una secuencia de caracteres como token
+	 * Categoria.COMENTARIO_BLOQUE
+	 * 
+	 * @return true si la secuencia de caracteres corresponden a
+	 *         Categoria.COMENTARIO_BLOQUE
+	 */
+	public boolean esComentarioBloque() {
+
+		// Rechazo Inmediato
+		if (caracterActual != '$') {
+			return false;
+		}
+
+		// Variables Temporales
+		String palabra = "";
+		int fila = filaActual;
+		int columna = colActual;
+		int posTemp = posActual;
+
+		// Transicion 1
+		palabra = hacerTransicion(palabra, caracterActual);
+
+		// BackTracking
+		if (caracterActual != '$') {
+			hacerBT(posTemp, fila, columna);
+			return false;
+		}
+
+		// Bucle
+		boolean flag = true; // Mientras no finalize con doble signo peso($$)
+		while (flag && caracterActual != finCodigo) {
+			palabra = hacerTransicion(palabra, caracterActual);
+
+			if (caracterActual == '$') {
+				palabra = hacerTransicion(palabra, caracterActual);
+				if (caracterActual != finCodigo) {
+					if (caracterActual == '$') {
+						palabra = hacerTransicion(palabra, caracterActual);
+						flag = false;
+					}
+				}
+			}
+		}
+
+		// Reportar Error
+		if (caracterActual == finCodigo && flag) {
+			System.out.println("Error");
+			return false;
+		}
+
+		listaTokens.add(new Token(Categoria.COMENTARIO_BLOQUE, palabra, fila, columna));
+		return true;
 
 	}
 
@@ -561,24 +555,64 @@ public class AnalizadorLexico {
 	 * @return true si un caracter corresponden a Categoria.OPERADOR_ARITMETICO
 	 */
 	public boolean esOperadorAritmetico() {
-
-		if (caracterActual == '+' || caracterActual == '-' || caracterActual == '*' || caracterActual == '/'
-				|| caracterActual == '%' || caracterActual == '^') {
-			String palabra = "";
-			int fila = filaActual;
-			int columna = colActual;
-
-			// TransiciÃ³n
-			palabra += caracterActual;
-			obtenerSgteCaracter();
-
-			listaTokens.add(new Token(Categoria.OPERADOR_ARITMETICO, palabra, fila, columna));
-			return true;
-
+		// Rechazo inmendiato
+		if (caracterActual != '+' && caracterActual != '-' && caracterActual != '*' && caracterActual != '/'
+				&& caracterActual != '%' && caracterActual != '^') {
+			return false;
 		}
 
-		// RI
-		return false;
+		// Variables temporales
+		String palabra = "";
+		int fila = filaActual;
+		int columna = colActual;
+		int posTemp = posActual;
+
+		if (caracterActual == '+') {
+			palabra = hacerTransicion(palabra, caracterActual);
+			// BackTracking
+			if (caracterActual == '+' || caracterActual == '=') {
+				hacerBT(posTemp, fila, columna);
+				return false;
+			}
+		} else if (caracterActual == '-') {
+			palabra = hacerTransicion(palabra, caracterActual);
+			// BackTracking
+			if (caracterActual == '-' || caracterActual == '=') {
+				hacerBT(posTemp, fila, columna);
+				return false;
+			}
+		} else if (caracterActual == '*') {
+			palabra = hacerTransicion(palabra, caracterActual);
+			// BackTracking
+			if (caracterActual == '=') {
+				hacerBT(posTemp, fila, columna);
+				return false;
+			}
+		} else if (caracterActual == '/') {
+			palabra = hacerTransicion(palabra, caracterActual);
+			// BackTracking
+			if (caracterActual == '=') {
+				hacerBT(posTemp, fila, columna);
+				return false;
+			}
+		} else if (caracterActual == '%') {
+			palabra = hacerTransicion(palabra, caracterActual);
+			// BackTracking
+			if (caracterActual == '%' || caracterActual == '=') {
+				hacerBT(posTemp, fila, columna);
+				return false;
+			}
+		} else if (caracterActual == '^') {
+			palabra = hacerTransicion(palabra, caracterActual);
+			// BackTracking
+			if (caracterActual == '=') {
+				hacerBT(posTemp, fila, columna);
+				return false;
+			}
+		}
+
+		listaTokens.add(new Token(Categoria.OPERADOR_ARITMETICO, palabra, fila, columna));
+		return true;
 	}
 
 	/**
@@ -702,6 +736,17 @@ public class AnalizadorLexico {
 	}
 
 	/**
+	 * Metodo que me permite identificar si un caracter es de tipo hexaDecimal (A,
+	 * B, C, D, E, F)
+	 * 
+	 * @param caracter caracter a indentificar como hexadecimal
+	 * @return truen si es un caracter de tipo hexadecimal
+	 */
+	public boolean isLetraHexa(char caracter) {
+		return caracter >= 65 && caracter <= 70 ? true : false;
+	}
+
+	/**
 	 * Metodo que me permite identificar una secuencia de caracteres como token
 	 * Categoria.IDENTIFICADOR
 	 * 
@@ -785,30 +830,47 @@ public class AnalizadorLexico {
 	public ArrayList<Token> getListaTokens() {
 		return listaTokens;
 	}
-	
+
 	/**
 	 * Metodo que me permite Hacer BackTracking
+	 * 
 	 * @param posInicial
 	 * @param fila
 	 * @param columna
 	 */
-	public void hacerBT(int posInicial, int fila, int columna) {
-		posActual = posInicial;
+	public void hacerBT(int posTemp, int fila, int columna) {
+		posActual = posTemp;
 		filaActual = fila;
 		colActual = columna;
-		caracterActual = codigoFuente.charAt(posInicial);		
+		caracterActual = codigoFuente.charAt(posTemp);
 	}
-	
+
 	/**
 	 * Me permite hacer una transicion, añadiendo el caracter actual
+	 * 
 	 * @param palabra
 	 * @param letra
 	 * @return
 	 */
-	public String hacerTransacion(String palabra, char letra) 
-	{
+	public String hacerTransicion(String palabra, char letra) {
 		obtenerSgteCaracter();
 		palabra += letra;
 		return palabra;
+	}
+
+	/**
+	 * Metodo que segun una palabra, indica si pertenece a las palbras reservadas
+	 * del lenguaje
+	 * 
+	 * @param palabra, palabra para indentificar como palabra reservada
+	 * @return true si pertenece al arreglo de palabras reservadas
+	 */
+	public boolean contenidoArregloReservadas(String palabra) {
+		for (int i = 0; i < palabrasReservadas.length; i++) {
+			if (palabrasReservadas[i].equals(palabra)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
