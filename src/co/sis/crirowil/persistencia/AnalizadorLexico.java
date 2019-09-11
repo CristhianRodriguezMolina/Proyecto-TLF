@@ -44,6 +44,11 @@ public class AnalizadorLexico {
 	 * Variables que guardan la fila y columna del token encontrado
 	 */
 	private int colActual, filaActual;
+	
+	/**
+	 * Lista que guarda los errores lexicos
+	 */
+	private ArrayList<ErrorLexico> listaErrores;
 
 	/**
 	 * Constructor
@@ -53,6 +58,7 @@ public class AnalizadorLexico {
 	public AnalizadorLexico(String codigoFuente) {
 		this.codigoFuente = codigoFuente;
 		this.listaTokens = new ArrayList<Token>();
+		this.listaErrores = new ArrayList<ErrorLexico>();
 		this.caracterActual = codigoFuente.charAt(posActual);
 		this.finCodigo = 0;
 	}
@@ -60,8 +66,9 @@ public class AnalizadorLexico {
 	/**
 	 * Metodo que analiza el codigo fuente y define el tipo de los token segun con
 	 * las categorias que cuenta el lenguaje
+	 * @throws ErrorLexico 
 	 */
-	public void analizar() {
+	public void analizar() throws ErrorLexico {
 
 		while (caracterActual != finCodigo) {
 
@@ -300,8 +307,9 @@ public class AnalizadorLexico {
 	 * 
 	 * @return true si la secuencia de caracteres corresponden a
 	 *         Categoria.CADENA_CARACTERES
+	 * @throws ErrorLexico 
 	 */
-	public boolean esCadenaCaracteres() {
+	public boolean esCadenaCaracteres() throws ErrorLexico {
 
 		// 32 = caracter de "
 		// RI
@@ -313,6 +321,8 @@ public class AnalizadorLexico {
 		int posTemp = posActual;
 		int fila = filaActual;
 		int columna = colActual;
+		//Flag para verificar si se encontro un error en la cadena por una barra invertida
+		boolean flag = false;
 
 		// Transicion 1
 		palabra = hacerTransacion(palabra, caracterActual);
@@ -320,7 +330,9 @@ public class AnalizadorLexico {
 		// Bucle
 		while (caracterActual != 34 && caracterActual != finCodigo) {
 
+			// 92 = caracter de \
 			if (caracterActual == 92) {
+				
 				palabra = hacerTransacion(palabra, caracterActual);
 
 				// RE
@@ -328,17 +340,25 @@ public class AnalizadorLexico {
 						&& caracterActual != 'f' && caracterActual != 'b' && caracterActual != 'r'
 						&& caracterActual != '\'') {
 					// ERROR
-					System.out.println("error");
-					return false;
-				}
-
-				palabra = hacerTransacion(palabra, caracterActual);
+					flag = true;
+				}else {
+					palabra = hacerTransacion(palabra, caracterActual);
+				}			
+				
 			} else {
 				palabra = hacerTransacion(palabra, caracterActual);
 			}
+			
 		}
-
-		if (caracterActual != finCodigo) {
+		
+		if(flag) {
+			
+			palabra = hacerTransacion(palabra, caracterActual);
+			listaTokens.add(new Token(Categoria.ERROR_LEXICO, palabra, fila, columna));
+			listaErrores.add(new ErrorLexico("Secuencia de escape invalida (validas son \\\\, \\n, \\t, \\f, \\\", \\b, \\r)"));
+			return true;
+			
+		}else if (caracterActual != finCodigo) {
 
 			palabra = hacerTransacion(palabra, caracterActual);
 			listaTokens.add(new Token(Categoria.CADENA_CARACTERES, palabra, fila, columna));
@@ -347,8 +367,11 @@ public class AnalizadorLexico {
 		} else {
 
 			// ERROR
-			System.out.println("error");
-			return false;
+			palabra = hacerTransacion(palabra, caracterActual);
+			listaTokens.add(new Token(Categoria.ERROR_LEXICO, palabra, fila, columna));
+			listaErrores.add(new ErrorLexico("Las comillas iniciales nunca se cerraron"));
+			return true;
+			
 		}
 	}
 
@@ -836,6 +859,14 @@ public class AnalizadorLexico {
 	 */
 	public ArrayList<Token> getListaTokens() {
 		return listaTokens;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public ArrayList<ErrorLexico> getListaErrores() {
+		return listaErrores;
 	}
 
 	/**
