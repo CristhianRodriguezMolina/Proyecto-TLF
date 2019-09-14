@@ -96,8 +96,8 @@ public class AnalizadorLexico {
 //				continue;
 //			if (esOperadorLogico())
 //				continue;
-//			if (esReal())
-//				continue;
+			if (esReal())
+				continue;
 //			if (esNatural())
 //				continue;
 //			if (esOperadorRelacional())
@@ -108,8 +108,8 @@ public class AnalizadorLexico {
 //				continue;
 //			if (esIdentificador())
 //				continue;
-			if (esCadenaCaracteres())
-			 	continue;
+//			if (esCadenaCaracteres())
+//			 	continue;
 
 			// Si el caracter actual no pertenece a ninguna categoria reconocida por el
 			// lenguaje, lo guarda como algo desconocido
@@ -653,54 +653,56 @@ public class AnalizadorLexico {
 	 */
 	public boolean esReal() {
 
-		if (Character.isDigit(caracterActual) || caracterActual == '.') {
-			String palabra = "";
-			int posTemp = posActual;
-			int fila = filaActual;
-			int columna = colActual;
+		//RI
+		if (!Character.isDigit(caracterActual) && caracterActual != '.') {
+			return false;		
+		}
+		
+		//Variables temporales
+		String palabra = "";
+		int posTemp = posActual;
+		int fila = filaActual;
+		int columna = colActual;
 
-			// Transición
-			palabra += caracterActual;
-			obtenerSgteCaracter();
+		// Transición 1
+		palabra = hacerTransicion(palabra, caracterActual);
 
-			if (palabra.equals(".") && Character.isDigit(caracterActual)) {
-				while (Character.isDigit(caracterActual)) {
-					palabra += caracterActual;
-					obtenerSgteCaracter();
-				}
-			} else if (Character.isDigit(palabra.charAt(0))) {
-				// Este flag verifica que ya se haya pasado una vez por un punto ('.'), ya que
-				// obivamente un real solo tiene un punto
-				boolean flag = false;
-
-				while (Character.isDigit(caracterActual) || (caracterActual == '.' && !flag)) {
-					if (caracterActual == '.') {
-						flag = true;
-					}
-
-					palabra += caracterActual;
-					obtenerSgteCaracter();
-				}
-			}
-
-			if (palabra.contains(".") && palabra.length() > 1) {
-				listaTokens.add(new Token(Categoria.REAL, palabra, fila, columna));
-
-			} else {
-				posActual = posTemp;
-				caracterActual = codigoFuente.charAt(posActual);
-				filaActual = fila;
-				colActual = columna;
-
+		if (palabra.equals(".")) {
+			
+			if(!Character.isDigit(caracterActual))
+			{
+				hacerBT(posTemp, fila, columna);
 				return false;
 			}
+			
+			while (Character.isDigit(caracterActual)) {
+				//Transicion 2
+				palabra = hacerTransicion(palabra, caracterActual);
+			}
+			
+		} else if (Character.isDigit(palabra.charAt(0))) {
+			// Este flag verifica que ya se haya pasado una vez por un punto ('.'), ya que
+			// obivamente un real solo tiene un punto
+			boolean flag = false;
 
-			return true;
+			while (Character.isDigit(caracterActual) || (caracterActual == '.' && flag == false)) {
+				if (caracterActual == '.') {
+					flag = true;
+				}
 
+				//Transicion 3
+				palabra = hacerTransicion(palabra, caracterActual);
+			}
+			
+			if(flag == false) {
+				hacerBT(posTemp, fila, columna);
+				return false;
+			}
 		}
 
-		// RI
-		return false;
+		listaTokens.add(new Token(Categoria.REAL, palabra, fila, columna));
+		return true;
+		
 	}
 
 	/**
