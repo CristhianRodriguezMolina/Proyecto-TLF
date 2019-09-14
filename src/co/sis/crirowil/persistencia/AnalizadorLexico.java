@@ -96,10 +96,10 @@ public class AnalizadorLexico {
 //				continue;
 //			if (esOperadorLogico())
 //				continue;
+			if (esNatural())
+				continue;
 			if (esReal())
 				continue;
-//			if (esNatural())
-//				continue;
 //			if (esOperadorRelacional())
 //				continue;
 //			if (esOperadorAsignacion())
@@ -744,27 +744,41 @@ public class AnalizadorLexico {
 	 */
 	public boolean esNatural() {
 
-		if (Character.isDigit(caracterActual)) {
-			String palabra = "";
-			int fila = filaActual;
-			int columna = colActual;
+		// RI
+		if (!Character.isDigit(caracterActual)) {
+			return false;
+		}
+		
+		//Variables temporales
+		String palabra = "";
+		int posTemp = posActual;
+		int fila = filaActual;
+		int columna = colActual;
 
-			// Transición
-			palabra += caracterActual;
-			obtenerSgteCaracter();
-
-			while (Character.isDigit(caracterActual)) {
-				palabra += caracterActual;
-				obtenerSgteCaracter();
-			}
-
-			listaTokens.add(new Token(Categoria.ENTERO, palabra, fila, columna));
-			return true;
-
+		// Transición
+		palabra = hacerTransicion(palabra, caracterActual);
+		
+		//BT 1
+		if(caracterActual == '.') {
+			hacerBT(posTemp, fila, columna);
+			return false;
 		}
 
-		// RI
-		return false;
+		//Bucle
+		while (Character.isDigit(caracterActual)) {
+			//Transicion 2
+			palabra = hacerTransicion(palabra, caracterActual);
+		}
+		
+		//BT 2
+		if(caracterActual == '.') {
+			hacerBT(posTemp, fila, columna);
+			return false;
+		}
+
+		listaTokens.add(new Token(Categoria.ENTERO, palabra, fila, columna));
+		return true;
+		
 	}
 
 	/**
