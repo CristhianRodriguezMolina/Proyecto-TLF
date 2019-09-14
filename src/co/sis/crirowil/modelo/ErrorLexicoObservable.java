@@ -11,7 +11,7 @@ public class ErrorLexicoObservable {
 	private ErrorLexico errorLexico;
 	
 	public ErrorLexicoObservable(ErrorLexico errorLexico) {
-		this.mensaje = new SimpleStringProperty(errorLexico.getMessage().toString());
+		this.mensaje = new SimpleStringProperty(errorLexico.getMessage());
 		this.errorLexico = errorLexico;
 	}
 

@@ -65,8 +65,8 @@ public class VentanaPrincipalControlador {
 	@FXML
 	private void initialize() {
 		categoriaColumna.setCellValueFactory(TokenCelda -> TokenCelda.getValue().getCategoria());
-		palabraColumna.setCellValueFactory(TokenCelda -> TokenCelda.getValue().getPalabra());			
-		//errorColumna.setCellValueFactory(ErrorCelda -> ErrorCelda.getValue().getMensaje());
+		palabraColumna.setCellValueFactory(TokenCelda -> TokenCelda.getValue().getPalabra());	
+		errorColumna.setCellValueFactory(ErrorCelda -> ErrorCelda.getValue().getMensaje());
 		
 		textArea.setText("importar mundo@\r\n" + 
 				"\r\n" + 

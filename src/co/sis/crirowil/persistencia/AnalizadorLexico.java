@@ -78,8 +78,8 @@ public class AnalizadorLexico {
 				continue;
 			}
 
-			if (esOperadorAritmetico())
-				continue;
+//			if (esOperadorAritmetico())
+//				continue;
 //			if (esComentarioBloque())
 //				continue;
 //			if (esComentarioLinea())
@@ -108,8 +108,8 @@ public class AnalizadorLexico {
 //				continue;
 //			if (esIdentificador())
 //				continue;
-			// if (esCadenaCaracteres())
-			// 	continue;
+			if (esCadenaCaracteres())
+			 	continue;
 
 			// Si el caracter actual no pertenece a ninguna categoria reconocida por el
 			// lenguaje, lo guarda como algo desconocido
@@ -187,11 +187,11 @@ public class AnalizadorLexico {
 			int columna = colActual;
 
 			// Transicion
-			palabra = hacerTransacion(palabra, caracterActual);
+			palabra = hacerTransicion(palabra, caracterActual);
 
 			boolean flag = true;
 			while (Character.isLetter(caracterActual) && flag == true) {
-				palabra = hacerTransacion(palabra, caracterActual);
+				palabra = hacerTransicion(palabra, caracterActual);
 
 				if (contenidoArregloReservadas(palabra)) {
 					break;
@@ -325,7 +325,7 @@ public class AnalizadorLexico {
 		boolean flag = false;
 
 		// Transicion 1
-		palabra = hacerTransacion(palabra, caracterActual);
+		palabra = hacerTransicion(palabra, caracterActual);
 
 		// Bucle
 		while (caracterActual != 34 && caracterActual != finCodigo) {
@@ -333,7 +333,7 @@ public class AnalizadorLexico {
 			// 92 = caracter de \
 			if (caracterActual == 92) {
 				
-				palabra = hacerTransacion(palabra, caracterActual);
+				palabra = hacerTransicion(palabra, caracterActual);
 
 				// RE
 				if (caracterActual != '\\' && caracterActual != 'n' && caracterActual != 't' && caracterActual != '"'
@@ -342,32 +342,32 @@ public class AnalizadorLexico {
 					// ERROR
 					flag = true;
 				}else {
-					palabra = hacerTransacion(palabra, caracterActual);
+					palabra = hacerTransicion(palabra, caracterActual);
 				}			
 				
 			} else {
-				palabra = hacerTransacion(palabra, caracterActual);
+				palabra = hacerTransicion(palabra, caracterActual);
 			}
 			
 		}
 		
 		if(flag) {
 			
-			palabra = hacerTransacion(palabra, caracterActual);
+			palabra = hacerTransicion(palabra, caracterActual);
 			listaTokens.add(new Token(Categoria.ERROR_LEXICO, palabra, fila, columna));
 			listaErrores.add(new ErrorLexico("Secuencia de escape invalida (validas son \\\\, \\n, \\t, \\f, \\\", \\b, \\r)"));
 			return true;
 			
 		}else if (caracterActual != finCodigo) {
 
-			palabra = hacerTransacion(palabra, caracterActual);
+			palabra = hacerTransicion(palabra, caracterActual);
 			listaTokens.add(new Token(Categoria.CADENA_CARACTERES, palabra, fila, columna));
 			return true;
 
 		} else {
 
 			// ERROR
-			palabra = hacerTransacion(palabra, caracterActual);
+			palabra = hacerTransicion(palabra, caracterActual);
 			listaTokens.add(new Token(Categoria.ERROR_LEXICO, palabra, fila, columna));
 			listaErrores.add(new ErrorLexico("Las comillas iniciales nunca se cerraron"));
 			return true;
@@ -884,14 +884,14 @@ public class AnalizadorLexico {
 	}
 
 	/**
-	 * Me permite hacer una transicion, añadiendo el caracter actual
+	 * Me permite hacer una transicion, aï¿½adiendo el caracter actual
 		caracterActual = codigoFuente.charAt(posInicial);
 	 * 
 	 * @param palabra
 	 * @param letra
 	 * @return
 	 */
-	public String hacerTransacion(String palabra, char letra) {
+	public String hacerTransicion(String palabra, char letra) {
 		obtenerSgteCaracter();
 		palabra += letra;
 		return palabra;
