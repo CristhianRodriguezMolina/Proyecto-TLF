@@ -100,8 +100,8 @@ public class AnalizadorLexico {
 				continue;
 			if (esReal())
 				continue;
-//			if (esOperadorRelacional())
-//				continue;
+			if (esOperadorRelacional())
+				continue;
 //			if (esOperadorAsignacion())
 //				continue;
 			if (esPalabraReservada())
@@ -500,35 +500,35 @@ public class AnalizadorLexico {
 	 */
 	public boolean esOperadorRelacional() {
 
-		if (caracterActual == '<' || caracterActual == '>' || caracterActual == '=' || caracterActual == '!') {
-			String palabra = "";
-			int posTemp = posActual;
-			int fila = filaActual;
-			int columna = colActual;
+		//RI
+		if (caracterActual != '<' && caracterActual != '>' && caracterActual != '=' && caracterActual != '!') {
+			return false;
+		}
+		
+		//Variables temporales
+		String palabra = "";
+		int posTemp = posActual;
+		int fila = filaActual;
+		int columna = colActual;
 
-			// Transición
-			palabra += caracterActual;
-			obtenerSgteCaracter();
+		// Transición 1
+		palabra = hacerTransicion(palabra, caracterActual);
 
-			if (caracterActual == '=') {
-				palabra += caracterActual;
-				obtenerSgteCaracter();
-			} else if ((palabra.equals("=") || palabra.equals("!")) && caracterActual != '=') {
-				posActual = posTemp;
-				caracterActual = codigoFuente.charAt(posActual);
-				filaActual = fila;
-				colActual = columna;
-
+		if(palabra.equals("=") || palabra.equals("!")) {
+			if(caracterActual != '=') {
+				hacerBT(posTemp, fila, columna);
 				return false;
 			}
-
-			listaTokens.add(new Token(Categoria.OPERADOR_RELACIONAL, palabra, fila, columna));
-			return true;
-
+			
+			palabra = hacerTransicion(palabra, caracterActual);
+		}else if(caracterActual == '=') {
+			palabra = hacerTransicion(palabra, caracterActual);
 		}
 
-		// RI
-		return false;
+		listaTokens.add(new Token(Categoria.OPERADOR_RELACIONAL, palabra, fila, columna));
+		return true;
+
+		
 	}
 
 	/**
@@ -729,7 +729,7 @@ public class AnalizadorLexico {
 		palabra = hacerTransicion(palabra, caracterActual);
 		
 		//BT
-		if (!palabra.equals("!") && !palabra.equals(caracterActual+"")) {
+		if (palabra.equals("!") && caracterActual == '=') {
 			hacerBT(posTemp, fila, columna);	
 			return false;
 		}
