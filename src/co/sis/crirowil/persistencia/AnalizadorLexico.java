@@ -94,8 +94,8 @@ public class AnalizadorLexico {
 //				continue;
 //			if (esParentesis())
 //				continue;
-//			if (esOperadorLogico())
-//				continue;
+			if (esOperadorLogico())
+				continue;
 			if (esNatural())
 				continue;
 			if (esReal())
@@ -713,27 +713,35 @@ public class AnalizadorLexico {
 	 *         Categoria.OPERADOR_LOGICO
 	 */
 	public boolean esOperadorLogico() {
+		
+		//RI
+		if(caracterActual != 'y' && caracterActual != 'o' && caracterActual != '!') {
+			return false;
+		}
+		
+		//Variables temporales
 		String palabra = "";
 		int posTemp = posActual;
 		int fila = filaActual;
 		int columna = colActual;
-		if (caracterActual == 'y' || caracterActual == 'o') {
-
-			palabra += caracterActual;
-			obtenerSgteCaracter();
-			String charTemp = caracterActual + "";
-			if (palabra.equals(charTemp)) {
-				palabra += caracterActual;
-				obtenerSgteCaracter();
-				listaTokens.add(new Token(Categoria.OPERADOR_LOGICO, palabra, fila, columna));
-				return true;
-			}
+		
+		//Transicion 1
+		palabra = hacerTransicion(palabra, caracterActual);
+		
+		//BT
+		if (!palabra.equals("!") && !palabra.equals(caracterActual+"")) {
+			hacerBT(posTemp, fila, columna);	
+			return false;
 		}
-		posActual = posTemp;
-		caracterActual = codigoFuente.charAt(posActual);
-		filaActual = fila;
-		colActual = columna;
-		return false;
+		
+		if(palabra.equals(caracterActual+"")) {
+			//Transicion 2
+			palabra = hacerTransicion(palabra, caracterActual);
+		}
+		
+		listaTokens.add(new Token(Categoria.OPERADOR_LOGICO, palabra, fila, columna));
+		return true;
+			
 	}
 
 	/**
