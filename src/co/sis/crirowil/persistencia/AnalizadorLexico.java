@@ -78,14 +78,14 @@ public class AnalizadorLexico {
 				continue;
 			}
 
-//			if (esOperadorAritmetico())
-//				continue;
-//			if (esComentarioBloque())
-//				continue;
-//			if (esComentarioLinea())
-//				continue;
-//			if (esHexadecimal())
-//				continue;
+			if (esOperadorAritmetico())
+				continue;
+			if (esComentarioBloque())
+				continue;
+			if (esComentarioLinea())
+				continue;
+			if (esHexadecimal())
+				continue;
 //			if (esTerminal())
 //				continue;
 //			if (esSeparador())
@@ -104,12 +104,12 @@ public class AnalizadorLexico {
 //				continue;
 //			if (esOperadorAsignacion())
 //				continue;
-//			if (esPalabraReservada())
-//				continue;
+			if (esPalabraReservada())
+				continue;
 //			if (esIdentificador())
 //				continue;
-//			if (esCadenaCaracteres())
-//			 	continue;
+			if (esCadenaCaracteres())
+			 	continue;
 
 			// Si el caracter actual no pertenece a ninguna categoria reconocida por el
 			// lenguaje, lo guarda como algo desconocido
@@ -180,40 +180,40 @@ public class AnalizadorLexico {
 	 */
 	public boolean esPalabraReservada() {
 
-		if (Character.isLetter(caracterActual)) {
-			String palabra = "";
-			int posTemp = posActual;
-			int fila = filaActual;
-			int columna = colActual;
+		//RI
+		if (!Character.isLetter(caracterActual)) {
+			return false;
+		}
+		
+		//Variables temporales
+		String palabra = "";
+		int posTemp = posActual;
+		int fila = filaActual;
+		int columna = colActual;
 
-			// Transicion
+		// Transicion 1
+		palabra = hacerTransicion(palabra, caracterActual);
+
+		boolean flag = false;
+		//Bucle
+		while (Character.isLetter(caracterActual) && flag == false) {
+			//Transaccion 2
 			palabra = hacerTransicion(palabra, caracterActual);
-
-			boolean flag = true;
-			while (Character.isLetter(caracterActual) && flag == true) {
-				palabra = hacerTransicion(palabra, caracterActual);
-
-				if (contenidoArregloReservadas(palabra)) {
-					break;
-				}
-			}
-
+			
 			if (contenidoArregloReservadas(palabra)) {
-				listaTokens.add(new Token(Categoria.PALABRA_RESERVADA, palabra, fila, columna));
-			} else {
-				posActual = posTemp;
-				caracterActual = codigoFuente.charAt(posActual);
-				filaActual = fila;
-				colActual = columna;
-
-				return false;
+				flag = true;
 			}
-
-			return true;
 		}
 
-		// RI
-		return false;
+		//BT
+		if (!contenidoArregloReservadas(palabra)) {
+			hacerBT(posTemp, fila, columna);
+			return false;
+		} 
+
+		listaTokens.add(new Token(Categoria.PALABRA_RESERVADA, palabra, fila, columna));
+		return true;
+		
 	}
 
 	/**
