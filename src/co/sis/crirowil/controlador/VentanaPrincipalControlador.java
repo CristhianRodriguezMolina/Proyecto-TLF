@@ -47,10 +47,16 @@ public class VentanaPrincipalControlador {
 	@FXML
     private TableView<ErrorLexicoObservable> tablaErrores;
 	/**
-	 * 
+	 * Hace referencia al nombre de los errores lexicox 
 	 */
 	@FXML
 	private TableColumn<ErrorLexicoObservable, String> errorColumna;
+	
+	/**
+	 * Hace referencia a la linea del error lexico
+	 */
+	@FXML
+    private TableColumn<ErrorLexicoObservable, String> lineaColumna;
 		
     /**
 	 * instancia del manejador de los escenario
@@ -67,6 +73,7 @@ public class VentanaPrincipalControlador {
 		categoriaColumna.setCellValueFactory(TokenCelda -> TokenCelda.getValue().getCategoria());
 		palabraColumna.setCellValueFactory(TokenCelda -> TokenCelda.getValue().getPalabra());	
 		errorColumna.setCellValueFactory(ErrorCelda -> ErrorCelda.getValue().getMensaje());
+		lineaColumna.setCellValueFactory(LineaColumna -> LineaColumna.getValue().getLine());
 		
 		textArea.setText("importar mundo@\r\n" + 
 				"\r\n" + 

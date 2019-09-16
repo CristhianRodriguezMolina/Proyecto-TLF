@@ -61,6 +61,7 @@ public class AnalizadorLexico {
 		this.listaErrores = new ArrayList<ErrorLexico>();
 		this.caracterActual = codigoFuente.charAt(posActual);
 		this.finCodigo = 0;
+		this.filaActual = 1;
 	}
 
 	/**
@@ -86,30 +87,40 @@ public class AnalizadorLexico {
 				continue;
 			if (esHexadecimal())
 				continue;
-//			if (esTerminal())
-//				continue;
-//			if (esSeparador())
-//				continue;
-//			if (esLlaves())
-//				continue;
-//			if (esParentesis())
-//				continue;
+			if (esTerminal())
+				continue;
+			if (esSeparador())
+				continue;
+			if (esReal())
+				continue;
+			if (esPunto())
+				continue;
+			if (esDosPuntos())
+				continue;
+			if (esLlaves())
+				continue;
+			if (esParentesis())
+				continue;
+			if (esCorchetes())
+				continue;
 			if (esOperadorLogico())
 				continue;
 			if (esNatural())
 				continue;
-			if (esReal())
-				continue;
 			if (esOperadorRelacional())
 				continue;
-//			if (esOperadorAsignacion())
-//				continue;
+			if (esOperadorAsignacion())
+				continue;
+			if (esIncrementoDecremento())
+				continue;
 			if (esPalabraReservada())
 				continue;
-//			if (esIdentificador())
-//				continue;
+			if (esIdentificador())
+				continue;
 			if (esCadenaCaracteres())
 			 	continue;
+			if (esCaracter())
+				continue;
 
 			// Si el caracter actual no pertenece a ninguna categoria reconocida por el
 			// lenguaje, lo guarda como algo desconocido
@@ -168,6 +179,96 @@ public class AnalizadorLexico {
 
 		// AA
 		listaTokens.add(new Token(Categoria.HEXADECIMAL, palabra, fila, columna));
+		return true;
+	}
+	
+	/**
+	 * Metodo que me permite idenificar una secuencia de caracteres como token tipo
+	 * Categoria.CARACTER
+	 * 
+	 * @return true si pertence a la Categoria.CARACTER
+	 */
+	public boolean esCaracter() {
+		
+		// RI
+		if (caracterActual != '\'') {
+			return false;
+		}
+
+		String palabra = "";
+		int posTemp = posActual;
+		int fila = filaActual;
+		int columna = colActual;
+		//Flag para verificar si se encontro un error en la cadena por una barra invertida
+		boolean flag = false;
+		
+		//flag que me permite identificar si se dejan los apostrofes vacios
+		boolean flag2 = false;
+
+		// Transicion 1
+		palabra = hacerTransicion(palabra, caracterActual);
+		
+		if(caracterActual == '\\') 
+		{
+			palabra = hacerTransicion(palabra, caracterActual);
+			
+			if(caracterActual != 'n' && caracterActual != '\'' && caracterActual != 't' && caracterActual != 'b' && caracterActual != 'f' && caracterActual != 'r' && caracterActual != '\\') 
+			{
+				flag = true;
+			}
+			palabra = hacerTransicion(palabra, caracterActual);
+			System.out.println("todo vuen: " + flag + " " +palabra);
+		}
+		else 
+		{
+			if(caracterActual == '\'') 
+			{
+				flag2 = true;
+			}
+			else 
+			{
+				palabra = hacerTransicion(palabra, caracterActual);
+			}
+		}
+		System.out.println(caracterActual);
+		if(caracterActual == '\'' && !flag && !flag2) 
+		{
+			palabra = hacerTransicion(palabra, caracterActual);
+			listaTokens.add(new Token(Categoria.CARACTER, palabra, fila, columna));
+		}
+		else 
+		{
+			if(flag2) 
+			{
+				// ERROR
+				palabra = hacerTransicion(palabra, caracterActual);
+				listaTokens.add(new Token(Categoria.ERROR_LEXICO, palabra, fila, columna));
+				listaErrores.add(new ErrorLexico("No se puede dejar el caracter vacio", fila));
+			}
+			else if(caracterActual != '\'') 
+			{
+				// ERROR
+				palabra = hacerTransicion(palabra, caracterActual);
+				listaTokens.add(new Token(Categoria.ERROR_LEXICO, palabra, fila, columna));
+				listaErrores.add(new ErrorLexico("El apostrofe nunca se cerro", fila));
+				
+				if(flag)
+				{
+					// ERROR
+					listaErrores.add(new ErrorLexico("Secuencia de escape invalida (validas son \\\\, \\n, \\t, \\f, \\\", \\b, \\r)", fila));
+				}
+			}
+			else if(caracterActual == '\'' && flag)
+			{
+				// ERROR
+				palabra = hacerTransicion(palabra, caracterActual);
+				listaTokens.add(new Token(Categoria.ERROR_LEXICO, palabra, fila, columna));
+				listaErrores.add(new ErrorLexico("Secuencia de escape invalida (validas son \\\\, \\n, \\t, \\f, \\\", \\b, \\r)", fila));
+			}
+			
+			
+			
+		}		
 		return true;
 	}
 
@@ -292,7 +393,8 @@ public class AnalizadorLexico {
 
 		// Reportar Error
 		if (caracterActual == finCodigo && flag) {
-			System.out.println("Error");
+			listaTokens.add(new Token(Categoria.ERROR_LEXICO, palabra, fila, columna));
+			listaErrores.add(new ErrorLexico("El comentario nunca se cerro", fila));
 			return false;
 		}
 
@@ -355,7 +457,7 @@ public class AnalizadorLexico {
 			
 			palabra = hacerTransicion(palabra, caracterActual);
 			listaTokens.add(new Token(Categoria.ERROR_LEXICO, palabra, fila, columna));
-			listaErrores.add(new ErrorLexico("Secuencia de escape invalida (validas son \\\\, \\n, \\t, \\f, \\\", \\b, \\r)"));
+			listaErrores.add(new ErrorLexico("Secuencia de escape invalida (validas son \\\\, \\n, \\t, \\f, \\\", \\b, \\r)", fila));
 			return true;
 			
 		}else if (caracterActual != finCodigo) {
@@ -369,7 +471,7 @@ public class AnalizadorLexico {
 			// ERROR
 			palabra = hacerTransicion(palabra, caracterActual);
 			listaTokens.add(new Token(Categoria.ERROR_LEXICO, palabra, fila, columna));
-			listaErrores.add(new ErrorLexico("Las comillas iniciales nunca se cerraron"));
+			listaErrores.add(new ErrorLexico("Las comillas iniciales nunca se cerraron", fila));
 			return true;
 			
 		}
@@ -384,27 +486,26 @@ public class AnalizadorLexico {
 	 */
 	public boolean esLlaves() {
 
-		if (caracterActual == '{' || caracterActual == '}') {
-			String palabra = "";
-			int fila = filaActual;
-			int columna = colActual;
+		// Rechazo Inmediato
+		if (caracterActual != '{' && caracterActual != '}') 
+		{
+			return false;
+		}
+		
+		String palabra = "";
+		int fila = filaActual;
+		int columna = colActual;
 
-			// Transición
-			palabra += caracterActual;
-			obtenerSgteCaracter();
+		// Transicion
+		palabra = hacerTransicion(palabra, caracterActual);
 
-			if (palabra.equals("{")) {
-				listaTokens.add(new Token(Categoria.LLAVES_ABRE, palabra, fila, columna));
-			} else {
-				listaTokens.add(new Token(Categoria.LLAVES_CIERRA, palabra, fila, columna));
-			}
-
-			return true;
-
+		if (palabra.equals("{")) {
+			listaTokens.add(new Token(Categoria.LLAVES_ABRE, palabra, fila, columna));
+		} else {
+			listaTokens.add(new Token(Categoria.LLAVES_CIERRA, palabra, fila, columna));
 		}
 
-		// RI
-		return false;
+		return true;
 	}
 
 	/**
@@ -416,27 +517,57 @@ public class AnalizadorLexico {
 	 */
 	public boolean esParentesis() {
 
-		if (caracterActual == '(' || caracterActual == ')') {
-			String palabra = "";
-			int fila = filaActual;
-			int columna = colActual;
+		// Rechazo Inmediato
+		if (caracterActual != '(' && caracterActual != ')') 
+		{
+			return false;
+		}
+		
+		String palabra = "";
+		int fila = filaActual;
+		int columna = colActual;
 
-			// Transición
-			palabra += caracterActual;
-			obtenerSgteCaracter();
+		// Transicion
+		palabra = hacerTransicion(palabra, caracterActual);
 
-			if (palabra.equals("(")) {
-				listaTokens.add(new Token(Categoria.PARENTESIS_ABRE, palabra, fila, columna));
-			} else {
-				listaTokens.add(new Token(Categoria.PARENTESIS_CIERRA, palabra, fila, columna));
-			}
-
-			return true;
-
+		if (palabra.equals("(")) {
+			listaTokens.add(new Token(Categoria.PARENTESIS_ABRE, palabra, fila, columna));
+		} else {
+			listaTokens.add(new Token(Categoria.PARENTESIS_CIERRA, palabra, fila, columna));
 		}
 
-		// RI
-		return false;
+		return true;
+	}
+	
+	/**
+	 * Metodo que me permite identificar un caracter como token tipo
+	 * Categoria.CORCHETES_ABRE o Categoria.CORCHETES_CIERRA
+	 * 
+	 * @return true si un caracter corresponden a Categoria.CORCHETES_ABRE o
+	 *         Categoria.CORCHETES_CIERRA
+	 */
+	public boolean esCorchetes() {
+
+		// Rechazo Inmediato
+		if (caracterActual != '[' && caracterActual != ']') 
+		{
+			return false;
+		}
+		
+		String palabra = "";
+		int fila = filaActual;
+		int columna = colActual;
+
+		// Transicion
+		palabra = hacerTransicion(palabra, caracterActual);
+
+		if (palabra.equals("[")) {
+			listaTokens.add(new Token(Categoria.CORCHETES_ABRE, palabra, fila, columna));
+		} else {
+			listaTokens.add(new Token(Categoria.CORCHETES_CIERRA, palabra, fila, columna));
+		}
+
+		return true;
 	}
 
 	/**
@@ -447,24 +578,80 @@ public class AnalizadorLexico {
 	 */
 	public boolean esTerminal() {
 
-		if (caracterActual == '@') {
-			String palabra = "";
-			int fila = filaActual;
-			int columna = colActual;
-
-			// Transición
-			palabra += caracterActual;
-			obtenerSgteCaracter();
-
-			listaTokens.add(new Token(Categoria.TERMINAL, palabra, fila, columna));
-			return true;
-
-		}
-
 		// RI
-		return false;
+		if (caracterActual != '@') {
+			return false;
+		}
+		
+		// Variable temporales
+		String palabra = "";
+		int fila = filaActual;
+		int columna = colActual;
+
+		// Transicion
+		palabra = hacerTransicion(palabra, caracterActual);
+
+		listaTokens.add(new Token(Categoria.TERMINAL, palabra, fila, columna));
+		return true;
 	}
 
+	/**
+	 * Metodo que me permite identificar un caracter como token tipo
+	 * Categoria.PUNTO
+	 * 
+	 * @return true si un caracter corresponden a Categoria.PUNTO
+	 */
+	public boolean esPunto() {
+
+		// RI
+		if (caracterActual != '.') {
+			return false;
+		}
+		// Variables temporales
+		String palabra = "";
+		int fila = filaActual;
+		int columna = colActual;
+		int posTemp = posActual;
+
+		// Transicion
+		palabra = hacerTransicion(palabra, caracterActual);
+		
+		// BackTracking
+		if(Character.isDigit(caracterActual)) 
+		{
+			hacerBT(posTemp, fila, columna);
+			return false;
+		}
+
+		listaTokens.add(new Token(Categoria.PUNTO, palabra, fila, columna));
+		return true;
+	}
+	
+	/**
+	 * Metodo que me permite identificar un caracter como token tipo
+	 * Categoria.DOS_PUNTOS
+	 * 
+	 * @return true si un caracter corresponden a Categoria.DOS_PUNTOS
+	 */
+	public boolean esDosPuntos() {
+
+		// RI
+		System.out.println("esfaasfdasfasfsfasfasgagasga");
+		if (caracterActual != ':') {
+			return false;
+		}
+		// Variables temporales
+		String palabra = "";
+		int fila = filaActual;
+		int columna = colActual;
+
+		// Transicion
+		palabra = hacerTransicion(palabra, caracterActual);
+
+		listaTokens.add(new Token(Categoria.DOS_PUNTOS, palabra, fila, columna));
+		return true;
+	}
+	
 	/**
 	 * Metodo que me permite identificar un caracter como token tipo
 	 * Categoria.SEPARADOR
@@ -473,22 +660,20 @@ public class AnalizadorLexico {
 	 */
 	public boolean esSeparador() {
 
-		if (caracterActual == ',') {
-			String palabra = "";
-			int fila = filaActual;
-			int columna = colActual;
-
-			// Transición
-			palabra += caracterActual;
-			obtenerSgteCaracter();
-
-			listaTokens.add(new Token(Categoria.SEPARADOR, palabra, fila, columna));
-			return true;
-
-		}
-
 		// RI
-		return false;
+		if (caracterActual != ',') {
+			return false;
+		}
+		// Variables temporales
+		String palabra = "";
+		int fila = filaActual;
+		int columna = colActual;
+
+		// Transicion
+		palabra = hacerTransicion(palabra, caracterActual);
+
+		listaTokens.add(new Token(Categoria.SEPARADOR, palabra, fila, columna));
+		return true;
 	}
 
 	/**
@@ -539,43 +724,108 @@ public class AnalizadorLexico {
 	 *         Categoria.OPERADOR_ASIGNACION
 	 */
 	public boolean esOperadorAsignacion() {
-
-		if (caracterActual == '+' || caracterActual == '=' || caracterActual == '*' || caracterActual == '/'
-				|| caracterActual == '%' || caracterActual == '^' || caracterActual == '-') {
-			String palabra = "";
-			int posTemp = posActual;
-			int fila = filaActual;
-			int columna = colActual;
-
-			// Transición
-			palabra += caracterActual;
-			obtenerSgteCaracter();
-
-			if (palabra.equals("=")) {
-				listaTokens.add(new Token(Categoria.OPERADOR_ASIGNACION, palabra, fila, columna));
-				return true;
-			} else if (palabra.equals(caracterActual + "") && (palabra.equals("+") || palabra.equals("-"))) {
-				palabra += caracterActual;
-				obtenerSgteCaracter();
-			} else if (!palabra.equals("=") && caracterActual == '=') {
-				palabra += caracterActual;
-				obtenerSgteCaracter();
-			} else {
-				posActual = posTemp;
-				caracterActual = codigoFuente.charAt(posActual);
-				filaActual = fila;
-				colActual = columna;
-
-				return false;
-			}
-
-			listaTokens.add(new Token(Categoria.OPERADOR_ASIGNACION, palabra, fila, columna));
-			return true;
-
+		
+		// Rechazo Inmediato
+		if (caracterActual != '+' && caracterActual != '-' && caracterActual !='*' && caracterActual != '/' && caracterActual != '%' && caracterActual != '=') {
+			return false;
 		}
 
-		// RI
-		return false;
+		// Variables Temporales
+		String palabra = "";
+		int fila = filaActual;
+		int columna = colActual;
+		int posTemp = posActual;
+		
+		if(caracterActual == '=') 
+		{
+			// Transicion 1
+			palabra = hacerTransicion(palabra, caracterActual);
+			
+			// BackTracking 
+			if(caracterActual == '=') 
+			{
+				hacerBT(posTemp, fila, columna);
+				return false;
+			}
+		}
+		else 
+		{
+			// Transicion 1
+			palabra = hacerTransicion(palabra, caracterActual);
+			
+			// BackTracking 
+			if(caracterActual != '=') 
+			{
+				hacerBT(posTemp, fila, columna);
+				return false;
+			}
+			else 
+			{
+				// Transicion 1
+				palabra = hacerTransicion(palabra, caracterActual);
+			}
+		}
+
+		listaTokens.add(new Token(Categoria.OPERADOR_ASIGNACION, palabra, fila, columna));
+		return true;
+
+	}
+	
+	/**
+	 * Metodo que me permite identificar un caracter o caracteres como token tipo
+	 * Categoria.INCREMENTO_DECREMENTO
+	 * 
+	 * @return true si un caracter o caracteres corresponden a
+	 *         Categoria.INCREMENTO_DECREMENTO
+	 */
+	public boolean esIncrementoDecremento() {
+		
+		// Rechazo Inmediato
+		if (caracterActual != '+' && caracterActual != '-') {
+			return false;
+		}
+
+		// Variables Temporales
+		String palabra = "";
+		int fila = filaActual;
+		int columna = colActual;
+		int posTemp = posActual;
+		
+		if(caracterActual == '+') 
+		{
+			// Transicion 1
+			palabra = hacerTransicion(palabra, caracterActual);
+			
+			// BackTracking 
+			if(caracterActual != '+') 
+			{
+				hacerBT(posTemp, fila, columna);
+				return false;
+			}
+			
+			// Transicion 2
+			palabra = hacerTransicion(palabra, caracterActual);
+			
+		}
+		else 
+		{
+			// Transicion 1
+			palabra = hacerTransicion(palabra, caracterActual);
+			
+			// BackTracking 
+			if(caracterActual != '-') 
+			{
+				hacerBT(posTemp, fila, columna);
+				return false;
+			}
+			
+			// Transicion 2
+			palabra = hacerTransicion(palabra, caracterActual);
+		}
+
+		listaTokens.add(new Token(Categoria.INCREMENTO_DECREMENTO, palabra, fila, columna));
+		return true;
+
 	}
 
 	/**

@@ -35,7 +35,8 @@
                <bottom>
                   <TableView fx:id="tablaErrores" prefHeight="163.0" prefWidth="287.0" BorderPane.alignment="CENTER">
                     <columns>
-                      <TableColumn fx:id="errorColumna" prefWidth="286.0" text="Errores Lexicos" />
+                      <TableColumn fx:id="errorColumna" prefWidth="249.0" text="Errores Lexicos" />
+                        <TableColumn fx:id="lineaColumna" prefWidth="37.0" text="Linea" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
