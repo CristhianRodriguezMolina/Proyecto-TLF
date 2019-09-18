@@ -7,7 +7,6 @@ import java.util.ArrayList;
  * fuente
  * 
  * @author Wilmar Stiven Valencia Cardona
- * @author Juan Manuel Roa Mejia
  * @author Cristhian Camilo Rodriguez Molina
  * @version 1.0
  */
@@ -204,34 +203,45 @@ public class AnalizadorLexico {
 		
 		//flag que me permite identificar si se dejan los apostrofes vacios
 		boolean flag2 = false;
+		
+		//flag que me permite identificar se hay un salto de linea despues del apostrofe 
+		boolean flag3 = false;
 
 		// Transicion 1
 		palabra = hacerTransicion(palabra, caracterActual);
 		
-		if(caracterActual == '\\') 
+		if(caracterActual == '\n') 
 		{
-			palabra = hacerTransicion(palabra, caracterActual);
-			
-			if(caracterActual != 'n' && caracterActual != '\'' && caracterActual != 't' && caracterActual != 'b' && caracterActual != 'f' && caracterActual != 'r' && caracterActual != '\\') 
-			{
-				flag = true;
-			}
-			palabra = hacerTransicion(palabra, caracterActual);
-			System.out.println("todo vuen: " + flag + " " +palabra);
+			flag3 = true;
 		}
-		else 
+		
+		if(!flag3) 
 		{
-			if(caracterActual == '\'') 
+			if(caracterActual == '\\') 
 			{
-				flag2 = true;
+				palabra = hacerTransicion(palabra, caracterActual);
+				
+				if(caracterActual != 'n' && caracterActual != '\'' && caracterActual != 't' && caracterActual != 'b' && caracterActual != 'f' && caracterActual != 'r' && caracterActual != '\\') 
+				{
+					flag = true;
+				}
+				palabra = hacerTransicion(palabra, caracterActual);
+				System.out.println("todo vuen: " + flag + " " +palabra);
 			}
 			else 
 			{
-				palabra = hacerTransicion(palabra, caracterActual);
-			}
+				if(caracterActual == '\'') 
+				{
+					flag2 = true;
+				}
+				else 
+				{
+					palabra = hacerTransicion(palabra, caracterActual);
+				}
+			}			
 		}
 		System.out.println(caracterActual);
-		if(caracterActual == '\'' && !flag && !flag2) 
+		if(caracterActual == '\'' && !flag && !flag2 && !flag3) 
 		{
 			palabra = hacerTransicion(palabra, caracterActual);
 			listaTokens.add(new Token(Categoria.CARACTER, palabra, fila, columna));
@@ -245,7 +255,7 @@ public class AnalizadorLexico {
 				listaTokens.add(new Token(Categoria.ERROR_LEXICO, palabra, fila, columna));
 				listaErrores.add(new ErrorLexico("No se puede dejar el caracter vacio", fila));
 			}
-			else if(caracterActual != '\'') 
+			else if(caracterActual != '\'' || flag3) 
 			{
 				// ERROR
 				palabra = hacerTransicion(palabra, caracterActual);
@@ -430,7 +440,7 @@ public class AnalizadorLexico {
 		palabra = hacerTransicion(palabra, caracterActual);
 
 		// Bucle
-		while (caracterActual != 34 && caracterActual != finCodigo) {
+		while (caracterActual != 34 && caracterActual != finCodigo && caracterActual != '\n') {
 
 			// 92 = caracter de \
 			if (caracterActual == 92) {
@@ -460,7 +470,7 @@ public class AnalizadorLexico {
 			listaErrores.add(new ErrorLexico("Secuencia de escape invalida (validas son \\\\, \\n, \\t, \\f, \\\", \\b, \\r)", fila));
 			return true;
 			
-		}else if (caracterActual != finCodigo) {
+		}else if (caracterActual != finCodigo && caracterActual != '\n') {
 
 			palabra = hacerTransicion(palabra, caracterActual);
 			listaTokens.add(new Token(Categoria.CADENA_CARACTERES, palabra, fila, columna));

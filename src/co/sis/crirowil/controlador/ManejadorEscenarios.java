@@ -21,7 +21,6 @@ import javafx.stage.Stage;
 /**
  * Controlador que me permite manejar todos lo escenarios
  * @author Wilmar Stiven Valencia Cardona
- * @author Juan Manuel Roa Mejia
  * @author Cristhian Camilo Rodriguez Molina
  * @version 1.0
  */

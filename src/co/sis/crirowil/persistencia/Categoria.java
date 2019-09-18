@@ -5,7 +5,6 @@ package co.sis.crirowil.persistencia;
  * fue
  * 
  * @author Wilmar Stiven Valencia Cardona
- * @author Juan Manuel Roa Mejia
  * @author Cristhian Camilo Rodriguez Molina
  * @version 1.0
  */

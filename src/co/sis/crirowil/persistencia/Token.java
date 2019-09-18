@@ -3,7 +3,6 @@ package co.sis.crirowil.persistencia;
 /**
  * Clase token que guarda atributos de cada token
  * @author Wilmar Stiven Valencia Cardona
- * @author Juan Manuel Roa Mejia
  * @author Cristhian Camilo Rodriguez Molina
  * @version 1.0
  */

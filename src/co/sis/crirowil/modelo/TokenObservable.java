@@ -8,7 +8,6 @@ import javafx.beans.property.StringProperty;
 /**
  * Permite Transforma un Token a formato Observale
  * @author Wilmar Stiven Valencia Cardona
- * @author Juan Manuel Roa Mejia
  * @author Cristhian Camilo Rodriguez Molina
  * @version 1.0
  */

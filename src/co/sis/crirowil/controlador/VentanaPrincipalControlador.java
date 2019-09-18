@@ -11,7 +11,6 @@ import javafx.scene.control.TextArea;
 /**
  * Controlador que me permite maneja la ventana principal
  * @author Wilmar Stiven Valencia Cardona
- * @author Juan Manuel Roa Mejia
  * @author Cristhian Camilo Rodriguez Molina
  * @version 1.0
  */
