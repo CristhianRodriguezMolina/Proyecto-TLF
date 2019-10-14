@@ -1,4 +1,4 @@
-package co.sis.crirowil.persistencia;
+package co.sis.crirowil.persistencia.analizadorLexico;
 
 /**
  * Enumeracion me define el tipo de token identificado o desconocido si no lo

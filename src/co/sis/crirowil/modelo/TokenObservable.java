@@ -1,7 +1,6 @@
 package co.sis.crirowil.modelo;
 
-import co.sis.crirowil.persistencia.Token;
-
+import co.sis.crirowil.persistencia.analizadorLexico.Token;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 

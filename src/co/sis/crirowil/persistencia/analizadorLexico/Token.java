@@ -1,4 +1,4 @@
-package co.sis.crirowil.persistencia;
+package co.sis.crirowil.persistencia.analizadorLexico;
 
 /**
  * Clase token que guarda atributos de cada token

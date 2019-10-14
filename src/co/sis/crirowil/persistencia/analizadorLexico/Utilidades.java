@@ -1,4 +1,4 @@
-package co.sis.crirowil.persistencia;
+package co.sis.crirowil.persistencia.analizadorLexico;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;

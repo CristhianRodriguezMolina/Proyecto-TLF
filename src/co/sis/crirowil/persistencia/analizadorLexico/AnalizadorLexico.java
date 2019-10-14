@@ -1,4 +1,4 @@
-package co.sis.crirowil.persistencia;
+package co.sis.crirowil.persistencia.analizadorLexico;
 
 import java.util.ArrayList;
 
@@ -26,7 +26,7 @@ public class AnalizadorLexico {
 	 * Arreglo que guarda las palabras reservadas del lenguaje
 	 */
 	private String[] palabrasReservadas = { "ciclo", "metodo", "cadena", "entero", "real", "devolver", "importar",
-			"sisas", "nonas", "nada" };
+			"sisas", "nonas", "nada" , "nonais", "bool", "char", "imprimir", "leer"};
 
 	/**
 	 * Variable que guarda el caracter que esta Actualmente en revision
@@ -78,8 +78,6 @@ public class AnalizadorLexico {
 				continue;
 			}
 
-			if (esOperadorAritmetico())
-				continue;
 			if (esComentarioBloque())
 				continue;
 			if (esComentarioLinea())
@@ -107,6 +105,8 @@ public class AnalizadorLexico {
 			if (esNatural())
 				continue;
 			if (esOperadorRelacional())
+				continue;
+			if (esOperadorAritmetico())
 				continue;
 			if (esOperadorAsignacion())
 				continue;
@@ -736,7 +736,7 @@ public class AnalizadorLexico {
 	public boolean esOperadorAsignacion() {
 		
 		// Rechazo Inmediato
-		if (caracterActual != '+' && caracterActual != '-' && caracterActual !='*' && caracterActual != '/' && caracterActual != '%' && caracterActual != '=') {
+		if (caracterActual != '+' && caracterActual != '-' && caracterActual !='*' && caracterActual != '/' && caracterActual != '%' && caracterActual != '=' && caracterActual != '^') {
 			return false;
 		}
 

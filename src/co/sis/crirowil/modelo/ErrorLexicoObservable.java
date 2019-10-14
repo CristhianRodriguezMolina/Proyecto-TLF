@@ -1,6 +1,6 @@
 package co.sis.crirowil.modelo;
 
-import co.sis.crirowil.persistencia.ErrorLexico;
+import co.sis.crirowil.persistencia.analizadorLexico.ErrorLexico;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;

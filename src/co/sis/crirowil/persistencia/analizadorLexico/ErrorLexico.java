@@ -1,5 +1,10 @@
-package co.sis.crirowil.persistencia;
+package co.sis.crirowil.persistencia.analizadorLexico;
 
+/**
+ * Me permite guardar errores lexicos presentes en el codigo fuente
+ * @author Wilmar
+ *
+ */
 public class ErrorLexico extends Exception {
 
 	/**
@@ -10,6 +15,7 @@ public class ErrorLexico extends Exception {
 		super(message);
 		this.line = line;
 	}
+	
 	/**
 	 * @return the line
 	 */
