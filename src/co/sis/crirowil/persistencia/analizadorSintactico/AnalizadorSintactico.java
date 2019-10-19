@@ -202,7 +202,7 @@ public class AnalizadorSintactico {
 	 * Analiza los tokens para verificar la sintactica correcta del lenguaje
 	 */
 	public void analizar() {
-
+		
 	}
 
 	/**
@@ -238,7 +238,7 @@ public class AnalizadorSintactico {
 		BloqueSentencia bloqueSentenciasSisas = esBloqueSentencia();
 		
 		if(bloqueSentenciasSisas == null) {
-			reportarError("Se esperaba bloque de sentencias ");
+			reportarError("Falta el bloque de sentencias");
 			return null;
 		}
 		
@@ -502,10 +502,30 @@ public class AnalizadorSintactico {
 	}
 	
 	public ExpresionCadena esExpresionCadena() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if(tokenActual.getCategoria() != Categoria.CADENA_CARACTERES) {
+			return null;
+		}
+		
+		Token cadenaCaracteres = tokenActual;
+		
+		obtenerTokenSiguiente();
+		
+		if(tokenActual.getCategoria() != Categoria.OPERADOR_ARITMETICO || !tokenActual.getPalabra().equals("+")) {
+			return new ExpresionCadena(cadenaCaracteres);
+		}
+		
+		obtenerTokenSiguiente();
+		
+		Expresion expresion = esExpresion();
+		
+		if(expresion == null) {
+			reportarError("Falta la expresion desues del mas (+)");
+			return null;
+		}
+		
+		return new ExpresionCadena(cadenaCaracteres, expresion);
 	}
-
 	public ExpresionLogica esExpresionLogica() {
 		// TODO Auto-generated method stub
 		return null;
