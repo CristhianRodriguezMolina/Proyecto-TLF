@@ -93,6 +93,13 @@ public class Ciclo extends Sentencia
 	public void setBloqueSentencia(BloqueSentencia bloqueSentencia) {
 		this.bloqueSentencia = bloqueSentencia;
 	}
+
+
+	@Override
+	public void getArbolVisual() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 

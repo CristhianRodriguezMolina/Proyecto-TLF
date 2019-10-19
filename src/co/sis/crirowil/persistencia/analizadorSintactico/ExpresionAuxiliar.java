@@ -20,4 +20,30 @@ public class ExpresionAuxiliar {
 		this.expresionAritmetica = expresionAritmetica;
 		this.expresionAuxiliar = expresionAuxiliar;
 	}
+
+	public Token getOperadorAritmetico() {
+		return operadorAritmetico;
+	}
+
+	public void setOperadorAritmetico(Token operadorAritmetico) {
+		this.operadorAritmetico = operadorAritmetico;
+	}
+
+	public ExpresionAritmetica getExpresionAritmetica() {
+		return expresionAritmetica;
+	}
+
+	public void setExpresionAritmetica(ExpresionAritmetica expresionAritmetica) {
+		this.expresionAritmetica = expresionAritmetica;
+	}
+
+	public ExpresionAuxiliar getExpresionAuxiliar() {
+		return expresionAuxiliar;
+	}
+
+	public void setExpresionAuxiliar(ExpresionAuxiliar expresionAuxiliar) {
+		this.expresionAuxiliar = expresionAuxiliar;
+	}
+	
+	
 }
