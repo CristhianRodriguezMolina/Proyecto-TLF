@@ -3,8 +3,6 @@ package co.sis.crirowil.persistencia.analizadorSintactico;
 import java.util.ArrayList;
 import java.util.spi.TimeZoneNameProvider;
 
-import javax.xml.bind.Validator;
-
 import co.sis.crirowil.persistencia.analizadorLexico.Categoria;
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
 
@@ -165,21 +163,26 @@ public class AnalizadorSintactico {
 	 * @return
 	 */
 	public Parametro esParametro() {
-		if (!(tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && esTipoRetorno() != null)) {
+		if (tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && esTipoRetorno() != null) 
+		{
+			Token retorno = tokenActual;
+			obtenerTokenSiguiente();
+			
+			if (tokenActual.getCategoria() != Categoria.IDENTIFICADOR) {
+				reportarError("El nombre del parametro no es valido");
+				return null;
+			}
+			
+			Token nombre = tokenActual;
+			return new Parametro(retorno, nombre);
+		}
+		else 
+		{
 			reportarError("El tipo de dato de un parametro no es valido");
 			return null;
+			
 		}
 
-		Token retorno = tokenActual;
-		obtenerTokenSiguiente();
-
-		if (tokenActual.getCategoria() != Categoria.IDENTIFICADOR) {
-			reportarError("El nombre del parametro no es valido");
-			return null;
-		}
-
-		Token nombre = tokenActual;
-		return new Parametro(retorno, nombre);
 	}
 
 	
@@ -202,7 +205,7 @@ public class AnalizadorSintactico {
 	 * Analiza los tokens para verificar la sintactica correcta del lenguaje
 	 */
 	public void analizar() {
-		
+		UnidadDeCompilacion unidadDeCompilacion = esUnidadDeCompilacion();
 	}
 
 	/**
@@ -242,7 +245,7 @@ public class AnalizadorSintactico {
 			return null;
 		}
 		
-		ListaNonais listaNonais = esListaNonais();
+		ArrayList<Nonais> listaNonais = esListaNonais();
 		
 		Nonas nonas = esSentenciaNonas();
 		
@@ -254,7 +257,36 @@ public class AnalizadorSintactico {
 	 * <ListaNonais> ::= <Nonais>[<ListaNonais>]
 	 * @return
 	 */
-	public ListaNonais esListaNonais() {
+	public ArrayList<Nonais> esListaNonais() {
+		ArrayList<Nonais> listaNonais = new ArrayList<>();
+		Nonais nonais = esNonais();
+
+		while (nonais != null) {
+			listaNonais.add(nonais);
+		}
+
+		return listaNonais;
+	}
+
+	/**
+	 * Metodo que me verifica que dado el BNF del nonais es o no valido
+	 * <Nonais> ::= nonais <BloqueSentencia>
+	 * @return
+	 */
+	public Nonais esNonais() {
+		if(tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && tokenActual.getPalabra().equals("nonais")) 
+		{
+			BloqueSentencia bloqueSentencia = esBloqueSentencia();
+			if(bloqueSentencia != null) 
+			{
+				return new Nonais(bloqueSentencia);
+			}
+			else 
+			{
+				reportarError("Falta el bloque de sentencias");
+			}
+		}
+		return null;
 	}
 
 	public Nonas esSentenciaNonas() {
@@ -381,10 +413,10 @@ public class AnalizadorSintactico {
 
 	/**
 	 * Metodo que me verifica que dado el BNF del DeclaracionVariable es o no valido
+	 * <DeclaracionVariable> ::=
 	 * @return
 	 */
 	public DeclaracionVariable esDeclaracionVariable() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -520,7 +552,7 @@ public class AnalizadorSintactico {
 		Expresion expresion = esExpresion();
 		
 		if(expresion == null) {
-			reportarError("Falta la expresion desues del mas (+)");
+			reportarError("Falta la expresion del mas (+)");
 			return null;
 		}
 		

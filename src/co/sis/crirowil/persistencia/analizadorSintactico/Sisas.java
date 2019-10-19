@@ -1,5 +1,7 @@
 package co.sis.crirowil.persistencia.analizadorSintactico;
 
+import java.util.ArrayList;
+
 /**
  * Clase que describe que es una sentencias sisas y sus componentes
  * 
@@ -22,7 +24,7 @@ public class Sisas extends Sentencia{
 	/**
 	 * Guarda los nonais del la sentencia sisas.
 	 */
-	private ListaNonais listaNonais;
+	private ArrayList<Nonais> listaNonais;
 	
 	/**
 	 * 	Bloques de sentencia de la sentencia nonais
@@ -35,7 +37,7 @@ public class Sisas extends Sentencia{
 	 * @param bloqueSentenciasSisas
 	 * @param bloqueSenteciasNonas
 	 */
-	public Sisas(Condicion condicion, BloqueSentencia bloqueSentenciasSisas, ListaNonais listaNonais, Nonas nonas) 
+	public Sisas(Condicion condicion, BloqueSentencia bloqueSentenciasSisas, ArrayList<Nonais> listaNonais, Nonas nonas) 
 	{
 		this.condicion = condicion;
 		this.bloqueSentenciaSisas = bloqueSentenciasSisas;
@@ -71,18 +73,20 @@ public class Sisas extends Sentencia{
 	public void setBloqueSentenciaSisas(BloqueSentencia bloqueSentenciaSisas) {
 		this.bloqueSentenciaSisas = bloqueSentenciaSisas;
 	}
+	
+	
 
 	/**
 	 * @return the listaNonais
 	 */
-	public ListaNonais getListaNonais() {
+	public ArrayList<Nonais> getListaNonais() {
 		return listaNonais;
 	}
 
 	/**
 	 * @param listaNonais the listaNonais to set
 	 */
-	public void setListaNonais(ListaNonais listaNonais) {
+	public void setListaNonais(ArrayList<Nonais> listaNonais) {
 		this.listaNonais = listaNonais;
 	}
 
@@ -98,6 +102,12 @@ public class Sisas extends Sentencia{
 	 */
 	public void setNonas(Nonas nonas) {
 		this.nonas = nonas;
+	}
+
+	@Override
+	public void getArbolVisual() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	
