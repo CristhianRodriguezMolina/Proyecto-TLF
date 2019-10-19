@@ -1,11 +1,73 @@
 package co.sis.crirowil.persistencia.analizadorSintactico;
 
-public class InvocacionFuncion extends Sentencia {
+import java.util.ArrayList;
 
-	@Override
-	public void getArbolVisual() {
-		// TODO Auto-generated method stub
-		
+import co.sis.crirowil.persistencia.analizadorLexico.Token;
+
+/**
+ * Clase que describe que es una invocacion de una funcion y sus componentes
+ * 
+ * @author Wilmar Stiven Valencia Cardona
+ * @author Cristhian Camilo Rodriguez Molina
+ * @version 1.0
+ */
+public class InvocacionFuncion{
+	
+	private Token nombre;
+	
+	private ArrayList<Argumento> listaArgumentos;
+	
+	
+	
+
+	/**
+	 * @param nombre
+	 * @param listaArgumentos
+	 */
+	public InvocacionFuncion(Token nombre, ArrayList<Argumento> listaArgumentos) {
+		super();
+		this.nombre = nombre;
+		this.listaArgumentos = listaArgumentos;
+	}
+
+
+
+
+	/**
+	 * @return the nombre
+	 */
+	public Token getNombre() {
+		return nombre;
+	}
+
+
+
+
+	/**
+	 * @param nombre the nombre to set
+	 */
+	public void setNombre(Token nombre) {
+		this.nombre = nombre;
+	}
+
+
+
+
+	/**
+	 * @return the listaArgumentos
+	 */
+	public ArrayList<Argumento> getListaArgumentos() {
+		return listaArgumentos;
+	}
+
+
+
+
+	/**
+	 * @param listaArgumentos the listaArgumentos to set
+	 */
+	public void setListaArgumentos(ArrayList<Argumento> listaArgumentos) {
+		this.listaArgumentos = listaArgumentos;
 	}
 
 }

@@ -1,7 +1,77 @@
 package co.sis.crirowil.persistencia.analizadorSintactico;
 
-public class DeclaracionVariable extends Sentencia{
+import co.sis.crirowil.persistencia.analizadorLexico.Token;
 
+/**
+ * Clase que describe que es una sentencia de declaracion de variable y sus componentes
+ * 
+ * @author Wilmar Stiven Valencia Cardona
+ * @author Cristhian Camilo Rodriguez Molina
+ * @version 1.0
+ */
+public class DeclaracionVariable extends Sentencia
+{
+	
+	private Token tipoRetorno;
+	
+	private Token identificador;
+	
+	private Asignacion asignacion;
+
+	/**
+	 * @param tipoDato
+	 * @param identificador
+	 * @param asignacion
+	 */
+	public DeclaracionVariable(Token tipoDato, Token identificador, Asignacion asignacion) {
+		super();
+		this.tipoRetorno = tipoDato;
+		this.identificador = identificador;
+		this.asignacion = asignacion;
+	}
+	
+	/**
+	 * @return the tipoRetorno
+	 */
+	public Token getTipoRetorno() {
+		return tipoRetorno;
+	}
+
+	/**
+	 * @param tipoRetorno the tipoRetorno to set
+	 */
+	public void setTipoRetorno(Token tipoRetorno) {
+		this.tipoRetorno = tipoRetorno;
+	}
+
+	/**
+	 * @return the identificador
+	 */
+	public Token getIdentificador() {
+		return identificador;
+	}
+
+	/**
+	 * @param identificador the identificador to set
+	 */
+	public void setIdentificador(Token identificador) {
+		this.identificador = identificador;
+	}
+
+	/**
+	 * @return the asignacion
+	 */
+	public Asignacion getAsignacion() {
+		return asignacion;
+	}
+
+	/**
+	 * @param asignacion the asignacion to set
+	 */
+	public void setAsignacion(Asignacion asignacion) {
+		this.asignacion = asignacion;
+	}
+	
 	@Override
 	public void getArbolVisual() {
 		// TODO Auto-generated method stub

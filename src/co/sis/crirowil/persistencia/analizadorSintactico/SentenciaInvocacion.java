@@ -1,0 +1,46 @@
+package co.sis.crirowil.persistencia.analizadorSintactico;
+
+/**
+ * Clase que describe que es una sentencias de invocacion y sus componentes
+ * 
+ * @author Wilmar Stiven Valencia Cardona
+ * @author Cristhian Camilo Rodriguez Molina
+ * @version 1.0
+ */
+public class SentenciaInvocacion extends Sentencia {
+	
+	InvocacionFuncion invocacionFuncion;
+	
+	
+
+	/**
+	 * @param invocacionFuncion
+	 */
+	public SentenciaInvocacion(InvocacionFuncion invocacionFuncion) {
+		super();
+		this.invocacionFuncion = invocacionFuncion;
+	}
+
+	/**
+	 * @return the invocacionFuncion
+	 */
+	public InvocacionFuncion getInvocacionFuncion() {
+		return invocacionFuncion;
+	}
+
+	/**
+	 * @param invocacionFuncion the invocacionFuncion to set
+	 */
+	public void setInvocacionFuncion(InvocacionFuncion invocacionFuncion) {
+		this.invocacionFuncion = invocacionFuncion;
+	}
+
+	@Override
+	public void getArbolVisual() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+
+}
