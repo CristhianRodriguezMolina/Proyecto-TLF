@@ -86,47 +86,58 @@ public class AnalizadorSintactico {
 	 */
 	public Funcion esFuncion() {
 		
-		if (!(tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && tokenActual.getPalabra().equals("metodo"))) {
+		if (tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && tokenActual.getPalabra().equals("metodo")) {
+			
+			if (tokenActual.getCategoria() == Categoria.IDENTIFICADOR) {
+				Token nombre = tokenActual;
+				obtenerTokenSiguiente();
+
+				if (tokenActual.getCategoria() == Categoria.PARENTESIS_ABRE) {
+					obtenerTokenSiguiente();
+
+					ArrayList<Parametro> listaParametros = esListaParametros();
+
+					if (tokenActual.getCategoria() == Categoria.PARENTESIS_CIERRA) {
+						if (tokenActual.getCategoria() == Categoria.DOS_PUNTOS) {
+							Token retorno = esTipoRetorno();
+							BloqueSentencia bloqueSentencias = esBloqueSentencia();
+							
+							if (bloqueSentencias == null) {
+								reportarError("Falta el bloque de sentencias");
+								return null;
+							}
+							
+							return new Funcion(nombre, listaParametros, retorno, bloqueSentencias);
+						}
+						else 
+						{
+							reportarError("Falta el parentesis de cierre");
+							return null;						
+						}	
+					}
+					else 
+					{
+						reportarError("Falta el parentesis de cierre");
+						return null;
+					}	
+				}
+				else 
+				{
+					reportarError("falta el parentesis de apertura");
+					return null;					
+				}	
+			}
+			else 
+			{
+				reportarError("identificador de la funcion no es valido");
+				return null;
+			}
+		}
+		else 
+		{
 			reportarError("Error, se esperaba la palabra metodo");
-			return null;
-		}
-
-		if (tokenActual.getCategoria() != Categoria.IDENTIFICADOR) {
-			reportarError("identificador de la funcion no es valido");
-			return null;
-		}
-
-		Token nombre = tokenActual;
-		obtenerTokenSiguiente();
-
-		if (tokenActual.getCategoria() != Categoria.PARENTESIS_ABRE) {
-			reportarError("falta el parentesis de apertura");
-			return null;
-		}
-
-		obtenerTokenSiguiente();
-
-		ArrayList<Parametro> listaParametros = esListaParametros();
-
-		if (tokenActual.getCategoria() != Categoria.PARENTESIS_CIERRA) {
-			reportarError("Falta el parentesis de cierre");
-			return null;
-		}
-
-		if (tokenActual.getCategoria() == Categoria.DOS_PUNTOS) {
-			reportarError("Falta el parentesis de cierre");
-			return null;
-		}
-
-		Token retorno = esTipoRetorno();
-		BloqueSentencia bloqueSentencias = esBloqueSentencia();
-
-		if (bloqueSentencias == null) {
-			reportarError("Falta el bloque de sentencias");
-			return null;
-		}
-
-		return new Funcion(nombre, listaParametros, retorno, bloqueSentencias);
+			return null;	
+		}		
 	}
 
 	/**
@@ -200,7 +211,7 @@ public class AnalizadorSintactico {
 	 * 
 	 * @return
 	 */
-	public Sisas esSentenciaSisas() {
+	public Sisas esSisas() {
 		if(!(tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && tokenActual.getPalabra().equals("sisas"))) 
 		{
 			return null;
@@ -227,7 +238,7 @@ public class AnalizadorSintactico {
 		BloqueSentencia bloqueSentenciasSisas = esBloqueSentencia();
 		
 		if(bloqueSentenciasSisas == null) {
-			reportarError("Bloquq de sentencias ");
+			reportarError("Se esperaba bloque de sentencias ");
 			return null;
 		}
 		
@@ -238,9 +249,12 @@ public class AnalizadorSintactico {
 		return new Sisas(condicion, bloqueSentenciasSisas, listaNonais, nonas);
 	}
 
+	/**
+	 * Metodo que me verifica que dado el BNF de la listaNonais es o no valido
+	 * <ListaNonais> ::= <Nonais>[<ListaNonais>]
+	 * @return
+	 */
 	public ListaNonais esListaNonais() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public Nonas esSentenciaNonas() {
@@ -274,6 +288,7 @@ public class AnalizadorSintactico {
 	}
 
 	/**
+	 * Metodo que me verifica que dado el BNF de la listaSentecia es o no valido
 	 * <ListaSentencias> ::= <Sentencia>[<ListaSentencias>]
 	 * 
 	 * @return
@@ -321,11 +336,23 @@ public class AnalizadorSintactico {
 	 */
 	public Sentencia esSentencia() {
 		
-		Sentencia s = esSentenciaSisas();
+		Sentencia s = esSisas();
 		if(s != null)
 			return s;
 		
 		s = esCiclo();
+		if(s != null)
+			return s;
+		
+		s = esDeclaracionVariable();
+		if(s != null)
+			return s;
+		
+		s= esInvocacionFuncion();
+		if(s != null)
+			return s;
+		
+		s = esRetorno();
 		if(s != null)
 			return s;
 		
@@ -335,6 +362,34 @@ public class AnalizadorSintactico {
 	}
 	
 	/**
+	 * Metodo que me verifica que dado el BNF del Retorno es o no valido
+	 * @return
+	 */
+	public Retorno esRetorno() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * Metodo que me verifica que dado el BNF del InvocacionFuncion es o no valido
+	 * @return
+	 */
+	public InvocacionFuncion esInvocacionFuncion() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * Metodo que me verifica que dado el BNF del DeclaracionVariable es o no valido
+	 * @return
+	 */
+	public DeclaracionVariable esDeclaracionVariable() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * Metodo que me verifica que dado el BNF del Ciclo es o no valido
 	 * <Ciclo> ::= <condicion> ":" <BloqueSentencia> | ciclo <Asignacion> "," <Condicion> "," <SentenciaAsignacion> ":" <BloqueSentencias>
 	 * @return
 	 */
@@ -439,15 +494,29 @@ public class AnalizadorSintactico {
 		expresion = esExpresionLogica();
 		if(expresion != null)
 			return expresion;
+		
+		expresion = esExpresionCadena();
+		if(expresion != null)
+			return expresion;
 		return  null;
 	}
 	
+	public ExpresionCadena esExpresionCadena() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	public ExpresionLogica esExpresionLogica() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public ExpresionRelacional esExpresionRelacional() {
+		
 		
 		return null;
 	}
@@ -492,6 +561,7 @@ public class AnalizadorSintactico {
 	}
 
 	/**
+	 * Metodo que me verifica que dado el BNF del ValorNumerico es o no valido
 	 * <ValorNumerico> ::=[<Signo>] real | [<Signo>] entero | [<Signo>] identificador
 	 * @return
 	 */
@@ -513,6 +583,7 @@ public class AnalizadorSintactico {
 	}
 
 	/**
+	 * Metodo que me verifica que dado el BNF de la expresionAuxiliar es o no valido
 	 * <ExpresionAuxiliar> ::= operadorAritmetico <ExpresionAritmetica>[<ExpresionAuxiliar>]
 	 */
 	private ExpresionAuxiliar esExpresionAuxiliar() {

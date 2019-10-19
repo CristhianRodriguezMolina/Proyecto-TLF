@@ -1,6 +1,6 @@
 package co.sis.crirowil.persistencia.analizadorSintactico;
 
-public class Sentencia {
+public abstract class Sentencia {
 	
-
+	public abstract void getArbolVisual();
 }
