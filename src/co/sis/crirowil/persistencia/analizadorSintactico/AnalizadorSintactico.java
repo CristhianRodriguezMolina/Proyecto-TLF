@@ -569,6 +569,8 @@ public class AnalizadorSintactico {
 
 		if(tokenActual.getCategoria() == Categoria.PARENTESIS_ABRE) {
 			
+			obtenerTokenSiguiente();
+			
 			ExpresionLogica expresionLogica = esExpresionLogica();
 			
 			if(expresionLogica != null) {
@@ -591,6 +593,8 @@ public class AnalizadorSintactico {
 			
 		}else if(tokenActual.getCategoria() == Categoria.OPERADOR_LOGICO && tokenActual.getPalabra().equals("!")) {
 
+			obtenerTokenSiguiente();
+			
 			ExpresionLogica expresionLogica = esExpresionLogica();
 			
 			if(expresionLogica != null) {
@@ -654,6 +658,62 @@ public class AnalizadorSintactico {
 	 */
 	public ExpresionRelacional esExpresionRelacional() {
 	
+		ExpresionAritmetica expresionAritmetica = esExpresionAritmetica();
+		
+		if(expresionAritmetica != null) {
+			
+			if(tokenActual.getCategoria() == Categoria.OPERADOR_RELACIONAL) {
+				
+				Token operadorRelacional = tokenActual;
+				obtenerTokenSiguiente();
+				
+				ExpresionAritmetica expresionAritmetica2 = esExpresionAritmetica();
+				
+				if(expresionAritmetica2 != null) {
+					  
+					return new ExpresionRelacional(expresionAritmetica, expresionAritmetica2, operadorRelacional, null);
+					
+				}else {
+					reportarError("Falta una expresion relacional");
+					return null;
+				}
+				
+			}else {
+				reportarError("Falta un operador relacional");
+				return null;
+			}
+			
+		}else if(tokenActual.getCategoria() == Categoria.PARENTESIS_ABRE) {
+			
+			obtenerTokenSiguiente();
+			
+			ExpresionRelacional expresionRelacional = esExpresionRelacional();
+			
+			if(expresionRelacional != null) {
+				
+				if(tokenActual.getCategoria() == Categoria.PARENTESIS_CIERRA) {
+					
+					return expresionRelacional;
+					
+				}else {
+					reportarError("Falta un parentesis que cierra ( \"(\" )");
+					return null;
+				}
+				
+			}else {
+				reportarError("Falta una expresion relacional despues del parentesis");
+				return null;
+			}
+			
+		}else if(tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && (tokenActual.getPalabra().equals("true") || tokenActual.getPalabra().equals("false"))) {
+			
+			Token valorVerdad = tokenActual;
+			obtenerTokenSiguiente();
+			
+			return new ExpresionRelacional(null, null, null, valorVerdad);
+			
+		}
+		
 		return null;
 	}
 
