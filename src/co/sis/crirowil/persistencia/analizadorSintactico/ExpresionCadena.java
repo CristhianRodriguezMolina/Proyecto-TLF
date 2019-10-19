@@ -1,7 +1,14 @@
 package co.sis.crirowil.persistencia.analizadorSintactico;
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
 
-public class ExpresionCadena {
+/**
+ * Clase que describe que es ExpresionCadena y sus componentes
+ * 
+ * @author Wilmar Stiven Valencia Cardona
+ * @author Cristhian Camilo Rodriguez Molina
+ * @version 1.0
+ */
+public class ExpresionCadena extends Expresion{
 
 	private Token cadenaCaracteres;
 	private Expresion expresion;
