@@ -840,20 +840,165 @@ public class AnalizadorSintactico {
 		
 		return new ExpresionCadena(cadenaCaracteres, expresion);
 	}
+	
+	/**
+	 * <ExpresionLogica> ::= "(" <ExpresionLogica> ")" [<ExpresionAuxiliarLogica>] | "!" <ExpresionLogica> [<ExpresionAuxiliarLogica>] | <ExpresionRelacional> [<ExpresionAuxiliarLogica>]
+	 * <ExpresionLogicaAuxiliar> ::= operadorLogio <ExpresionLogica> [<ExpresionAuxiliarLogica>]
+	 * 
+	 * @return
+	 */
 	public ExpresionLogica esExpresionLogica() {
-		// TODO Auto-generated method stub
+
+		if(tokenActual.getCategoria() == Categoria.PARENTESIS_ABRE) {
+			
+			obtenerTokenSiguiente();
+			
+			ExpresionLogica expresionLogica = esExpresionLogica();
+			
+			if(expresionLogica != null) {
+				
+				if(tokenActual.getCategoria() == Categoria.PARENTESIS_CIERRA) {
+					
+					ExpresionAuxiliarLogica expresionAuxiliarLogica = esExpresionAuxiliarLogica();
+					
+					return new ExpresionLogica(expresionLogica, null, expresionAuxiliarLogica, false);
+					
+				}else {
+					reportarError("Faltan parentesis que cierran");
+					return null;
+				}
+				
+			}else {
+				reportarError("Falta expresion logica");
+				return null;
+			}
+			
+		}else if(tokenActual.getCategoria() == Categoria.OPERADOR_LOGICO && tokenActual.getPalabra().equals("!")) {
+
+			obtenerTokenSiguiente();
+			
+			ExpresionLogica expresionLogica = esExpresionLogica();
+			
+			if(expresionLogica != null) {
+				
+				ExpresionAuxiliarLogica expresionAuxiliarLogica = esExpresionAuxiliarLogica();
+				
+				return new ExpresionLogica(expresionLogica, null, expresionAuxiliarLogica, true);
+				
+			}else {
+				reportarError("Falta una expresion logica");
+				return null;
+			}
+			
+		}else {
+			
+			ExpresionRelacional expresionRelacional = esExpresionRelacional();
+			
+			if(expresionRelacional != null) {
+				
+				ExpresionAuxiliarLogica expresionAuxiliarLogica = esExpresionAuxiliarLogica();
+				
+				return new ExpresionLogica(null, expresionRelacional, expresionAuxiliarLogica, false);
+				
+			}else {
+				reportarError("Falta una expresion relacional, un parentesis que abre ( \"(\") o un operador logico ( \"!\" )");
+			}
+			
+		}
+		
 		return null;
 	}
 
 	/**
+	 * <ExpresionLogicaAuxiliar> ::= operadorLogio <ExpresionLogica> [<ExpresionAuxiliarLogica>]
+	 * 
+	 * @return
+	 */
+	private ExpresionAuxiliarLogica esExpresionAuxiliarLogica() {
+		if(tokenActual.getCategoria() == Categoria.OPERADOR_LOGICO) 
+		{
+			Token operadorLogico = tokenActual;
+			obtenerTokenSiguiente();
+			
+			ExpresionLogica expresionLogica = esExpresionLogica();
+			
+			if(expresionLogica != null) 
+			{
+				ExpresionAuxiliarLogica expresionAuxiliarLogica = esExpresionAuxiliarLogica();
+				
+				return new ExpresionAuxiliarLogica(operadorLogico, expresionLogica, expresionAuxiliarLogica);
+			}
+		}
+		return null;
+	}
+
+
+	/**
+	 * <ExpresionRelacional> ::= <ExpresionAritmetica> operadorRelacional <ExpresionAritmetica> | "(" <ExpresionRelacional> ")" | true | false
 	 * 
 	 * @return
 	 */
 	public ExpresionRelacional esExpresionRelacional() {
+	
+		ExpresionAritmetica expresionAritmetica = esExpresionAritmetica();
 		
+		if(expresionAritmetica != null) {
+			
+			if(tokenActual.getCategoria() == Categoria.OPERADOR_RELACIONAL) {
+				
+				Token operadorRelacional = tokenActual;
+				obtenerTokenSiguiente();
+				
+				ExpresionAritmetica expresionAritmetica2 = esExpresionAritmetica();
+				
+				if(expresionAritmetica2 != null) {
+					  
+					return new ExpresionRelacional(expresionAritmetica, expresionAritmetica2, operadorRelacional, null);
+					
+				}else {
+					reportarError("Falta una expresion relacional");
+					return null;
+				}
+				
+			}else {
+				reportarError("Falta un operador relacional");
+				return null;
+			}
+			
+		}else if(tokenActual.getCategoria() == Categoria.PARENTESIS_ABRE) {
+			
+			obtenerTokenSiguiente();
+			
+			ExpresionRelacional expresionRelacional = esExpresionRelacional();
+			
+			if(expresionRelacional != null) {
+				
+				if(tokenActual.getCategoria() == Categoria.PARENTESIS_CIERRA) {
+					
+					return expresionRelacional;
+					
+				}else {
+					reportarError("Falta un parentesis que cierra ( \"(\" )");
+					return null;
+				}
+				
+			}else {
+				reportarError("Falta una expresion relacional despues del parentesis");
+				return null;
+			}
+			
+		}else if(tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && (tokenActual.getPalabra().equals("true") || tokenActual.getPalabra().equals("false"))) {
+			
+			Token valorVerdad = tokenActual;
+			obtenerTokenSiguiente();
+			
+			return new ExpresionRelacional(null, null, null, valorVerdad);
+			
+		}
 		
 		return null;
 	}
+
 
 	/**
 	 * <ExpresionAritmetica> ::= "(" <ExpresionAritmetica> ")" [<ExpresionAuxiliar>] | <ValorNumerico>[<ExpresionAuxiliar>]
