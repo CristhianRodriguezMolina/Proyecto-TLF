@@ -2,6 +2,8 @@ package co.sis.crirowil.persistencia.analizadorSintactico;
 
 import java.util.ArrayList;
 
+import javafx.scene.control.TreeItem;
+
 /**
  * Clase que describe que es una Unidad de compilacion y sus componentes
  * 
@@ -39,6 +41,20 @@ public class UnidadDeCompilacion {
 		this.listaFunciones = listaFunciones;
 	}
 	
-	
+	/**
+	 * 
+	 * @return
+	 */
+	public TreeItem<String> getArbolVisual() {
+		
+		TreeItem<String> raiz = new TreeItem<String>("Unidad de compilación");
+		
+		for (Funcion funcion : listaFunciones) {
+			raiz.getChildren().add( funcion.getArbolVisual() );
+		}
+		
+		return raiz;
+	}
+
 
 }

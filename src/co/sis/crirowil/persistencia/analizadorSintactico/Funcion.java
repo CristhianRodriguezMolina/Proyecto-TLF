@@ -3,6 +3,7 @@ package co.sis.crirowil.persistencia.analizadorSintactico;
 import java.util.ArrayList;
 
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
+import javafx.scene.control.TreeItem;
 
 /**
  * Clase que describe que es una funcion y sus componentes
@@ -104,6 +105,36 @@ public class Funcion {
 	 */
 	public void setBloqueSentencias(BloqueSentencia bloqueSentencias) {
 		this.bloqueSentencias = bloqueSentencias;
+	}
+
+	public TreeItem<String> getArbolVisual() {
+			
+		TreeItem<String> raiz = new TreeItem<String>("Función");
+
+		raiz.getChildren().add(new TreeItem<String>("Nombre: " + nombre.getPalabra()));
+
+		if (retorno != null) {
+			raiz.getChildren().add(new TreeItem<String>("Tipo de retorno: " + retorno.getPalabra()));
+		} else {
+			raiz.getChildren().add(new TreeItem<String>("Tipo de retorno: void"));
+		}
+
+		TreeItem<String> params = new TreeItem<String>("Parámetros");
+		raiz.getChildren().add(params);
+
+		for (Parametro parametro : listaParametros) {
+			params.getChildren().add(parametro.getArbolVisual());
+		}
+
+		TreeItem<String> sentencias = new TreeItem<String>("Sentencias");
+		raiz.getChildren().add(sentencias);
+
+		for (Sentencia sentencia : bloqueSentencias.getListaSentencias()) {
+			sentencias.getChildren().add(sentencia.getArbolVisual());
+		}
+
+		return raiz;
+			
 	}
 	
 	

@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TreeView;
 
 /**
  * Controlador que me permite maneja la ventana principal
@@ -56,6 +57,36 @@ public class VentanaPrincipalControlador {
 	 */
 	@FXML
     private TableColumn<ErrorLexicoObservable, String> lineaColumna;
+	
+	/**
+	 * 
+	 */
+	@FXML
+    private TableView<?> tblErroresSintacticos;
+
+	/**
+	 * 
+	 */
+    @FXML
+    private TableColumn<?, ?> filaColumna;
+
+    /**
+     * 
+     */
+    @FXML
+    private TableColumn<?, ?> columnaColumna;
+
+    /**
+     * 
+     */
+    @FXML
+    private TableColumn<?, ?> mensajeColumna;
+
+    /**
+     * 
+     */
+    @FXML
+    private TreeView<?> treeArbolVisual;
 		
     /**
 	 * instancia del manejador de los escenario

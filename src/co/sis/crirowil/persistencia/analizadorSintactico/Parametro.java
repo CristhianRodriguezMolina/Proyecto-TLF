@@ -1,6 +1,7 @@
 package co.sis.crirowil.persistencia.analizadorSintactico;
 
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
+import javafx.scene.control.TreeItem;
 
 /**
  * Clase que describe que es un Parametro y sus componentes
@@ -58,5 +59,10 @@ public class Parametro {
 	 */
 	public void setNombre(Token nombre) {
 		this.nombre = nombre;
+	}
+
+	public TreeItem<String> getArbolVisual() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
