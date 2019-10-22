@@ -10,6 +10,8 @@ import co.sis.crirowil.persistencia.analizadorLexico.AnalizadorLexico;
 import co.sis.crirowil.persistencia.analizadorLexico.ErrorLexico;
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
 import co.sis.crirowil.persistencia.analizadorLexico.Utilidades;
+import co.sis.crirowil.persistencia.analizadorSintactico.AnalizadorSintactico;
+import co.sis.crirowil.persistencia.analizadorSintactico.ErrorSintactico;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -87,6 +89,8 @@ public class ManejadorEscenarios {
 	 */
 	public void analizar(String cFuente)
 	{
+		
+		//ANALISIS LEXICO
 		AnalizadorLexico al = new AnalizadorLexico(cFuente);		
 		try {
 			al.analizar();
@@ -109,6 +113,12 @@ public class ManejadorEscenarios {
 		}
 		setTokensObservables(tokensObservablesTemp);
 		setErroresObservables(erroresObservablesTemp);
+		
+		//ANALISIS SINTACTICO
+		AnalizadorSintactico as = new AnalizadorSintactico(tokens);
+		as.analizar();
+		ArrayList<ErrorSintactico> erroresSintacticos = as.getListaErrores();
+		
 	}
 
 	/**

@@ -33,6 +33,18 @@ public class AnalizadorSintactico {
 	 * Guarda errores encontrados en el codigo fuente
 	 */
 	ArrayList<ErrorSintactico> listaErrores;
+	
+	/**
+	 * Unidad de compilacion del codigo fuente
+	 */
+	UnidadDeCompilacion unidadDeCompilacion;
+
+	/**
+	 * Analiza los tokens para verificar la sintactica correcta del lenguaje
+	 */
+	public void analizar() {
+		unidadDeCompilacion = esUnidadDeCompilacion();
+	}
 
 	/**
 	 * Metodo constructor
@@ -200,13 +212,6 @@ public class AnalizadorSintactico {
 			return tokenActual;
 		}
 		return null;
-	}
-
-	/**
-	 * Analiza los tokens para verificar la sintactica correcta del lenguaje
-	 */
-	public void analizar() {
-		UnidadDeCompilacion unidadDeCompilacion = esUnidadDeCompilacion();
 	}
 
 	/**
@@ -986,4 +991,21 @@ public class AnalizadorSintactico {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	/**
+	 * 
+	 * @return retorna la Unidad de compilacion de programa
+	 */
+	public UnidadDeCompilacion getUnidadDeCompilacion() {
+		return unidadDeCompilacion;
+	}
+
+	/**
+	 * 
+	 * @return los errores sintacticos del programa
+	 */
+	public ArrayList<ErrorSintactico> getListaErrores() {
+		return listaErrores;
+	}
+	
 }

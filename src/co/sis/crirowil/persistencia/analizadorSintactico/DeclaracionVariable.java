@@ -1,6 +1,7 @@
 package co.sis.crirowil.persistencia.analizadorSintactico;
 
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
+import javafx.scene.control.TreeItem;
 
 /**
  * Clase que describe que es una sentencia de declaracion de variable y sus componentes
@@ -73,9 +74,9 @@ public class DeclaracionVariable extends Sentencia
 	}
 	
 	@Override
-	public void getArbolVisual() {
+	public TreeItem<String> getArbolVisual() {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
 }

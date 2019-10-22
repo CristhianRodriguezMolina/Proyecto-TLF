@@ -2,6 +2,8 @@ package co.sis.crirowil.persistencia.analizadorSintactico;
 
 import java.util.ArrayList;
 
+import javafx.scene.control.TreeItem;
+
 /**
  * Clase que describe que es una sentencias sisas y sus componentes
  * 
@@ -105,9 +107,9 @@ public class Sisas extends Sentencia{
 	}
 
 	@Override
-	public void getArbolVisual() {
+	public TreeItem<String> getArbolVisual() {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 	
 	

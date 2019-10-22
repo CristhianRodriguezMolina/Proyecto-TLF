@@ -1,5 +1,7 @@
 package co.sis.crirowil.controlador;
 
+import java.util.ArrayList;
+
 import co.sis.crirowil.modelo.ErrorLexicoObservable;
 import co.sis.crirowil.modelo.TokenObservable;
 import javafx.collections.ObservableList;
@@ -180,6 +182,8 @@ public class VentanaPrincipalControlador {
 		String codigoFuente = textArea.getText();
 		manejador.analizar(codigoFuente);
 		refrescarTabla();
+		
+		
 	}
 	
 	/**

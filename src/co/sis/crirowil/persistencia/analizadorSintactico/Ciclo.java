@@ -1,5 +1,7 @@
 package co.sis.crirowil.persistencia.analizadorSintactico;
 
+import javafx.scene.control.TreeItem;
+
 /**
  * Clase que describe que es un ciclo y sus componentes
  * 
@@ -96,9 +98,9 @@ public class Ciclo extends Sentencia
 
 
 	@Override
-	public void getArbolVisual() {
+	public TreeItem<String> getArbolVisual() {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 	
 	

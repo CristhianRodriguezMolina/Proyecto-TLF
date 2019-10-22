@@ -1,6 +1,7 @@
 package co.sis.crirowil.persistencia.analizadorSintactico;
 
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
+import javafx.scene.control.TreeItem;
 
 /**
  * Clase que describe que es una sentencias retorno y sus componentes
@@ -105,9 +106,9 @@ public class Retorno extends Sentencia
 
 
 	@Override
-	public void getArbolVisual() {
+	public TreeItem<String> getArbolVisual() {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
 }

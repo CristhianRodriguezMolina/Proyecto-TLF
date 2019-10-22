@@ -127,7 +127,6 @@ public class AnalizadorLexico {
 
 			obtenerSgteCaracter();
 		}
-
 		// Collections.sort((List<Token>) listaTokens);
 
 	}

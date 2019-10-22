@@ -60,4 +60,18 @@ public class ErrorSintactico {
 	public void setColumna(int columna) {
 		this.columna = columna;
 	}
+	/**
+	 * @return
+	 */
+	public String getMensaje() {
+		return mensaje;
+	}
+	/**
+	 * @param mensaje
+	 */
+	public void setMensaje(String mensaje) {
+		this.mensaje = mensaje;
+	}
+	
+	
 }

@@ -1,6 +1,7 @@
 package co.sis.crirowil.persistencia.analizadorSintactico;
 
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
+import javafx.scene.control.TreeItem;
 
 
 /**
@@ -51,9 +52,9 @@ public class SentenciaAsignacion extends Sentencia{
 		this.asignacion = asignacion;
 	}
 	@Override
-	public void getArbolVisual() {
+	public TreeItem<String> getArbolVisual() {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 	
 	
