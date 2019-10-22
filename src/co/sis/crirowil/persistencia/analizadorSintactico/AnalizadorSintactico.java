@@ -40,17 +40,6 @@ public class AnalizadorSintactico {
 	UnidadDeCompilacion unidadDeCompilacion;
 
 	/**
-	 * Analiza los tokens para verificar la sintactica correcta del lenguaje
-	 */
-	public void analizar() {
-		try {
-			unidadDeCompilacion = esUnidadDeCompilacion();
-		} catch (NullPointerException e) {
-			System.out.println("Null");
-		}		
-	}
-
-	/**
 	 * Metodo constructor
 	 * 
 	 * @param tokens
@@ -62,12 +51,19 @@ public class AnalizadorSintactico {
 	}
 
 	/**
+	 * Analiza los tokens para verificar la sintactica correcta del lenguaje
+	 */
+	public void analizar() {
+		unidadDeCompilacion = esUnidadDeCompilacion();
+	}
+
+	/**
 	 * Metodo que describe si los token corresponden al BNF de la unidad de
 	 * compilacion <UnidadDeCompilacion> ::= <listaFunciones>
 	 * 
 	 * @return
 	 */
-	public UnidadDeCompilacion esUnidadDeCompilacion() throws NullPointerException {
+	public UnidadDeCompilacion esUnidadDeCompilacion() {
 		ArrayList<Funcion> listaFunciones = esListaFunciones();
 
 		if (listaFunciones != null) {
@@ -82,7 +78,7 @@ public class AnalizadorSintactico {
 	 * Metodo que me verifica que dado el BNF del listaFunciones es o no valido
 	 * <ListaFunciones> ::= <Funcion>[<ListaFunciones>]
 	 */
-	public ArrayList<Funcion> esListaFunciones() throws NullPointerException {
+	public ArrayList<Funcion> esListaFunciones() {
 		ArrayList<Funcion> listaFunciones = new ArrayList<>();
 		Funcion funcion = esFuncion();
 
@@ -99,7 +95,7 @@ public class AnalizadorSintactico {
 	 * <Funcion> ::= metodo identificador "("[<ListaParametros>]")"
 	 * [":"<TipoRetorno>] <BloqueSentencias>
 	 */
-	public Funcion esFuncion() throws NullPointerException {
+	public Funcion esFuncion() {
 
 		if (tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && tokenActual.getPalabra().equals("metodo")) {
 			obtenerTokenSiguiente();
@@ -139,7 +135,7 @@ public class AnalizadorSintactico {
 							return new Funcion(nombre, listaParametros, null, bloqueSentencias);
 						}
 						
-						reportarError("Falta el parentesis de cierre");
+						reportarError("Falta el parentesis de cierre2");
 						return null;
 						
 					} else {
@@ -176,13 +172,13 @@ public class AnalizadorSintactico {
 				obtenerTokenSiguiente();
 				parametro = esParametro();
 				if (parametro == null) {
-					reportarError("lista de parametros invalida");
-					return null;
+					return listaParametros;
 				}
 			} else {
+				
 				parametro = esParametro();
 				if (parametro != null) {
-					reportarError("falta el separador de parametros");
+					reportarError("falta una coma entre parametros");
 					return null;
 				}
 			}
@@ -208,11 +204,10 @@ public class AnalizadorSintactico {
 			}
 
 			Token nombre = tokenActual;
+			obtenerTokenSiguiente();
 			return new Parametro(retorno, nombre);
 		} else {
-			reportarError("El tipo de dato de un parametro no es valido");
 			return null;
-
 		}
 
 	}
@@ -342,6 +337,7 @@ public class AnalizadorSintactico {
 			if (obtenerTokenSiguiente()) {
 				if (listaSentencia != null) {
 					if (tokenActual.getPalabra().equals("}")) {
+						obtenerTokenSiguiente();
 						return new BloqueSentencia(listaSentencia);
 					}
 				}
@@ -379,7 +375,7 @@ public class AnalizadorSintactico {
 			tokenActual = tokens.get(posActual);
 			return true;
 		} else {
-			tokenActual = null;
+			tokenActual = new Token(Categoria.DESCONOCIDO, "?", 0, 0);
 			return false;
 		}
 	}

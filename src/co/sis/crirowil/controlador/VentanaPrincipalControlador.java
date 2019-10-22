@@ -13,6 +13,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.layout.StackPane;
 
 /**
  * Controlador que me permite maneja la ventana principal
@@ -91,7 +92,13 @@ public class VentanaPrincipalControlador {
      * 
      */
     @FXML
-    private TreeView<?> treeArbolVisual;
+    private StackPane root;
+    
+    /**
+     * 
+     */
+    @FXML
+    private TreeView<String> treeArbolVisual;
 		
     /**
 	 * instancia del manejador de los escenario
@@ -199,7 +206,7 @@ public class VentanaPrincipalControlador {
 	
 	private void crearArbolVisual() {
 
-		treeArbolVisual = new TreeView<String>(manejador.getUnidadDeCompilacion().getArbolVisual());
+		treeArbolVisual.setRoot(manejador.getUnidadDeCompilacion().getArbolVisual());
 		
 	}
 
