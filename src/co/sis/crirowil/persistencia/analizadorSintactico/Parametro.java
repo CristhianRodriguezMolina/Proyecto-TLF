@@ -62,7 +62,6 @@ public class Parametro {
 	}
 
 	public TreeItem<String> getArbolVisual() {
-		// TODO Auto-generated method stub
-		return null;
+		return new TreeItem<String>( nombre.getPalabra()+" : "+retorno.getPalabra() );
 	}
 }

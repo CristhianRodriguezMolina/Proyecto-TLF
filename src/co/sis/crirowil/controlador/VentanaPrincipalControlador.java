@@ -3,12 +3,15 @@ package co.sis.crirowil.controlador;
 import java.util.ArrayList;
 
 import co.sis.crirowil.modelo.ErrorLexicoObservable;
+import co.sis.crirowil.modelo.ErrorSintacticoObservable;
 import co.sis.crirowil.modelo.TokenObservable;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
 /**
@@ -64,25 +67,25 @@ public class VentanaPrincipalControlador {
 	 * 
 	 */
 	@FXML
-    private TableView<?> tblErroresSintacticos;
+    private TableView<ErrorSintacticoObservable> tblErroresSintacticos;
 
 	/**
 	 * 
 	 */
     @FXML
-    private TableColumn<?, ?> filaColumna;
+    private TableColumn<ErrorSintacticoObservable, String> filaColumna;
 
     /**
      * 
      */
     @FXML
-    private TableColumn<?, ?> columnaColumna;
+    private TableColumn<ErrorSintacticoObservable, String> columnaColumna;
 
     /**
      * 
      */
     @FXML
-    private TableColumn<?, ?> mensajeColumna;
+    private TableColumn<ErrorSintacticoObservable, String> mensajeColumna;
 
     /**
      * 
@@ -106,6 +109,9 @@ public class VentanaPrincipalControlador {
 		palabraColumna.setCellValueFactory(TokenCelda -> TokenCelda.getValue().getPalabra());	
 		errorColumna.setCellValueFactory(ErrorCelda -> ErrorCelda.getValue().getMensaje());
 		lineaColumna.setCellValueFactory(LineaColumna -> LineaColumna.getValue().getLine());
+		filaColumna.setCellValueFactory(FilaCelda -> FilaCelda.getValue().getFila());
+		columnaColumna.setCellValueFactory(ColumnaCelda -> ColumnaCelda.getValue().getColumna());
+		mensajeColumna.setCellValueFactory(MensajeCelda -> MensajeCelda.getValue().getMensaje());
 		
 		textArea.setText("importar mundo@\r\n" + 
 				"\r\n" + 
@@ -154,14 +160,19 @@ public class VentanaPrincipalControlador {
 	{
 		tablaTokens.getItems().clear();
 		tablaErrores.getItems().clear();
+		tblErroresSintacticos.getItems().clear();
 		ObservableList<ErrorLexicoObservable> ErroresObservables = manejador.getErroresObservables();
 		ObservableList<TokenObservable> TokensObservables = manejador.getTokensObservables();
+		ObservableList<ErrorSintacticoObservable> ErroresSintacticosObservables = manejador.getErroresSintacticosObservables();
 		
 		for (TokenObservable TokenObs : TokensObservables) {
 			tablaTokens.getItems().add(TokenObs);
 		}
 		for (ErrorLexicoObservable ErrorOb : ErroresObservables) {
 			tablaErrores.getItems().add(ErrorOb);
+		}
+		for (ErrorSintacticoObservable ErrorOb : ErroresSintacticosObservables) {
+			tblErroresSintacticos.getItems().add(ErrorOb);
 		}
 		
 		tablaTokens.getColumns().get(0).setVisible(false);
@@ -182,10 +193,16 @@ public class VentanaPrincipalControlador {
 		String codigoFuente = textArea.getText();
 		manejador.analizar(codigoFuente);
 		refrescarTabla();
-		
+		crearArbolVisual();
 		
 	}
 	
+	private void crearArbolVisual() {
+
+		treeArbolVisual = new TreeView<String>(manejador.getUnidadDeCompilacion().getArbolVisual());
+		
+	}
+
 	/**
 	 * Permite cerrar la ventana de editar y crear
 	 */

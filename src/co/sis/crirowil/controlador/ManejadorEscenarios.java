@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import co.sis.crirowil.Main;
 import co.sis.crirowil.modelo.ErrorLexicoObservable;
+import co.sis.crirowil.modelo.ErrorSintacticoObservable;
 import co.sis.crirowil.modelo.TokenObservable;
 import co.sis.crirowil.persistencia.analizadorLexico.AnalizadorLexico;
 import co.sis.crirowil.persistencia.analizadorLexico.ErrorLexico;
@@ -12,6 +13,7 @@ import co.sis.crirowil.persistencia.analizadorLexico.Token;
 import co.sis.crirowil.persistencia.analizadorLexico.Utilidades;
 import co.sis.crirowil.persistencia.analizadorSintactico.AnalizadorSintactico;
 import co.sis.crirowil.persistencia.analizadorSintactico.ErrorSintactico;
+import co.sis.crirowil.persistencia.analizadorSintactico.UnidadDeCompilacion;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -37,7 +39,7 @@ public class ManejadorEscenarios {
 	/**
 	 * Tipo de panel inicial
 	 */
-	private AnchorPane anchorPanel;
+	private BorderPane anchorPanel;
 	
 	/**
 	 * Lista de tokens observables
@@ -49,6 +51,16 @@ public class ManejadorEscenarios {
 	 * Lista de errores lexicos observables
 	 */
 	private ObservableList<ErrorLexicoObservable> erroresObservables;
+	
+	/**
+	 * Lista de errores sintacticos observables
+	 */
+	private ObservableList<ErrorSintacticoObservable> erroresSintacticosObservables;
+	
+	/**
+	 * La unidad de compilacion del programa
+	 */
+	private UnidadDeCompilacion unidadDeCompilacion;
 	
 	/**
 	 * Recibe el escenario principal de la aplicacion
@@ -64,9 +76,9 @@ public class ManejadorEscenarios {
 
 			// se carga la vista
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(Main.class.getResource("./vista/ventanaPrincipal.fxml"));
+			loader.setLocation(Main.class.getResource("./vista/ventanaAnalizadorSintactico.fxml"));
 
-			anchorPanel = (AnchorPane) loader.load();
+			anchorPanel = (BorderPane) loader.load();
 			
 			VentanaPrincipalControlador controlador = loader.getController();
 			controlador.setManejador(this);
@@ -118,7 +130,13 @@ public class ManejadorEscenarios {
 		AnalizadorSintactico as = new AnalizadorSintactico(tokens);
 		as.analizar();
 		ArrayList<ErrorSintactico> erroresSintacticos = as.getListaErrores();
-		
+		ObservableList<ErrorSintacticoObservable> erroresSintacticosObservablesTemp = FXCollections.observableArrayList();
+		for(ErrorSintactico error: erroresSintacticos) 
+		{
+			erroresSintacticosObservablesTemp.add(new ErrorSintacticoObservable(error));			
+		}
+		setErroresSintacticosObservables(erroresSintacticosObservablesTemp);
+		setUnidadDeCompilacion(as.getUnidadDeCompilacion());
 	}
 
 	/**
@@ -150,6 +168,38 @@ public class ManejadorEscenarios {
 	public void setErroresObservables(ObservableList<ErrorLexicoObservable> erroresObservables) {
 		this.erroresObservables = erroresObservables;
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public ObservableList<ErrorSintacticoObservable> getErroresSintacticosObservables() {
+		return erroresSintacticosObservables;
+	}
+	
+	/**
+	 * 
+	 * @param erroresSintacticosObservables
+	 */
+	public void setErroresSintacticosObservables(ObservableList<ErrorSintacticoObservable> erroresSintacticosObservables) {
+		this.erroresSintacticosObservables = erroresSintacticosObservables;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public UnidadDeCompilacion getUnidadDeCompilacion() {
+		return unidadDeCompilacion;
+	}
+
+	/**
+	 * 
+	 * @param unidadDeCompilacion
+	 */
+	public void setUnidadDeCompilacion(UnidadDeCompilacion unidadDeCompilacion) {
+		this.unidadDeCompilacion = unidadDeCompilacion;
+	}
 
 	/**
 	 * @return the escenario
@@ -168,14 +218,14 @@ public class ManejadorEscenarios {
 	/**
 	 * @return the anchorPanel
 	 */
-	public AnchorPane getAnchorPanel() {
+	public BorderPane getAnchorPanel() {
 		return anchorPanel;
 	}
 
 	/**
 	 * @param anchorPanel the anchorPanel to set
 	 */
-	public void setAnchorPanel(AnchorPane anchorPanel) {
+	public void setAnchorPanel(BorderPane anchorPanel) {
 		this.anchorPanel = anchorPanel;
 	}	
 }

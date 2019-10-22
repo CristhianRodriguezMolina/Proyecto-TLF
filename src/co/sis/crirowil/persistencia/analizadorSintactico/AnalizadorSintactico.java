@@ -43,7 +43,11 @@ public class AnalizadorSintactico {
 	 * Analiza los tokens para verificar la sintactica correcta del lenguaje
 	 */
 	public void analizar() {
-		unidadDeCompilacion = esUnidadDeCompilacion();
+		try {
+			unidadDeCompilacion = esUnidadDeCompilacion();
+		} catch (NullPointerException e) {
+			System.out.println("Null");
+		}		
 	}
 
 	/**
@@ -54,6 +58,7 @@ public class AnalizadorSintactico {
 	public AnalizadorSintactico(ArrayList<Token> tokens) {
 		this.tokens = tokens;
 		listaErrores = new ArrayList<>();
+		tokenActual = tokens.get(posActual);
 	}
 
 	/**
@@ -62,7 +67,7 @@ public class AnalizadorSintactico {
 	 * 
 	 * @return
 	 */
-	public UnidadDeCompilacion esUnidadDeCompilacion() {
+	public UnidadDeCompilacion esUnidadDeCompilacion() throws NullPointerException {
 		ArrayList<Funcion> listaFunciones = esListaFunciones();
 
 		if (listaFunciones != null) {
@@ -77,12 +82,13 @@ public class AnalizadorSintactico {
 	 * Metodo que me verifica que dado el BNF del listaFunciones es o no valido
 	 * <ListaFunciones> ::= <Funcion>[<ListaFunciones>]
 	 */
-	public ArrayList<Funcion> esListaFunciones() {
+	public ArrayList<Funcion> esListaFunciones() throws NullPointerException {
 		ArrayList<Funcion> listaFunciones = new ArrayList<>();
 		Funcion funcion = esFuncion();
 
 		while (funcion != null) {
 			listaFunciones.add(funcion);
+			funcion = esFuncion();
 		}
 
 		return listaFunciones;
@@ -93,10 +99,10 @@ public class AnalizadorSintactico {
 	 * <Funcion> ::= metodo identificador "("[<ListaParametros>]")"
 	 * [":"<TipoRetorno>] <BloqueSentencias>
 	 */
-	public Funcion esFuncion() {
+	public Funcion esFuncion() throws NullPointerException {
 
 		if (tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && tokenActual.getPalabra().equals("metodo")) {
-
+			obtenerTokenSiguiente();
 			if (tokenActual.getCategoria() == Categoria.IDENTIFICADOR) {
 				Token nombre = tokenActual;
 				obtenerTokenSiguiente();
@@ -107,8 +113,13 @@ public class AnalizadorSintactico {
 					ArrayList<Parametro> listaParametros = esListaParametros();
 
 					if (tokenActual.getCategoria() == Categoria.PARENTESIS_CIERRA) {
+						
+						obtenerTokenSiguiente();
+						
 						if (tokenActual.getCategoria() == Categoria.DOS_PUNTOS) {
+							obtenerTokenSiguiente();
 							Token retorno = esTipoRetorno();
+							obtenerTokenSiguiente();
 							BloqueSentencia bloqueSentencias = esBloqueSentencia();
 
 							if (bloqueSentencias == null) {
@@ -117,10 +128,20 @@ public class AnalizadorSintactico {
 							}
 
 							return new Funcion(nombre, listaParametros, retorno, bloqueSentencias);
-						} else {
-							reportarError("Falta el parentesis de cierre");
-							return null;
+						} else if(tokenActual.getCategoria() == Categoria.LLAVES_ABRE) {
+							BloqueSentencia bloqueSentencias = esBloqueSentencia();
+
+							if (bloqueSentencias == null) {
+								reportarError("Falta el bloque de sentencias");
+								return null;
+							}
+
+							return new Funcion(nombre, listaParametros, null, bloqueSentencias);
 						}
+						
+						reportarError("Falta el parentesis de cierre");
+						return null;
+						
 					} else {
 						reportarError("Falta el parentesis de cierre");
 						return null;
@@ -166,11 +187,7 @@ public class AnalizadorSintactico {
 				}
 			}
 		}
-
-		if (listaParametros.size() == 0) {
-			reportarError("la lista de parametros debe tener minimo un parametro valido");
-			return null;
-		}
+		
 		return listaParametros;
 	}
 
