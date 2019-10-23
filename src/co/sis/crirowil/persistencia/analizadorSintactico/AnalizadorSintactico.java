@@ -240,6 +240,7 @@ public class AnalizadorSintactico {
 		obtenerTokenSiguiente();
 
 		Condicion condicion = esCondicion();
+		System.out.println("paso");
 
 		if (condicion == null) {
 			reportarError("la sentencia sisas debe de tener una condicon valida");
@@ -256,7 +257,7 @@ public class AnalizadorSintactico {
 		BloqueSentencia bloqueSentenciasSisas = esBloqueSentencia();
 
 		if (bloqueSentenciasSisas == null) {
-			reportarError("Falta el bloque de sentencias");
+			reportarError("Falta el bloque de sentencias sisas");
 			return null;
 		}
 
@@ -279,6 +280,7 @@ public class AnalizadorSintactico {
 
 		while (nonais != null) {
 			listaNonais.add(nonais);
+			nonais = esNonais();
 		}
 
 		return listaNonais;
@@ -291,15 +293,35 @@ public class AnalizadorSintactico {
 	 * @return
 	 */
 	public Nonais esNonais() {
-		if (tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && tokenActual.getPalabra().equals("nonais")) {
-			BloqueSentencia bloqueSentencia = esBloqueSentencia();
-			if (bloqueSentencia != null) {
-				return new Nonais(bloqueSentencia);
-			} else {
-				reportarError("Falta el bloque de sentencias");
-			}
+		
+		if (!(tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && tokenActual.getPalabra().equals("nonais"))) {
+			return null;
 		}
-		return null;
+
+		obtenerTokenSiguiente();
+
+		Condicion condicion = esCondicion();
+
+		if (condicion == null) {
+			reportarError("la sentencia nonais debe de tener una condicon valida");
+			return null;
+		}
+
+		if (tokenActual.getCategoria() != Categoria.DOS_PUNTOS) {
+			reportarError("Token inesperado, se esperaba: \":\"");
+			return null;
+		}
+
+		obtenerTokenSiguiente();
+
+		BloqueSentencia bloqueSentencias = esBloqueSentencia();
+
+		if (bloqueSentencias == null) {
+			reportarError("Falta el bloque de sentencias");
+			return null;
+		}
+		
+		return new Nonais(condicion, bloqueSentencias);
 	}
 
 	/**
@@ -345,14 +367,12 @@ public class AnalizadorSintactico {
 	 * @return
 	 */
 	public BloqueSentencia esBloqueSentencia() {
-		ArrayList<Sentencia> listaSentencia = esListaSentencias();
 		if (tokenActual.getPalabra().equals("{")) {
 			if (obtenerTokenSiguiente()) {
-				if (listaSentencia != null) {
-					if (tokenActual.getPalabra().equals("}")) {
-						obtenerTokenSiguiente();
-						return new BloqueSentencia(listaSentencia);
-					}
+				ArrayList<Sentencia> listaSentencia = esListaSentencias();
+				if (tokenActual.getPalabra().equals("}")) {
+					obtenerTokenSiguiente();
+					return new BloqueSentencia(listaSentencia);
 				}
 			}
 		}
@@ -412,25 +432,25 @@ public class AnalizadorSintactico {
 		if (s != null)
 			return s;
 
-		s = esCiclo();
-		if (s != null)
-			return s;
-
-		s = esDeclaracionVariable();
-		if (s != null)
-			return s;
-
-		s = esSentenciaInvocacion();
-		if (s != null)
-			return s;
-
-		s = esSentenciaAsignacion();
-		if (s != null)
-			return s;
-
-		s = esRetorno();
-		if (s != null)
-			return s;
+//		s = esCiclo();
+//		if (s != null)
+//			return s;
+//
+//		s = esDeclaracionVariable();
+//		if (s != null)
+//			return s;
+//
+//		s = esSentenciaInvocacion();
+//		if (s != null)
+//			return s;
+//
+//		s = esSentenciaAsignacion();
+//		if (s != null)
+//			return s;
+//
+//		s = esRetorno();
+//		if (s != null)
+//			return s;
 
 		return null;
 
@@ -733,22 +753,23 @@ public class AnalizadorSintactico {
 	 */
 	public Expresion esExpresion() {
 		Expresion expresion = null;
-
-		expresion = esExpresionAritmetica();
+		
+		expresion = esExpresionLogica();
 		if (expresion != null)
 			return expresion;
 
 		expresion = esExpresionRelacional();
 		if (expresion != null)
 			return expresion;
-
-		expresion = esExpresionLogica();
+		
+		expresion = esExpresionAritmetica();
 		if (expresion != null)
 			return expresion;
 
 		expresion = esExpresionCadena();
 		if (expresion != null)
 			return expresion;
+		
 		return null;
 	}
 
@@ -990,9 +1011,11 @@ public class AnalizadorSintactico {
 		if (tokenActual.getCategoria() == Categoria.ENTERO || tokenActual.getCategoria() == Categoria.REAL
 				|| tokenActual.getCategoria() == Categoria.IDENTIFICADOR) {
 			Token termino = tokenActual;
+			obtenerTokenSiguiente();
 			return new ValorNumerico(signo, termino);
 		}
 
+		reportarError("No hay valor numerico");
 		return null;
 	}
 

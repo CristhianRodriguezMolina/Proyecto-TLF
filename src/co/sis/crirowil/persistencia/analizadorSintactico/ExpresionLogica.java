@@ -64,11 +64,14 @@ public class ExpresionLogica extends Expresion{
 		
 		raiz.getChildren().add(new TreeItem<String>("Expresion negada: " + negacion));
 		
-		raiz.getChildren().add(getExpresionLogica().getArbolVisual());
+		if(getExpresionLogica() != null)
+			raiz.getChildren().add(getExpresionLogica().getArbolVisual());
 		
-		raiz.getChildren().add(getExpresionRelacional().getArbolVisual());
+		if(getExpresionRelacional() != null)
+			raiz.getChildren().add(getExpresionRelacional().getArbolVisual());
 		
-		raiz.getChildren().add(getExpresionAuxiliarLogica().getArbolVisual());
+		if(getExpresionAuxiliarLogica() != null)
+			raiz.getChildren().add(getExpresionAuxiliarLogica().getArbolVisual());
 		
 		return raiz;
 		

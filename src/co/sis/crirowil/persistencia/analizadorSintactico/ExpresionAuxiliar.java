@@ -52,9 +52,11 @@ public class ExpresionAuxiliar {
 		
 		raiz.getChildren().add(new TreeItem<String>("Operador aritmetico: " + operadorAritmetico.getPalabra()));
 		
-		raiz.getChildren().add(getExpresionAritmetica().getArbolVisual());
+		if(getExpresionAritmetica() != null)
+			raiz.getChildren().add(getExpresionAritmetica().getArbolVisual());
 		
-		raiz.getChildren().add(getExpresionAuxiliar().getArbolVisual());
+		if(getExpresionAuxiliar() != null)
+			raiz.getChildren().add(getExpresionAuxiliar().getArbolVisual());
 		
 		return raiz;
 		

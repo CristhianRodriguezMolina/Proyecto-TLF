@@ -1,5 +1,6 @@
 package co.sis.crirowil.persistencia.analizadorSintactico;
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
+import javafx.scene.control.TreeItem;
 
 /**
  * Clase que describe que es ExpresionCadena y sus componentes
@@ -39,4 +40,19 @@ public class ExpresionCadena extends Expresion{
 	public void setExpresion(Expresion expresion) {
 		this.expresion = expresion;
 	}
+
+	@Override
+	public TreeItem<String> getArbolVisual() {
+		
+		TreeItem<String> raiz = new TreeItem<String>("Expresion cadena");
+		
+		raiz.getChildren().add(new TreeItem<String>(cadenaCaracteres.getPalabra()));
+		
+		if(expresion != null)
+			raiz.getChildren().add(expresion.getArbolVisual());
+		
+		return raiz;
+	}
+	
+	
 }

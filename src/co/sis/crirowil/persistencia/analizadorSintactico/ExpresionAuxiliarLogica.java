@@ -72,9 +72,11 @@ public class ExpresionAuxiliarLogica {
 		
 		raiz.getChildren().add(new TreeItem<String>("Operador lógico: " + operadorLogico.getPalabra()));
 		
-		raiz.getChildren().add(getExpresionLogica().getArbolVisual());
+		if(getExpresionLogica() != null)
+			raiz.getChildren().add(getExpresionLogica().getArbolVisual());
 		
-		raiz.getChildren().add(getExpresionAuxiliarLogica().getArbolVisual());
+		if(getExpresionAuxiliarLogica() != null)
+			raiz.getChildren().add(getExpresionAuxiliarLogica().getArbolVisual());
 		
 		return raiz;
 		
