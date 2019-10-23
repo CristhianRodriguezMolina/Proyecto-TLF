@@ -1,5 +1,7 @@
 package co.sis.crirowil.persistencia.analizadorSintactico;
 
+import javafx.scene.control.TreeItem;
+
 /**
  * Clase que describe que es una sentencias ExpresionAritmetica y sus componentes
  * 
@@ -65,6 +67,21 @@ public class ExpresionAritmetica extends Expresion
 	 */
 	public void setValorNumerico(ValorNumerico valorNumerico) {
 		this.valorNumerico = valorNumerico;
+	}
+	
+	@Override
+	public TreeItem<String> getArbolVisual() {
+
+		TreeItem<String> raiz = new TreeItem<String>("Expresion Aritmetica");
+		
+		raiz.getChildren().add(new TreeItem<String>("Valor numerico: " + valorNumerico.toString()));
+		
+		raiz.getChildren().add(getExpresionAritmetica().getArbolVisual());
+		
+		raiz.getChildren().add(getExpresionAuxiliar().getArbolVisual());
+		
+		return raiz;
+		
 	}
 	
 	

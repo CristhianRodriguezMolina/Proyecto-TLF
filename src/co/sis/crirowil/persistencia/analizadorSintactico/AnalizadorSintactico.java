@@ -321,8 +321,21 @@ public class AnalizadorSintactico {
 	}
 
 	public Condicion esCondicion() {
-		// TODO Auto-generated method stub
-		return null;
+		Expresion expresion = esExpresion();
+		
+		if(expresion != null) {
+			
+			if(expresion instanceof ExpresionRelacional || expresion instanceof ExpresionLogica) {
+				return new Condicion(expresion);
+			}else {
+				reportarError("La condicion debe ser una expresion relacional o logica no una "+expresion.getClass().getSimpleName());
+				return null;
+			}
+			
+		}else {
+			reportarError("Hace falta una condicion");
+			return null;
+		}
 	}
 
 	/**

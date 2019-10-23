@@ -108,8 +108,29 @@ public class Sisas extends Sentencia{
 
 	@Override
 	public TreeItem<String> getArbolVisual() {
-		// TODO Auto-generated method stub
-		return null;
+		TreeItem<String> raiz = new TreeItem<String>("Sisas");
+
+		raiz.getChildren().add(new TreeItem<String>("Condición: " + condicion.getArbolVisual()));
+
+		TreeItem<String> sentencias = new TreeItem<String>("Sentencias");
+		raiz.getChildren().add(sentencias);
+
+		for (Sentencia sentencia : bloqueSentenciaSisas.getListaSentencias()) {
+			sentencias.getChildren().add(sentencia.getArbolVisual());
+		}
+		
+		TreeItem<String> listaNonais = new TreeItem<String>("Lista nonais");
+		raiz.getChildren().add(listaNonais);
+		
+		for (Nonais nonais : this.listaNonais) {
+			listaNonais.getChildren().add(nonais.getArbolVisual());
+		}
+		
+		TreeItem<String> nonas = new TreeItem<String>("Nonas");
+		raiz.getChildren().add(nonas);
+		nonas.getChildren()add(this.nonas.getArbolVisual());
+
+		return raiz;
 	}
 	
 	

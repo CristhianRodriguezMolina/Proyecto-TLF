@@ -1,6 +1,7 @@
 package co.sis.crirowil.persistencia.analizadorSintactico;
 
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
+import javafx.scene.control.TreeItem;
 
 public class ExpresionAuxiliar {
 	
@@ -43,6 +44,20 @@ public class ExpresionAuxiliar {
 
 	public void setExpresionAuxiliar(ExpresionAuxiliar expresionAuxiliar) {
 		this.expresionAuxiliar = expresionAuxiliar;
+	}
+
+	public TreeItem<String> getArbolVisual() {
+
+		TreeItem<String> raiz = new TreeItem<String>("Expresion Auxiliar Aritmetica");
+		
+		raiz.getChildren().add(new TreeItem<String>("Operador aritmetico: " + operadorAritmetico.getPalabra()));
+		
+		raiz.getChildren().add(getExpresionAritmetica().getArbolVisual());
+		
+		raiz.getChildren().add(getExpresionAuxiliar().getArbolVisual());
+		
+		return raiz;
+		
 	}
 	
 	
