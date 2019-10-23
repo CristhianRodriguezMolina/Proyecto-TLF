@@ -47,5 +47,12 @@ public class ValorNumerico {
 		this.termino = termino;
 	}
 	
+	@Override
+	public String toString() {
+		return signo + "" + termino;
+	}
+	
+	
+	
 	
 }

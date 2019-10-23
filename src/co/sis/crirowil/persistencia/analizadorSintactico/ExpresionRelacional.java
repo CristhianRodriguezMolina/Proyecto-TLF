@@ -1,6 +1,7 @@
 package co.sis.crirowil.persistencia.analizadorSintactico;
 
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
+import javafx.scene.control.TreeItem;
 
 public class ExpresionRelacional extends Expresion{
 
@@ -54,6 +55,27 @@ public class ExpresionRelacional extends Expresion{
 
 	public void setValorLogico(Token valorLogico) {
 		this.valorLogico = valorLogico;
+	}
+
+	@Override
+	public TreeItem<String> getArbolVisual() {
+
+		TreeItem<String> raiz = new TreeItem<String>("Expresion Relacional");
+		
+		if(valorLogico == null) {
+			if(getExpresionAritmetica() != null)
+				raiz.getChildren().add(getExpresionAritmetica().getArbolVisual());
+			
+			raiz.getChildren().add(new TreeItem<String>("Operador relacional: " + operadorRelacional.getPalabra()));
+			
+			if(getExpresionAritmetica2() != null)
+				raiz.getChildren().add(getExpresionAritmetica2().getArbolVisual());
+		}else {
+			raiz.getChildren().add(new TreeItem<String>("Valor lógico: " + valorLogico.getPalabra()));
+		}
+		
+		return raiz;
+		
 	}
 	
 	

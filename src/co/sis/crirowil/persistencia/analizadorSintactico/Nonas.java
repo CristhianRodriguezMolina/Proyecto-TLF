@@ -1,5 +1,7 @@
 package co.sis.crirowil.persistencia.analizadorSintactico;
 
+import javafx.scene.control.TreeItem;
+
 /**
  * Clase que describe que es una sentencias nonas y sus componentes
  * 
@@ -33,6 +35,21 @@ public class Nonas {
 	 */
 	public void setBloqueSentencia(BloqueSentencia bloqueSentencia) {
 		this.bloqueSentencia = bloqueSentencia;
+	}
+
+	public TreeItem<String> getArbolVisual() {
+
+		TreeItem<String> raiz = new TreeItem<String>("Nonas");
+
+		TreeItem<String> sentencias = new TreeItem<String>("Sentencias");
+		raiz.getChildren().add(sentencias);
+
+		for (Sentencia sentencia : bloqueSentencia.getListaSentencias()) {
+			sentencias.getChildren().add(sentencia.getArbolVisual());
+		}
+		
+		return raiz;
+		
 	}
 	
 	
