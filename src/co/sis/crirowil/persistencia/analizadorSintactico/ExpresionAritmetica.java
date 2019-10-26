@@ -27,9 +27,9 @@ public class ExpresionAritmetica extends Expresion
 	 * @param expresionAritmetica
 	 * @param valorNumerico
 	 */
-	public ExpresionAritmetica(ValorNumerico valorNumerico, ExpresionAritmetica expresionAritmetica) {
+	public ExpresionAritmetica(ValorNumerico valorNumerico, ExpresionAuxiliar expresionAuxiliar) {
 		super();
-		this.expresionAritmetica = expresionAritmetica;
+		this.expresionAuxiliar = expresionAuxiliar;
 		this.valorNumerico = valorNumerico;
 	}
 	/**

@@ -13,7 +13,7 @@ import javafx.scene.control.TreeItem;
 public class DeclaracionVariable extends Sentencia
 {
 	
-	private Token tipoRetorno;
+	private Token tipoDato;
 	
 	private Token identificador;
 	
@@ -26,7 +26,7 @@ public class DeclaracionVariable extends Sentencia
 	 */
 	public DeclaracionVariable(Token tipoDato, Token identificador, Asignacion asignacion) {
 		super();
-		this.tipoRetorno = tipoDato;
+		this.tipoDato = tipoDato;
 		this.identificador = identificador;
 		this.asignacion = asignacion;
 	}
@@ -35,14 +35,14 @@ public class DeclaracionVariable extends Sentencia
 	 * @return the tipoRetorno
 	 */
 	public Token getTipoRetorno() {
-		return tipoRetorno;
+		return tipoDato;
 	}
 
 	/**
 	 * @param tipoRetorno the tipoRetorno to set
 	 */
 	public void setTipoRetorno(Token tipoRetorno) {
-		this.tipoRetorno = tipoRetorno;
+		this.tipoDato = tipoRetorno;
 	}
 
 	/**
@@ -75,8 +75,16 @@ public class DeclaracionVariable extends Sentencia
 	
 	@Override
 	public TreeItem<String> getArbolVisual() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		TreeItem<String> raiz = new TreeItem<String>("Declaracion de variable");
+		raiz.getChildren().add(new TreeItem<String>("Tipo de dato: " + tipoDato));
+		raiz.getChildren().add(new TreeItem<String>("Nombre: " + identificador));
+		
+		if(asignacion != null) 
+		{
+			TreeItem<String> asignacionTree = asignacion.getArbolVisual();
+			raiz.getChildren().add(asignacionTree);
+		}	
 
+		return raiz;
+	}
 }

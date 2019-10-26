@@ -1,6 +1,7 @@
 package co.sis.crirowil.persistencia.analizadorSintactico;
 
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
+import javafx.scene.control.TreeItem;
 
 /**
  * Clase que describe que es un argumento y sus componentes
@@ -65,5 +66,24 @@ public class Argumento {
 		this.expresion = expresion;
 	}
 	
+	/**
+	 * Me obtiene una representacion grafica a modo de arbol de como esta compuesta la clase
+	 */
+	public TreeItem<String> getArbolVisual() 
+	{
+		TreeItem<String> raiz = new TreeItem<String>("Argumento");
+		if(nombre != null) 
+		{
+			raiz.getChildren().add(new TreeItem<String>("Nombre: " + nombre));
+		}
+		else 
+		{
+			TreeItem<String> expresionTree = new TreeItem<String>("Expresion");
+			expresionTree.getChildren().add(expresion.getArbolVisual());
+			raiz.getChildren().add(expresionTree);
+		}
+		
+		return raiz;
+	}
 	
 }

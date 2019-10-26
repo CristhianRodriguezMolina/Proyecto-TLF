@@ -3,6 +3,7 @@ package co.sis.crirowil.persistencia.analizadorSintactico;
 import java.util.ArrayList;
 
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
+import javafx.scene.control.TreeItem;
 
 /**
  * Clase que describe que es una invocacion de una funcion y sus componentes
@@ -68,6 +69,25 @@ public class InvocacionFuncion{
 	 */
 	public void setListaArgumentos(ArrayList<Argumento> listaArgumentos) {
 		this.listaArgumentos = listaArgumentos;
+	}
+	
+	public TreeItem<String> getArbolVisual() 
+	{
+		TreeItem<String> raiz = new TreeItem<String>("Invocacion de Funcion");
+		raiz.getChildren().add(new TreeItem<String>("Nombre: " + nombre));
+		
+		if(listaArgumentos.size() > 0) 
+		{
+			for(Argumento argumento: listaArgumentos) 
+			{
+				TreeItem<String> argumentoTree = new TreeItem<String>("Argumento");
+				argumentoTree.getChildren().add(argumento.getArbolVisual());
+				raiz.getChildren().add(argumentoTree);
+			}
+			
+		}
+		
+		return raiz;
 	}
 
 }

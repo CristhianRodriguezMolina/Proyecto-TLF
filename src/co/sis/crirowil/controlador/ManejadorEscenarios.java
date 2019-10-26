@@ -72,7 +72,7 @@ public class ManejadorEscenarios {
 		this.escenario = escenario;
 		try {
 			// se inicializa el escenario
-			escenario.setTitle("Analizador Lexico de la Universidad del Quind�o");
+			escenario.setTitle("Analizador Lexico de la Universidad del Quindio");
 
 			// se carga la vista
 			FXMLLoader loader = new FXMLLoader();
@@ -108,9 +108,7 @@ public class ManejadorEscenarios {
 			al.analizar();
 		} catch (ErrorLexico e) {
 			Utilidades.mostrarMensaje("Error Lexico", e.getMessage());
-		}			
-		System.out.println(al.getListaTokens());
-		System.out.println(al.getListaErrores());
+		}
 		ArrayList<Token> tokens = al.getListaTokens();
 		ArrayList<ErrorLexico> errores = al.getListaErrores();
 		ObservableList<TokenObservable> tokensObservablesTemp = FXCollections.observableArrayList();

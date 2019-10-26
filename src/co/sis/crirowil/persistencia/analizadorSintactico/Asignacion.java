@@ -1,6 +1,7 @@
 package co.sis.crirowil.persistencia.analizadorSintactico;
 
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
+import javafx.scene.control.TreeItem;
 
 /**
  * Clase que describe que es una asignacion y sus componentes
@@ -10,14 +11,12 @@ import co.sis.crirowil.persistencia.analizadorLexico.Token;
  * @version 1.0
  */
 public class Asignacion {
-	
+
 	private Token operadorAsignacion;
-	
+
 	private Expresion expresion;
-	
+
 	private InvocacionFuncion invocacionFuncion;
-	
-	
 
 	/**
 	 * @param operadorAsignacion
@@ -28,8 +27,6 @@ public class Asignacion {
 		this.operadorAsignacion = operadorAsignacion;
 		this.expresion = expresion;
 	}
-	
-	
 
 	/**
 	 * @param operadorAsignacion
@@ -40,8 +37,6 @@ public class Asignacion {
 		this.operadorAsignacion = operadorAsignacion;
 		this.invocacionFuncion = invocacionFuncion;
 	}
-
-
 
 	/**
 	 * @return the operadorAsignacion
@@ -84,8 +79,18 @@ public class Asignacion {
 	public void setInvocacionFuncion(InvocacionFuncion invocacionFuncion) {
 		this.invocacionFuncion = invocacionFuncion;
 	}
-	
-	
-	
 
+	public TreeItem<String> getArbolVisual() {
+		TreeItem<String> raiz = new TreeItem<String>("Asignacion");
+		raiz.getChildren().add(new TreeItem<String>("Operador de Asignacion: " + operadorAsignacion));
+		if(expresion != null) {
+			TreeItem<String> expresionTree = expresion.getArbolVisual();
+			raiz.getChildren().add(expresionTree);
+		}else 
+		{
+			TreeItem<String> invocacionFuncionTree = invocacionFuncion.getArbolVisual();
+			raiz.getChildren().add(invocacionFuncionTree);
+		}
+		return raiz;			
+	}
 }

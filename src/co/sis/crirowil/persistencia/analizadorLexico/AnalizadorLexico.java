@@ -225,7 +225,6 @@ public class AnalizadorLexico {
 					flag = true;
 				}
 				palabra = hacerTransicion(palabra, caracterActual);
-				System.out.println("todo vuen: " + flag + " " +palabra);
 			}
 			else 
 			{
@@ -239,7 +238,6 @@ public class AnalizadorLexico {
 				}
 			}			
 		}
-		System.out.println(caracterActual);
 		if(caracterActual == '\'' && !flag && !flag2 && !flag3) 
 		{
 			palabra = hacerTransicion(palabra, caracterActual);
@@ -645,7 +643,6 @@ public class AnalizadorLexico {
 	public boolean esDosPuntos() {
 
 		// RI
-		System.out.println("esfaasfdasfasfsfasfasgagasga");
 		if (caracterActual != ':') {
 			return false;
 		}

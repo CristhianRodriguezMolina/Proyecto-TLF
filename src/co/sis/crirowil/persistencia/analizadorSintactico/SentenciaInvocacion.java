@@ -39,8 +39,7 @@ public class SentenciaInvocacion extends Sentencia {
 
 	@Override
 	public TreeItem<String> getArbolVisual() {
-		// TODO Auto-generated method stub
-		return null;
+		return invocacionFuncion.getArbolVisual();
 	}
 	
 	
