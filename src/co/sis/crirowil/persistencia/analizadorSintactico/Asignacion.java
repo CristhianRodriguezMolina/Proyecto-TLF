@@ -80,17 +80,21 @@ public class Asignacion {
 		this.invocacionFuncion = invocacionFuncion;
 	}
 
+
+
 	public TreeItem<String> getArbolVisual() {
-		TreeItem<String> raiz = new TreeItem<String>("Asignacion");
-		raiz.getChildren().add(new TreeItem<String>("Operador de Asignacion: " + operadorAsignacion));
+		
+		TreeItem<String> raiz = new TreeItem<>("Asignación");
+		
+		raiz.getChildren().add(new TreeItem<>("Operador de asignacion: " + operadorAsignacion.getPalabra()));
+		
 		if(expresion != null) {
-			TreeItem<String> expresionTree = expresion.getArbolVisual();
-			raiz.getChildren().add(expresionTree);
-		}else 
-		{
-			TreeItem<String> invocacionFuncionTree = invocacionFuncion.getArbolVisual();
-			raiz.getChildren().add(invocacionFuncionTree);
+			raiz.getChildren().add(expresion.getArbolVisual());
+		}else {
+			raiz.getChildren().add(invocacionFuncion.getArbolVisual());
 		}
-		return raiz;			
+		
+		return raiz;
+		
 	}
 }

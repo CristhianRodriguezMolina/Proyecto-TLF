@@ -1,6 +1,7 @@
 package co.sis.crirowil.persistencia.analizadorSintactico;
 
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
+import javafx.scene.control.TreeItem;
 
 /**
  * Clase que describe que es una sentencias valorNumerico y sus componentes
@@ -52,7 +53,15 @@ public class ValorNumerico {
 		return signo + "" + termino;
 	}
 	
-	
+	public TreeItem<String> getArbolVisual(){
+		
+		if(signo != null) {
+			return new TreeItem<>("Expresion: " + signo.getPalabra() + "" + termino.getPalabra());
+		}else {
+			return new TreeItem<>("Expresion: " + termino.getPalabra());
+		}
+		
+	}
 	
 	
 }

@@ -90,4 +90,25 @@ public class InvocacionFuncion{
 		return raiz;
 	}
 
+
+
+
+	public TreeItem<String> getArbolVisual() {
+
+		TreeItem<String> raiz = new TreeItem<>("Invocacion función");
+		
+		raiz.getChildren().add(new TreeItem<>("Nombre: "+nombre.getPalabra()));
+		
+		if(this.listaArgumentos.size() > 0) {
+			
+			TreeItem<String> listaArgumentos = new TreeItem<>("Argumentos");
+			raiz.getChildren().add(listaArgumentos);
+			for (Argumento argumento : this.listaArgumentos) {
+				listaArgumentos.getChildren().add(argumento.getArbolVisual());
+			}
+		}
+		
+		return raiz;
+	}
+
 }

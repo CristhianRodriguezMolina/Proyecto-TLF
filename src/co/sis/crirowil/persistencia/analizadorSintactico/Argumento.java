@@ -65,6 +65,18 @@ public class Argumento {
 	public void setExpresion(Expresion expresion) {
 		this.expresion = expresion;
 	}
+
+
+
+	public TreeItem<String> getArbolVisual() {
+		
+		if(nombre != null) {
+			return new TreeItem<String>("Nombre: "+nombre.getPalabra());
+		}else {
+			return expresion.getArbolVisual();
+		}
+		
+	}
 	
 	/**
 	 * Me obtiene una representacion grafica a modo de arbol de como esta compuesta la clase
