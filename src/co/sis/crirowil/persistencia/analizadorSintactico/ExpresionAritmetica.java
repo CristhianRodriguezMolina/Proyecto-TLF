@@ -27,9 +27,9 @@ public class ExpresionAritmetica extends Expresion
 	 * @param expresionAritmetica
 	 * @param valorNumerico
 	 */
-	public ExpresionAritmetica(ValorNumerico valorNumerico, ExpresionAritmetica expresionAritmetica) {
+	public ExpresionAritmetica(ValorNumerico valorNumerico, ExpresionAuxiliar expresionAuxiliar) {
 		super();
-		this.expresionAritmetica = expresionAritmetica;
+		this.expresionAuxiliar = expresionAuxiliar;
 		this.valorNumerico = valorNumerico;
 	}
 	/**
@@ -74,7 +74,7 @@ public class ExpresionAritmetica extends Expresion
 
 		TreeItem<String> raiz = new TreeItem<String>("Expresion Aritmetica");
 		
-		raiz.getChildren().add(new TreeItem<String>("Valor numerico: " + valorNumerico.toString()));
+		raiz.getChildren().add(valorNumerico.getArbolVisual());
 		
 		if(getExpresionAritmetica() != null)
 			raiz.getChildren().add(getExpresionAritmetica().getArbolVisual());

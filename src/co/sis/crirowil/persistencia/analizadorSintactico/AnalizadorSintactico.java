@@ -448,9 +448,9 @@ public class AnalizadorSintactico {
 //		if (s != null)
 //			return s;
 //
-//		s = esRetorno();
-//		if (s != null)
-//			return s;
+		s = esRetorno();
+		if (s != null)
+			return s;
 
 		return null;
 
@@ -484,6 +484,7 @@ public class AnalizadorSintactico {
 	public Retorno esRetorno() {
 		if (tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && tokenActual.getPalabra().equals("retorno")) {
 			obtenerTokenSiguiente();
+			
 			if (tokenActual.getCategoria() == Categoria.IDENTIFICADOR) {
 				Token identificador = tokenActual;
 				obtenerTokenSiguiente();
@@ -492,8 +493,21 @@ public class AnalizadorSintactico {
 					return new Retorno(identificador);
 
 				} else {
-					reportarError("falta el terminal de la sentecia");
+					tokenActual = identificador;
+					
+					InvocacionFuncion invocacionFuncion = esInvocacionFuncion();
+					if (invocacionFuncion != null) {
+						if (tokenActual.getCategoria() == Categoria.TERMINAL) {
+							obtenerTokenSiguiente();
+							return new Retorno(invocacionFuncion);
+
+						} else {
+							reportarError("falta el terminal de la sentecia");
+						}
+					} 
 				}
+				reportarError("falta el terminal de la sentecia");
+				
 			} else {
 				Expresion expresion = esExpresion();
 				if (expresion != null) {
@@ -504,17 +518,8 @@ public class AnalizadorSintactico {
 					} else {
 						reportarError("falta el terminal de la sentecia");
 					}
-				} else {
-					InvocacionFuncion invocacionFuncion = esInvocacionFuncion();
-					if (invocacionFuncion != null) {
-						if (tokenActual.getCategoria() == Categoria.TERMINAL) {
-							obtenerTokenSiguiente();
-							return new Retorno(invocacionFuncion);
-
-						} else {
-							reportarError("falta el terminal de la sentecia");
-						}
-					}
+				}else {
+					reportarError("Sentencia de retorno erronea");
 				}
 			}
 		}
@@ -563,11 +568,13 @@ public class AnalizadorSintactico {
 
 		while (argumento != null) {
 			listaArgumentos.add(argumento);
-			if (tokenActual.getCategoria() == Categoria.SEPARADOR) {
+			if(tokenActual.getCategoria() == Categoria.PARENTESIS_CIERRA) {
+				argumento = null;
+			} else if (tokenActual.getCategoria() == Categoria.SEPARADOR) {
 				obtenerTokenSiguiente();
 				argumento = esArgumento();
 				if (argumento == null) {
-					reportarError("lista de argumentos invalida");
+					reportarError("Separador (,) demas en la lista de argumentos");
 					return null;
 				}
 			} else {
@@ -579,10 +586,6 @@ public class AnalizadorSintactico {
 			}
 		}
 
-		if (listaArgumentos.size() == 0) {
-			reportarError("La lista de argumentos debe tener minimo un argumento valido");
-			return null;
-		}
 		return listaArgumentos;
 	}
 
@@ -597,7 +600,6 @@ public class AnalizadorSintactico {
 			obtenerTokenSiguiente();
 
 			return new Argumento(nombre);
-
 		} else {
 			Expresion expresion = esExpresion();
 			if (expresion != null) {
@@ -753,16 +755,28 @@ public class AnalizadorSintactico {
 	 */
 	public Expresion esExpresion() {
 		Expresion expresion = null;
+		Token tokenActualAux = tokenActual;
+		int posActualAux = posActual;
+
+		expresion = esExpresionAritmetica();
+		if(tokenActual.getCategoria() == Categoria.OPERADOR_RELACIONAL) {
+			tokenActual = tokenActualAux;
+			posActual = posActualAux;
+			expresion = null;
+		}
+		if (expresion != null)
+			return expresion;
+		
+		expresion = esExpresionRelacional();
+		if(tokenActual.getCategoria() == Categoria.OPERADOR_LOGICO) {
+			tokenActual = tokenActualAux;
+			posActual = posActualAux;
+			expresion = null;
+		}
+		if (expresion != null)
+			return expresion;
 		
 		expresion = esExpresionLogica();
-		if (expresion != null)
-			return expresion;
-
-		expresion = esExpresionRelacional();
-		if (expresion != null)
-			return expresion;
-		
-		expresion = esExpresionAritmetica();
 		if (expresion != null)
 			return expresion;
 
@@ -905,7 +919,6 @@ public class AnalizadorSintactico {
 		if (expresionAritmetica != null) {
 
 			if (tokenActual.getCategoria() == Categoria.OPERADOR_RELACIONAL) {
-
 				Token operadorRelacional = tokenActual;
 				obtenerTokenSiguiente();
 
@@ -985,7 +998,7 @@ public class AnalizadorSintactico {
 			ValorNumerico valorNumerico = esValorNumerico();
 
 			if (valorNumerico != null) {
-				ExpresionAritmetica expresionAritmetica = esExpresionAritmetica();
+				ExpresionAuxiliar expresionAritmetica = esExpresionAuxiliar();
 
 				return new ExpresionAritmetica(valorNumerico, expresionAritmetica);
 			}

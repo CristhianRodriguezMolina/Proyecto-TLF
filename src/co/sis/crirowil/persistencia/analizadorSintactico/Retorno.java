@@ -107,8 +107,19 @@ public class Retorno extends Sentencia
 
 	@Override
 	public TreeItem<String> getArbolVisual() {
-		// TODO Auto-generated method stub
-		return null;
+
+		TreeItem<String> raiz = new TreeItem<>("Retorno");
+		
+		if(identificador != null) {
+			raiz.getChildren().add(new TreeItem<>("Identificador: "+identificador.getPalabra()));
+		}else if(invocacionFuncion != null) {
+			raiz.getChildren().add(invocacionFuncion.getArbolVisual());
+		}else {
+			raiz.getChildren().add(expresion.getArbolVisual());
+		}
+		
+		return raiz;
+		
 	}
 
 }

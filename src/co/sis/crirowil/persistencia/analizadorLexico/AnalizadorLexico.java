@@ -25,7 +25,7 @@ public class AnalizadorLexico {
 	/**
 	 * Arreglo que guarda las palabras reservadas del lenguaje
 	 */
-	private String[] palabrasReservadas = { "ciclo", "metodo", "cadena", "entero", "real", "devolver", "importar",
+	private String[] palabrasReservadas = { "ciclo", "metodo", "cadena", "entero", "real", "retorno", "importar",
 			"sisas", "nonas", "nada" , "nonais", "bool", "char", "imprimir", "leer", "true", "false"};
 
 	/**
@@ -588,7 +588,7 @@ public class AnalizadorLexico {
 	public boolean esTerminal() {
 
 		// RI
-		if (caracterActual != '@') {
+		if (caracterActual != ';') {
 			return false;
 		}
 		
