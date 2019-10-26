@@ -48,6 +48,14 @@ public class Retorno extends Sentencia
 		super();
 		this.identificador = identificador;
 	}
+	
+	
+	/**
+	 * @param NULL
+	 */
+	public Retorno() {
+		super();
+	}
 
 
 
@@ -114,8 +122,10 @@ public class Retorno extends Sentencia
 			raiz.getChildren().add(new TreeItem<>("Identificador: "+identificador.getPalabra()));
 		}else if(invocacionFuncion != null) {
 			raiz.getChildren().add(invocacionFuncion.getArbolVisual());
-		}else {
+		}else if(expresion != null) {
 			raiz.getChildren().add(expresion.getArbolVisual());
+		}else {
+			raiz.getChildren().add(new TreeItem<>("Nada"));
 		}
 		
 		return raiz;

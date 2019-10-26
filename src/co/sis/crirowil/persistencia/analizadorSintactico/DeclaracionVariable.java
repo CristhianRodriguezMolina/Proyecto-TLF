@@ -75,8 +75,16 @@ public class DeclaracionVariable extends Sentencia
 	
 	@Override
 	public TreeItem<String> getArbolVisual() {
-		// TODO Auto-generated method stub
-		return null;
+
+		TreeItem<String> raiz = new TreeItem<>("Declaracion de variable");
+		
+		raiz.getChildren().add(new TreeItem<>(identificador.getPalabra() + " : " + tipoRetorno.getPalabra()));
+		
+		if(asignacion != null) {
+			raiz.getChildren().add(asignacion.getArbolVisual());
+		}
+		
+		return raiz;
 	}
 
 }

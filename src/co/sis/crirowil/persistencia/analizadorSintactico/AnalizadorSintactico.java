@@ -332,6 +332,7 @@ public class AnalizadorSintactico {
 	 */
 	public Nonas esNonas() {
 		if (tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && tokenActual.getPalabra().equals("nonas")) {
+			obtenerTokenSiguiente();
 			BloqueSentencia bloqueSentencia = esBloqueSentencia();
 			if (bloqueSentencia != null) {
 				return new Nonas(bloqueSentencia);
@@ -436,18 +437,18 @@ public class AnalizadorSintactico {
 //		if (s != null)
 //			return s;
 //
-//		s = esDeclaracionVariable();
-//		if (s != null)
-//			return s;
+		s = esDeclaracionVariable();
+		if (s != null)
+			return s;
 //
 //		s = esSentenciaInvocacion();
 //		if (s != null)
 //			return s;
 //
-//		s = esSentenciaAsignacion();
-//		if (s != null)
-//			return s;
-//
+		s = esSentenciaAsignacion();
+		if (s != null)
+			return s;
+
 		s = esRetorno();
 		if (s != null)
 			return s;
@@ -485,6 +486,16 @@ public class AnalizadorSintactico {
 		if (tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && tokenActual.getPalabra().equals("retorno")) {
 			obtenerTokenSiguiente();
 			
+			if (tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && tokenActual.getPalabra().equals("nada")) {
+				obtenerTokenSiguiente();
+				if (tokenActual.getCategoria() == Categoria.TERMINAL) {
+					obtenerTokenSiguiente();
+					return new Retorno();
+
+				} else {
+					reportarError("falta el terminal de la sentecia");
+				}
+			}
 			if (tokenActual.getCategoria() == Categoria.IDENTIFICADOR) {
 				Token identificador = tokenActual;
 				obtenerTokenSiguiente();
@@ -634,14 +645,11 @@ public class AnalizadorSintactico {
 				obtenerTokenSiguiente();
 				return new DeclaracionVariable(tipoDato, identificador, asignacion);
 			} else {
-				reportarError("Falta el terminal \"@\"");
+				reportarError("Falta el terminal \";\"");
 				return null;
 			}
-		} else {
-			reportarError("El tipo de dato de un parametro no es valido");
-			return null;
-
 		}
+		return null;
 	}
 
 	/**
@@ -712,14 +720,16 @@ public class AnalizadorSintactico {
 	 * @return
 	 */
 	public SentenciaAsignacion esSentenciaAsignacion() {
+		
 		if (tokenActual.getCategoria() == Categoria.IDENTIFICADOR) {
 			Token nombre = tokenActual;
+			obtenerTokenSiguiente();
 
 			Asignacion asignacion = esAsignacion();
 			if (asignacion != null) {
 				return new SentenciaAsignacion(nombre, asignacion);
 			} else {
-				reportarError("asignacion no valida");
+				reportarError("Asignacion invalida");
 			}
 		}
 		return null;
@@ -832,7 +842,7 @@ public class AnalizadorSintactico {
 			if (expresionLogica != null) {
 
 				if (tokenActual.getCategoria() == Categoria.PARENTESIS_CIERRA) {
-
+					obtenerTokenSiguiente();
 					ExpresionAuxiliarLogica expresionAuxiliarLogica = esExpresionAuxiliarLogica();
 
 					return new ExpresionLogica(expresionLogica, null, expresionAuxiliarLogica, false);
@@ -914,31 +924,7 @@ public class AnalizadorSintactico {
 	 */
 	public ExpresionRelacional esExpresionRelacional() {
 
-		ExpresionAritmetica expresionAritmetica = esExpresionAritmetica();
-
-		if (expresionAritmetica != null) {
-
-			if (tokenActual.getCategoria() == Categoria.OPERADOR_RELACIONAL) {
-				Token operadorRelacional = tokenActual;
-				obtenerTokenSiguiente();
-
-				ExpresionAritmetica expresionAritmetica2 = esExpresionAritmetica();
-
-				if (expresionAritmetica2 != null) {
-
-					return new ExpresionRelacional(expresionAritmetica, expresionAritmetica2, operadorRelacional, null);
-
-				} else {
-					reportarError("Falta una expresion relacional");
-					return null;
-				}
-
-			} else {
-				reportarError("Falta un operador relacional");
-				return null;
-			}
-
-		} else if (tokenActual.getCategoria() == Categoria.PARENTESIS_ABRE) {
+		 if (tokenActual.getCategoria() == Categoria.PARENTESIS_ABRE) {
 
 			obtenerTokenSiguiente();
 
@@ -950,8 +936,8 @@ public class AnalizadorSintactico {
 
 					return expresionRelacional;
 
-				} else {
-					reportarError("Falta un parentesis que cierra ( \"(\" )");
+				} else if(tokenActual.getCategoria() != Categoria.OPERADOR_LOGICO) {
+					reportarError("Falta un parentesis que cierra ( \")\" )");
 					return null;
 				}
 
@@ -968,6 +954,34 @@ public class AnalizadorSintactico {
 
 			return new ExpresionRelacional(null, null, null, valorVerdad);
 
+		} else {
+			ExpresionAritmetica expresionAritmetica = esExpresionAritmetica();
+
+			if (expresionAritmetica != null) {
+
+				if (tokenActual.getCategoria() == Categoria.OPERADOR_RELACIONAL) {
+					Token operadorRelacional = tokenActual;
+					obtenerTokenSiguiente();
+
+					ExpresionAritmetica expresionAritmetica2 = esExpresionAritmetica();
+
+					if (expresionAritmetica2 != null) {
+
+						return new ExpresionRelacional(expresionAritmetica, expresionAritmetica2, operadorRelacional, null);
+
+					} else {
+						reportarError("Falta una expresion relacional");
+						return null;
+					}
+
+				} else if(tokenActual.getCategoria() != Categoria.OPERADOR_LOGICO) {
+					reportarError("Falta un operador relacional");
+					return null;
+				}
+
+			}else {
+				reportarError("Expresion relacional incompleta");
+			}
 		}
 
 		return null;

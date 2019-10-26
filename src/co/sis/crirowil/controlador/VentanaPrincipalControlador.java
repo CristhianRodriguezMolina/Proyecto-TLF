@@ -1,17 +1,13 @@
 package co.sis.crirowil.controlador;
 
-import java.util.ArrayList;
-
 import co.sis.crirowil.modelo.ErrorLexicoObservable;
 import co.sis.crirowil.modelo.ErrorSintacticoObservable;
 import co.sis.crirowil.modelo.TokenObservable;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.StackPane;
 
@@ -120,34 +116,33 @@ public class VentanaPrincipalControlador {
 		columnaColumna.setCellValueFactory(ColumnaCelda -> ColumnaCelda.getValue().getColumna());
 		mensajeColumna.setCellValueFactory(MensajeCelda -> MensajeCelda.getValue().getMensaje());
 		
-		textArea.setText("importar mundo@\r\n" + 
-				"\r\n" + 
-				"$$Comentario de prueba$$\r\n" + 
-				"metodo main(args, resp)\r\n" + 
+		textArea.setText(
+//				"$$Comentario de prueba$$\r\n" + 
+				"metodo main(cadena args, cadena resp)\r\n" + 
 				"{\r\n" + 
-				"	entero numero1 = 345@\r\n" + 
-				"	real numero2 = 5.63@\r\n" + 
-				"	real numero3 = .45@\r\n" + 
-				"	real numero4 = 456.@\r\n" + 
-				"	real numero5 *= numero1@\r\n" + 
-				"	real numero6 /= numero2@\r\n" + 
-				"	real numero7 -= numero3@\r\n" + 
-				"	real numero8 ^= numero4@\r\n" + 
-				"	entero o = 1@\r\n" + 
-				"	entero y = 0 + o@\r\n" + 
-				"	entero numero9 = numero2 - numero3 %= 2@\r\n" + 
-				"	cadena = \"hola mundo\"@\r\n" + 
-				"	ciclo(entero i = 0@ i < 50@ i+=1)\r\n" + 
-				"	{\r\n" + 
-				"		cadena temp = \"\"@\r\n" + 
-				"		entero res = numero2*numero3@\r\n" + 
-				"		entero res1 *= numero1^numero4@\r\n" + 
-				"		string res2 = \"hola\" + \"mundo\" + \"\"@\r\n" + 
-				"		sisas((numero1 >= numero 3 oo numero2 > 3) yy numero1 <= 5.4)\r\n" + 
+				"	entero numero1 = 345;\r\n" + 
+				"	real numero2 = 5.63;\r\n" + 
+				"	real numero3 = .45;\r\n" + 
+				"	real numero4 = 456.;\r\n" + 
+				"	real numero5 *= numero1;\r\n" + 
+				"	real numero6 /= numero2;\r\n" + 
+				"	real numero7 -= numero3;\r\n" + 
+				"	real numero8 ^= numero4;\r\n" + 
+				"	entero o = 1;\r\n" + 
+				"	entero y = 0 + o;\r\n" + 
+				"	entero numero9 = numero2 - numero3 % 2;\r\n" + 
+				"	cadena d = \"hola mundo\";\r\n" + 
+//				"	ciclo(entero i = 0; i < 50; i+=1)\r\n" + 
+//				"	{\r\n" + 
+				"		cadena temp = \"\";\r\n" + 
+				"		entero res = numero2*numero3;\r\n" + 
+				"		entero res1 *= numero1^numero4;\r\n" + 
+				"		cadena res2 = \"hola\" + \"mundo\" + \"\";\r\n" + 
+				"		sisas((numero1 >= numero3 oo numero2 > 3) yy numero1 <= 5.4) :\r\n" + 
 				"		{\r\n" + 
-				"			cadena hexa = hx123456789ABCDEF + \"\"@\r\n" + 
+				"			cadena hexa = \"\" +hx123456789ABCDEF;\r\n" + 
 				"		}\r\n" + 
-				"		nonas sisas(numero3 == numero4 yy 5<4 oo numero2 % 2 == 0) \r\n" + 
+				"		nonais(numero3 == numero4 yy 5<4 oo numero2 % 2 == 0) :\r\n" + 
 				"		{\r\n" + 
 				"\r\n" + 
 				"		}\r\n" + 
@@ -155,8 +150,8 @@ public class VentanaPrincipalControlador {
 				"		{\r\n" + 
 				"\r\n" + 
 				"		}\r\n" + 
-				"	}\r\n" + 
-				"	devolver nada@\r\n" + 
+//				"	}\r\n" + 
+				"	retorno nada;\r\n" + 
 				"}");
 	}
 	
