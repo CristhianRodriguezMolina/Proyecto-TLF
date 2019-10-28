@@ -750,7 +750,6 @@ public class AnalizadorSintactico {
 			obtenerTokenSiguiente();
 
 			Asignacion asignacion = esAsignacion();
-			System.out.println(tokenActual);
 			if (asignacion != null) {
 				if (tokenActual.getCategoria() == Categoria.TERMINAL) {
 					obtenerTokenSiguiente();

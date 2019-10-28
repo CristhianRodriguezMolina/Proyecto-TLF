@@ -132,26 +132,43 @@ public class VentanaPrincipalControlador {
 				"	entero y = 0 + o;\r\n" + 
 				"	entero numero9 = numero2 - numero3 % 2;\r\n" + 
 				"	cadena d = \"hola mundo\";\r\n" + 
-//				"	ciclo(entero i = 0; i < 50; i+=1)\r\n" + 
-//				"	{\r\n" + 
-				"		cadena temp = \"\";\r\n" + 
-				"		entero res = numero2*numero3;\r\n" + 
-				"		entero res1 *= numero1^numero4;\r\n" + 
-				"		cadena res2 = \"hola\" + \"mundo\" + \"\";\r\n" + 
-				"		sisas((numero1 >= numero3 oo numero2 > 3) yy numero1 <= 5.4) :\r\n" + 
-				"		{\r\n" + 
-				"			cadena hexa = \"\" +hx123456789ABCDEF;\r\n" + 
-				"		}\r\n" + 
-				"		nonais(numero3 == numero4 yy 5<4 oo numero2 % 2 == 0) :\r\n" + 
-				"		{\r\n" + 
-				"\r\n" + 
-				"		}\r\n" + 
-				"		nonas\r\n" + 
-				"		{\r\n" + 
-				"\r\n" + 
-				"		}\r\n" + 
-//				"	}\r\n" + 
+				"	cadena temp = \"\";\r\n" + 
+				"	cadena res2 = \"hola\" + \"mundo\" + \"\";\r\n" + 
 				"	retorno nada;\r\n" + 
+				"}\r\n" + 
+				"\r\n" + 
+				"metodo sumar(entero n, entero n2): real\r\n" + 
+				"{\r\n" + 
+				"	sisas 5>6:{\r\n" + 
+				"		numero = 3 < 4 yy 4>3;\r\n" + 
+				"	} nonais 5 < 6 oo 4 <2: {\r\n" + 
+				"		numero++;\r\n" + 
+				"	}nonais 4 > 3:{\r\n" + 
+				"		numero = holis();\r\n" + 
+				"	}nonas{\r\n" + 
+				"		numero = 2 + numero;\r\n" + 
+				"	}\r\n" + 
+				"}\r\n" + 
+				"\r\n" + 
+				"metodo sumar(entero n, entero n2): real\r\n" + 
+				"{\r\n" + 
+				"	real numero;\r\n" + 
+				"	real numero1 = 5 > 6;\r\n" + 
+				"	real numero3 = hola(5 + 6, numero);\r\n" + 
+				"	hola(1, 3,hola,d);\r\n" + 
+				"}\r\n" + 
+				"\r\n" + 
+				"metodo sumar(entero n, entero n2): real\r\n" + 
+				"{\r\n" + 
+				"	ciclo a + b == 2: \r\n" + 
+				"	{\r\n" + 
+				"		 retorno hola;\r\n" + 
+				"	}\r\n" + 
+				"\r\n" + 
+				"	ciclo entero i=0; a + b == 2; i++ : \r\n" + 
+				"	{\r\n" + 
+				"		real mundo;\r\n" + 
+				"	}\r\n" + 
 				"}");
 	}
 	
