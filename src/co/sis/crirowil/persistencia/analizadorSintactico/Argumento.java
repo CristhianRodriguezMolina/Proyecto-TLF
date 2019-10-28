@@ -68,6 +68,9 @@ public class Argumento {
 
 
 
+	/**
+	 * Me obtiene una representacion grafica a modo de arbol de como esta compuesta la clase
+	 */
 	public TreeItem<String> getArbolVisual() {
 		
 		if(nombre != null) {
@@ -78,24 +81,5 @@ public class Argumento {
 		
 	}
 	
-	/**
-	 * Me obtiene una representacion grafica a modo de arbol de como esta compuesta la clase
-	 */
-	public TreeItem<String> getArbolVisual() 
-	{
-		TreeItem<String> raiz = new TreeItem<String>("Argumento");
-		if(nombre != null) 
-		{
-			raiz.getChildren().add(new TreeItem<String>("Nombre: " + nombre));
-		}
-		else 
-		{
-			TreeItem<String> expresionTree = new TreeItem<String>("Expresion");
-			expresionTree.getChildren().add(expresion.getArbolVisual());
-			raiz.getChildren().add(expresionTree);
-		}
-		
-		return raiz;
-	}
 	
 }

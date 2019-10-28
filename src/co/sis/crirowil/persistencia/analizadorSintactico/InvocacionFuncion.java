@@ -70,27 +70,6 @@ public class InvocacionFuncion{
 	public void setListaArgumentos(ArrayList<Argumento> listaArgumentos) {
 		this.listaArgumentos = listaArgumentos;
 	}
-	
-	public TreeItem<String> getArbolVisual() 
-	{
-		TreeItem<String> raiz = new TreeItem<String>("Invocacion de Funcion");
-		raiz.getChildren().add(new TreeItem<String>("Nombre: " + nombre));
-		
-		if(listaArgumentos.size() > 0) 
-		{
-			for(Argumento argumento: listaArgumentos) 
-			{
-				TreeItem<String> argumentoTree = new TreeItem<String>("Argumento");
-				argumentoTree.getChildren().add(argumento.getArbolVisual());
-				raiz.getChildren().add(argumentoTree);
-			}
-			
-		}
-		
-		return raiz;
-	}
-
-
 
 
 	public TreeItem<String> getArbolVisual() {

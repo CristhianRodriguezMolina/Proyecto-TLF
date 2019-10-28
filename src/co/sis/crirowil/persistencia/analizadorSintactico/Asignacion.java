@@ -20,6 +20,14 @@ public class Asignacion {
 
 	/**
 	 * @param operadorAsignacion
+	 */
+	public Asignacion(Token operadorAsignacion) {
+		super();
+		this.operadorAsignacion = operadorAsignacion;
+	}
+	
+	/**
+	 * @param operadorAsignacion
 	 * @param expresion
 	 */
 	public Asignacion(Token operadorAsignacion, Expresion expresion) {
@@ -90,7 +98,7 @@ public class Asignacion {
 		
 		if(expresion != null) {
 			raiz.getChildren().add(expresion.getArbolVisual());
-		}else {
+		}else if (invocacionFuncion != null){
 			raiz.getChildren().add(invocacionFuncion.getArbolVisual());
 		}
 		

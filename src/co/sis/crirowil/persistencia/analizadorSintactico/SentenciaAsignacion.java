@@ -53,8 +53,10 @@ public class SentenciaAsignacion extends Sentencia{
 	}
 	@Override
 	public TreeItem<String> getArbolVisual() {
-		// TODO Auto-generated method stub
-		return null;
+		TreeItem<String> raiz = new TreeItem<String>("Sentencia de Asignacion");
+		raiz.getChildren().add(new TreeItem<String>("Variable: " + nombre.getPalabra()));
+		raiz.getChildren().add(asignacion.getArbolVisual());
+		return raiz;
 	}
 	
 	

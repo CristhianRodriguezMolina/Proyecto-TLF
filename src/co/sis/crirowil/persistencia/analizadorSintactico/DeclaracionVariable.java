@@ -78,7 +78,7 @@ public class DeclaracionVariable extends Sentencia
 
 		TreeItem<String> raiz = new TreeItem<>("Declaracion de variable");
 		
-		raiz.getChildren().add(new TreeItem<>(identificador.getPalabra() + " : " + tipoRetorno.getPalabra()));
+		raiz.getChildren().add(new TreeItem<>(identificador.getPalabra() + " : " + tipoDato.getPalabra()));
 		
 		if(asignacion != null) {
 			raiz.getChildren().add(asignacion.getArbolVisual());

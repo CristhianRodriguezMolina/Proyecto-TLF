@@ -33,7 +33,7 @@ public class AnalizadorSintactico {
 	 * Guarda errores encontrados en el codigo fuente
 	 */
 	ArrayList<ErrorSintactico> listaErrores;
-	
+
 	/**
 	 * Unidad de compilacion del codigo fuente
 	 */
@@ -64,11 +64,9 @@ public class AnalizadorSintactico {
 	 * @return
 	 */
 	public UnidadDeCompilacion esUnidadDeCompilacion() {
-		System.out.println("revisemos la unidada de compilacion");
 		ArrayList<Funcion> listaFunciones = esListaFunciones();
 
 		if (listaFunciones != null) {
-			System.out.println("si es una unidad de compilacion valida");
 			return new UnidadDeCompilacion(listaFunciones);
 		} else {
 			reportarError("la unidad de compilacion debe de tener una lista de funciones que va a ejecutar");
@@ -81,8 +79,6 @@ public class AnalizadorSintactico {
 	 * <ListaFunciones> ::= <Funcion>[<ListaFunciones>]
 	 */
 	public ArrayList<Funcion> esListaFunciones() {
-		
-		System.out.println("revisemos la lista de funciones");
 		ArrayList<Funcion> listaFunciones = new ArrayList<>();
 		Funcion funcion = esFuncion();
 
@@ -100,8 +96,6 @@ public class AnalizadorSintactico {
 	 * [":"<TipoRetorno>] <BloqueSentencias>
 	 */
 	public Funcion esFuncion() {
-		
-		System.out.println("revisemos la funcion");
 
 		if (tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && tokenActual.getPalabra().equals("metodo")) {
 			obtenerTokenSiguiente();
@@ -115,9 +109,9 @@ public class AnalizadorSintactico {
 					ArrayList<Parametro> listaParametros = esListaParametros();
 
 					if (tokenActual.getCategoria() == Categoria.PARENTESIS_CIERRA) {
-						
+
 						obtenerTokenSiguiente();
-						
+
 						if (tokenActual.getCategoria() == Categoria.DOS_PUNTOS) {
 							obtenerTokenSiguiente();
 							Token retorno = esTipoRetorno();
@@ -130,21 +124,19 @@ public class AnalizadorSintactico {
 							}
 
 							return new Funcion(nombre, listaParametros, retorno, bloqueSentencias);
-						} else if(tokenActual.getCategoria() == Categoria.LLAVES_ABRE) {
+						} else if (tokenActual.getCategoria() == Categoria.LLAVES_ABRE) {
 							BloqueSentencia bloqueSentencias = esBloqueSentencia();
 
 							if (bloqueSentencias == null) {
 								reportarError("Falta el bloque de sentencias");
 								return null;
 							}
-
-							System.out.println("si es una funcion valida");
 							return new Funcion(nombre, listaParametros, null, bloqueSentencias);
 						}
-						
-						reportarError("Falta el parentesis de cierre2");
+
+						reportarError("Falta el parentesis de cierre");
 						return null;
-						
+
 					} else {
 						reportarError("Falta el parentesis de cierre");
 						return null;
@@ -158,7 +150,7 @@ public class AnalizadorSintactico {
 				return null;
 			}
 		} else {
-			reportarError("Error, se esperaba la palabra metodo");
+			reportarError("Se esperaba la palabra metodo");
 			return null;
 		}
 	}
@@ -170,8 +162,6 @@ public class AnalizadorSintactico {
 	 * @return
 	 */
 	public ArrayList<Parametro> esListaParametros() {
-		
-		System.out.println("revisemos la lista de parametros");
 		ArrayList<Parametro> listaParametros = new ArrayList<>();
 		Parametro parametro = esParametro();
 		while (parametro != null) {
@@ -183,7 +173,7 @@ public class AnalizadorSintactico {
 					return listaParametros;
 				}
 			} else {
-				
+
 				parametro = esParametro();
 				if (parametro != null) {
 					reportarError("falta una coma entre parametros");
@@ -191,7 +181,7 @@ public class AnalizadorSintactico {
 				}
 			}
 		}
-		
+
 		return listaParametros;
 	}
 
@@ -202,8 +192,6 @@ public class AnalizadorSintactico {
 	 * @return
 	 */
 	public Parametro esParametro() {
-		
-		System.out.println("revisemos el parametro");
 		if (tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && esTipoRetorno() != null) {
 			Token retorno = tokenActual;
 			obtenerTokenSiguiente();
@@ -215,10 +203,8 @@ public class AnalizadorSintactico {
 
 			Token nombre = tokenActual;
 			obtenerTokenSiguiente();
-			System.out.println("es un parametro valido");
 			return new Parametro(retorno, nombre);
 		} else {
-			System.out.println("no es un parametro valido");
 			return null;
 		}
 
@@ -233,10 +219,8 @@ public class AnalizadorSintactico {
 		if (tokenActual.getPalabra().equals("real") || tokenActual.getPalabra().equals("entero")
 				|| tokenActual.getPalabra().equals("cadena") || tokenActual.getPalabra().equals("bool")
 				|| tokenActual.getPalabra().equals("char")) {
-			System.out.println("es un tipo de retorno valido");
 			return tokenActual;
 		}
-		System.out.println("no es un tipo de retorno valido");
 		return null;
 	}
 
@@ -254,7 +238,6 @@ public class AnalizadorSintactico {
 		obtenerTokenSiguiente();
 
 		Condicion condicion = esCondicion();
-		System.out.println("paso");
 
 		if (condicion == null) {
 			reportarError("la sentencia sisas debe de tener una condicon valida");
@@ -302,12 +285,12 @@ public class AnalizadorSintactico {
 
 	/**
 	 * Metodo que me verifica que dado el BNF del nonais es o no valido <Nonais> ::=
-	 * nonais <BloqueSentencia>
+	 * nonais <Condicion> ":" <BloqueSentencia>
 	 * 
 	 * @return
 	 */
 	public Nonais esNonais() {
-		
+
 		if (!(tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && tokenActual.getPalabra().equals("nonais"))) {
 			return null;
 		}
@@ -334,7 +317,7 @@ public class AnalizadorSintactico {
 			reportarError("Falta el bloque de sentencias");
 			return null;
 		}
-		
+
 		return new Nonais(condicion, bloqueSentencias);
 	}
 
@@ -357,22 +340,24 @@ public class AnalizadorSintactico {
 		return null;
 	}
 
+	/**
+	 * ¨ Metodo que me verifica que dado el BNF de la condicion es o no valido
+	 * <Condicion> ::= <ExpresionLogica> | <ExpresionRelacional>
+	 * 
+	 * @return
+	 */
 	public Condicion esCondicion() {
 		Expresion expresion = esExpresion();
-		
-		if(expresion != null) {
-			
-			if(expresion instanceof ExpresionRelacional || expresion instanceof ExpresionLogica) {
+
+		if (expresion != null) {
+
+			if (expresion instanceof ExpresionRelacional || expresion instanceof ExpresionLogica) {
 				return new Condicion(expresion);
-			}else {
-				reportarError("La condicion debe ser una expresion relacional o logica no una "+expresion.getClass().getSimpleName());
-				return null;
 			}
-			
-		}else {
-			reportarError("Hace falta una condicion");
-			return null;
+
 		}
+
+		return null;
 	}
 
 	/**
@@ -382,7 +367,6 @@ public class AnalizadorSintactico {
 	 * @return
 	 */
 	public BloqueSentencia esBloqueSentencia() {
-		System.out.println("revisemos el bloque se sentencias");
 		if (tokenActual.getPalabra().equals("{")) {
 			if (obtenerTokenSiguiente()) {
 				ArrayList<Sentencia> listaSentencia = esListaSentencias();
@@ -402,7 +386,6 @@ public class AnalizadorSintactico {
 	 * @return
 	 */
 	public ArrayList<Sentencia> esListaSentencias() {
-		System.out.println("revisemos la lista de sentencias");
 		ArrayList<Sentencia> listaSentencia = new ArrayList<>();
 		Sentencia sentencia = esSentencia();
 
@@ -444,38 +427,41 @@ public class AnalizadorSintactico {
 	 * @return
 	 */
 	public Sentencia esSentencia() {
-		System.out.println("revisemos las sentencias");
+
+		Token tokenTemp = tokenActual;
+		int posTemp = posActual;
 
 		Sentencia s;
-//		s = esSisas();
-//		if (s != null)
-//			return s;
-//
-//		s = esCiclo();
-//		if (s != null)
-//			return s;
+		s = esSisas();
+		if (s != null)
+			return s;
+
+		tokenActual = tokenTemp;
+		posActual = posTemp;
+		s = esCiclo();
+		if (s != null)
+			return s;
+
+		tokenActual = tokenTemp;
+		posActual = posTemp;
 		s = esDeclaracionVariable();
 		if (s != null)
 			return s;
-//
-//		s = esDeclaracionVariable();
-//		if (s != null)
-//			return s;
+
+		tokenActual = tokenTemp;
+		posActual = posTemp;
 		s = esSentenciaInvocacion();
 		if (s != null)
 			return s;
-//
-//		s = esSentenciaAsignacion();
-//		if (s != null)
-//			return s;
-//
-//		s = esRetorno();
-//		if (s != null)
-//			return s;
+
+		tokenActual = tokenTemp;
+		posActual = posTemp;
 		s = esSentenciaAsignacion();
 		if (s != null)
 			return s;
 
+		tokenActual = tokenTemp;
+		posActual = posTemp;
 		s = esRetorno();
 		if (s != null)
 			return s;
@@ -486,7 +472,7 @@ public class AnalizadorSintactico {
 
 	/**
 	 * Metodo que me verifica que dado el BNF de la sentencia de invocacion es o no
-	 * valido <SentenciaInvocacion> ::= <InvocacionFuncion> "@"
+	 * valido <SentenciaInvocacion> ::= <InvocacionFuncion> ";"
 	 * 
 	 * @return
 	 */
@@ -504,15 +490,15 @@ public class AnalizadorSintactico {
 
 	/**
 	 * Metodo que me verifica que dado el BNF del Retorno es o no valido <Retorno>
-	 * ::= "retorno" identificador "@"| "retorno" <Expresion> "@"| "retorno"
-	 * <InvocacionFuncion> "@"
+	 * ::= "retorno" identificador ";"| "retorno" <Expresion> ";"| "retorno"
+	 * <InvocacionFuncion> ";"
 	 * 
 	 * @return
 	 */
 	public Retorno esRetorno() {
 		if (tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && tokenActual.getPalabra().equals("retorno")) {
 			obtenerTokenSiguiente();
-			
+
 			if (tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && tokenActual.getPalabra().equals("nada")) {
 				obtenerTokenSiguiente();
 				if (tokenActual.getCategoria() == Categoria.TERMINAL) {
@@ -520,7 +506,7 @@ public class AnalizadorSintactico {
 					return new Retorno();
 
 				} else {
-					reportarError("falta el terminal de la sentecia");
+					reportarError("falta el terminal de la sentencia");
 				}
 			}
 			if (tokenActual.getCategoria() == Categoria.IDENTIFICADOR) {
@@ -532,7 +518,7 @@ public class AnalizadorSintactico {
 
 				} else {
 					tokenActual = identificador;
-					
+
 					InvocacionFuncion invocacionFuncion = esInvocacionFuncion();
 					if (invocacionFuncion != null) {
 						if (tokenActual.getCategoria() == Categoria.TERMINAL) {
@@ -542,10 +528,10 @@ public class AnalizadorSintactico {
 						} else {
 							reportarError("falta el terminal de la sentecia");
 						}
-					} 
+					}
 				}
 				reportarError("falta el terminal de la sentecia");
-				
+
 			} else {
 				Expresion expresion = esExpresion();
 				if (expresion != null) {
@@ -556,7 +542,7 @@ public class AnalizadorSintactico {
 					} else {
 						reportarError("falta el terminal de la sentecia");
 					}
-				}else {
+				} else {
 					reportarError("Sentencia de retorno erronea");
 				}
 			}
@@ -572,8 +558,6 @@ public class AnalizadorSintactico {
 	 * @return
 	 */
 	public InvocacionFuncion esInvocacionFuncion() {
-
-		System.out.println("revisemos si es una invoacion de una funcion");
 		if (tokenActual.getCategoria() == Categoria.IDENTIFICADOR) {
 			Token nombre = tokenActual;
 			obtenerTokenSiguiente();
@@ -583,18 +567,15 @@ public class AnalizadorSintactico {
 				ArrayList<Argumento> listaArgumentos = esListaArgumentos();
 				if (tokenActual.getCategoria() == Categoria.PARENTESIS_CIERRA) {
 					obtenerTokenSiguiente();
-					System.out.println("es una invocacion de una funcion valida");
 					return new InvocacionFuncion(nombre, listaArgumentos);
 				} else {
 					reportarError("Falta el parentesis de cierre");
 					return null;
 				}
 			} else {
-				reportarError("Falta el parentesis de apertura");
 				return null;
 			}
 		}
-		System.out.println("no es una invocacion de una funcion valida");
 		return null;
 	}
 
@@ -603,16 +584,12 @@ public class AnalizadorSintactico {
 	 * valido <ListaArgumentos> ::= <Argumento>[, <ListaArgumentos>]
 	 */
 	public ArrayList<Argumento> esListaArgumentos() {
-		System.out.println("revisemos lo argumentos");
 		ArrayList<Argumento> listaArgumentos = new ArrayList<>();
 		Argumento argumento = esArgumento();
-		System.out.println("Token actual en lista de argumentos: " +  tokenActual);
-		System.out.println("asdisandsadas");
-		System.out.println("argumento actual: " + (argumento == null));
 
 		while (argumento != null) {
 			listaArgumentos.add(argumento);
-			if(tokenActual.getCategoria() == Categoria.PARENTESIS_CIERRA) {
+			if (tokenActual.getCategoria() == Categoria.PARENTESIS_CIERRA) {
 				argumento = null;
 			} else if (tokenActual.getCategoria() == Categoria.SEPARADOR) {
 				obtenerTokenSiguiente();
@@ -638,59 +615,42 @@ public class AnalizadorSintactico {
 	 * <Argumento> ::= identificador | <Expresion>
 	 */
 	private Argumento esArgumento() {
-		
-		System.out.println("revisemos si es un argumento");
 
 		if (tokenActual.getCategoria() == Categoria.IDENTIFICADOR) {
 			Token nombre = tokenActual;
 			obtenerTokenSiguiente();
-
-			System.out.println("si es un argumento valido");
 			return new Argumento(nombre);
 		} else {
 			Expresion expresion = esExpresion();
 			if (expresion != null) {
-				System.out.println("si es un argumento valido");
 				return new Argumento(expresion);
 			}
 		}
-		System.out.println("no es un argumento valido");
 		return null;
 	}
 
 	/**
 	 * Metodo que me verifica que dado el BNF del DeclaracionVariable es o no valido
-	 * <DeclaracionVariable> ::= <TipoRetorno> identificador [<Asignacion>]"@"
+	 * <DeclaracionVariable> ::= <TipoRetorno> identificador [<Asignacion>]";"
 	 * 
 	 * @return
 	 */
 	public DeclaracionVariable esDeclaracionVariable() {
-		System.out.println("revisemos si es una declaracion de una varivale");
-		System.out.println("Token Actual:" + tokenActual);
 		if (tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && esTipoRetorno() != null) {
-			System.out.println("es un tipo de retorno");
 			Token tipoDato = tokenActual;
 			obtenerTokenSiguiente();
-			
-			System.out.println("Token Actual:" + tokenActual);
-
 			if (tokenActual.getCategoria() != Categoria.IDENTIFICADOR) {
 				reportarError("El nombre de la varible no es valido");
 				return null;
 			}
-			
-			System.out.println("es un identificador");
 
 			Token identificador = tokenActual;
 			obtenerTokenSiguiente();
-			
-			System.out.println("Token Actual:" + tokenActual);
 
 			Asignacion asignacion = esAsignacion();
 
 			if (tokenActual.getCategoria() == Categoria.TERMINAL) {
 				obtenerTokenSiguiente();
-				System.out.println("es una declaracion de variable valida");
 				return new DeclaracionVariable(tipoDato, identificador, asignacion);
 			} else {
 				reportarError("Falta el terminal \";\"");
@@ -702,80 +662,102 @@ public class AnalizadorSintactico {
 
 	/**
 	 * Metodo que me verifica que dado el BNF del Ciclo es o no valido <Ciclo> ::=
-	 * <condicion> ":" <BloqueSentencia> | ciclo <SentenciaAsignacion> ","
-	 * <Condicion> "," <SentenciaAsignacion> ":" <BloqueSentencias>
+	 * <Condicion> ":" <BloqueSentencia> | ciclo <DeclaracionVariable> <Condicion>
+	 * ";" identificador <Asignacion> ":" <BloqueSentencia>
 	 * 
 	 * @return
 	 */
 	public Ciclo esCiclo() {
 
-		boolean tieneAsignacion = false;
+		if (tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && tokenActual.getPalabra().equals("ciclo")) {
+			obtenerTokenSiguiente();
+			boolean tieneAsignacion = false;
 
-		Asignacion asignacion = esAsignacion();
+			Token tokenTemp = tokenActual;
+			int posTemp = posActual;
+			DeclaracionVariable declaracionVariable = esDeclaracionVariable();
 
-		if (asignacion != null) {
-			if (tokenActual.getCategoria() == Categoria.SEPARADOR) {
-				tieneAsignacion = true;
+			if (declaracionVariable == null) {
+				tokenActual = tokenTemp;
+				posActual = posTemp;
 			} else {
-				reportarError("Falta un separador");
+				tieneAsignacion = true;
 			}
-		}
+			Condicion condicion = esCondicion();
+			if (condicion != null) {
+				if (tokenActual.getCategoria() == Categoria.TERMINAL) {
+					obtenerTokenSiguiente();
 
-		Condicion condicion = esCondicion();
-		if (condicion != null) {
-			SentenciaAsignacion sentenciaAsignacion = esSentenciaAsignacion();
+					if (declaracionVariable != null && tieneAsignacion) {
+						if (tokenActual.getCategoria() == Categoria.IDENTIFICADOR) {
+							Token identificador = tokenActual;
+							obtenerTokenSiguiente();
 
-			if (asignacion != null && tieneAsignacion) {
-				if (sentenciaAsignacion != null) {
+							Asignacion asignacion = esAsignacion();
+
+							if (asignacion != null) {
+								if (tokenActual.getCategoria() == Categoria.DOS_PUNTOS) {
+									obtenerTokenSiguiente();
+									BloqueSentencia bloqueSentencia = esBloqueSentencia();
+									if (bloqueSentencia != null) {
+										SentenciaAsignacion sentenciaAsignacion = new SentenciaAsignacion(identificador,
+												asignacion);
+										return new Ciclo(declaracionVariable, condicion, sentenciaAsignacion,
+												bloqueSentencia);
+									} else {
+										reportarError("falta las sentencias en el ciclo");
+										return null;
+									}
+
+								}
+							}
+
+						} else {
+							reportarError("Sentencia de ciclo incompleta");
+							return null;
+						}
+					}
+
+				} else {
 					if (tokenActual.getCategoria() == Categoria.DOS_PUNTOS) {
 						obtenerTokenSiguiente();
 						BloqueSentencia bloqueSentencia = esBloqueSentencia();
 						if (bloqueSentencia != null) {
-							return new Ciclo(asignacion, condicion, sentenciaAsignacion, bloqueSentencia);
+							return new Ciclo(condicion, bloqueSentencia);
 						} else {
 							reportarError("falta las sentecias en el ciclo");
 							return null;
 						}
+					}
+				}
+				return null;
 
-					}
-				} else {
-					reportarError("Sentencia de ciclo incompleta");
-					return null;
-				}
-			} else {
-				if (tokenActual.getCategoria() == Categoria.DOS_PUNTOS) {
-					obtenerTokenSiguiente();
-					BloqueSentencia bloqueSentencia = esBloqueSentencia();
-					if (bloqueSentencia != null) {
-						return new Ciclo(condicion, bloqueSentencia);
-					} else {
-						reportarError("falta las sentecias en el ciclo");
-						return null;
-					}
-				}
 			}
-			return null;
-
 		}
-
 		return null;
 	}
 
 	/**
 	 * Metodo que me verifica que dado el BNF del Ciclo es o no valido
-	 * <SentenciaAsigncacion> ::= identificador <Asignacion> "@"
+	 * <SentenciaAsigncacion> ::= identificador <Asignacion> ";"
 	 * 
 	 * @return
 	 */
 	public SentenciaAsignacion esSentenciaAsignacion() {
-		
+
 		if (tokenActual.getCategoria() == Categoria.IDENTIFICADOR) {
 			Token nombre = tokenActual;
 			obtenerTokenSiguiente();
 
 			Asignacion asignacion = esAsignacion();
+			System.out.println(tokenActual);
 			if (asignacion != null) {
-				return new SentenciaAsignacion(nombre, asignacion);
+				if (tokenActual.getCategoria() == Categoria.TERMINAL) {
+					obtenerTokenSiguiente();
+					return new SentenciaAsignacion(nombre, asignacion);
+				} else {
+					reportarError("falta \";\"");
+				}
 			} else {
 				reportarError("Asignacion invalida");
 			}
@@ -785,16 +767,13 @@ public class AnalizadorSintactico {
 
 	/**
 	 * Metodo que me verifica que dado el BNF de la asignacion es o no valido
-	 * <Asignacion> ::= operadorAsignacion <InvocacionFuncion> | operadorAsignacion <Expresion>
+	 * <Asignacion> ::= operadorAsignacion <InvocacionFuncion> | operadorAsignacion
+	 * <Expresion> | operadorIncrementoDecremento;
 	 */
 	public Asignacion esAsignacion() {
-		System.out.println("revisemos la asignacion");
-		System.out.println("Token Actual: " + tokenActual);
 		if (tokenActual.getCategoria() == Categoria.OPERADOR_ASIGNACION) {
-			System.out.println("");
 			Token operadorAsignacion = tokenActual;
 			obtenerTokenSiguiente();
-			System.out.println("Token Actual: " + tokenActual);
 			InvocacionFuncion invocacionFuncion = esInvocacionFuncion();
 			if (invocacionFuncion != null) {
 				return new Asignacion(operadorAsignacion, invocacionFuncion);
@@ -806,43 +785,47 @@ public class AnalizadorSintactico {
 			}
 			reportarError("La asignacion que esta haciendo es invalida");
 			return null;
+		} else if (tokenActual.getCategoria() == Categoria.INCREMENTO_DECREMENTO) {
+			Token operadorAsignacion = tokenActual;
+			obtenerTokenSiguiente();
+			return new Asignacion(operadorAsignacion);
 		}
 		return null;
+
 	}
 
 	/**
 	 * @return
 	 */
 	public Expresion esExpresion() {
+		Expresion expresion = null;
 		Token tokenActualAux = tokenActual;
 		int posActualAux = posActual;
-
-		expresion = esExpresionCadena();
-		if (expresion != null) 
-			return expresion;
-
 		expresion = esExpresionAritmetica();
-		if(tokenActual.getCategoria() == Categoria.OPERADOR_RELACIONAL) {
+		if (tokenActual.getCategoria() == Categoria.OPERADOR_RELACIONAL) {
 			tokenActual = tokenActualAux;
 			posActual = posActualAux;
 			expresion = null;
 		}
 		if (expresion != null)
 			return expresion;
-		
 		expresion = esExpresionRelacional();
-		if(tokenActual.getCategoria() == Categoria.OPERADOR_LOGICO) {
+		if (tokenActual.getCategoria() == Categoria.OPERADOR_LOGICO) {
 			tokenActual = tokenActualAux;
 			posActual = posActualAux;
 			expresion = null;
 		}
 		if (expresion != null)
 			return expresion;
-		
+
 		expresion = esExpresionLogica();
 		if (expresion != null)
 			return expresion;
 
+		expresion = esExpresionCadena();
+		if (expresion != null) {
+			return expresion;
+		}
 		return null;
 	}
 
@@ -880,9 +863,6 @@ public class AnalizadorSintactico {
 	 * @return
 	 */
 	public ExpresionLogica esExpresionLogica() {
-		
-		System.out.println("revisemos si Es expresion Logica");
-		System.out.println("token actual:" + tokenActual);
 
 		if (tokenActual.getCategoria() == Categoria.PARENTESIS_ABRE) {
 
@@ -935,9 +915,6 @@ public class AnalizadorSintactico {
 
 				return new ExpresionLogica(null, expresionRelacional, expresionAuxiliarLogica, false);
 
-			} else {
-				reportarError(
-						"Falta una expresion relacional, un parentesis que abre ( \"(\") o un operador logico ( \"!\" )");
 			}
 
 		}
@@ -975,7 +952,7 @@ public class AnalizadorSintactico {
 	 */
 	public ExpresionRelacional esExpresionRelacional() {
 
-		 if (tokenActual.getCategoria() == Categoria.PARENTESIS_ABRE) {
+		if (tokenActual.getCategoria() == Categoria.PARENTESIS_ABRE) {
 
 			obtenerTokenSiguiente();
 
@@ -987,7 +964,7 @@ public class AnalizadorSintactico {
 
 					return expresionRelacional;
 
-				} else if(tokenActual.getCategoria() != Categoria.OPERADOR_LOGICO) {
+				} else if (tokenActual.getCategoria() != Categoria.OPERADOR_LOGICO) {
 					reportarError("Falta un parentesis que cierra ( \")\" )");
 					return null;
 				}
@@ -1018,20 +995,19 @@ public class AnalizadorSintactico {
 
 					if (expresionAritmetica2 != null) {
 
-						return new ExpresionRelacional(expresionAritmetica, expresionAritmetica2, operadorRelacional, null);
+						return new ExpresionRelacional(expresionAritmetica, expresionAritmetica2, operadorRelacional,
+								null);
 
 					} else {
 						reportarError("Falta una expresion relacional");
 						return null;
 					}
 
-				} else if(tokenActual.getCategoria() != Categoria.OPERADOR_LOGICO) {
+				} else if (tokenActual.getCategoria() != Categoria.OPERADOR_LOGICO) {
 					reportarError("Falta un operador relacional");
 					return null;
 				}
 
-			}else {
-				reportarError("Expresion relacional incompleta");
 			}
 		}
 
@@ -1045,8 +1021,6 @@ public class AnalizadorSintactico {
 	 * @return
 	 */
 	public ExpresionAritmetica esExpresionAritmetica() {
-		System.out.println("revisemos si es una expresionAritmetica");
-		System.out.println("token actual:" + tokenActual);
 		if (tokenActual.getCategoria() == Categoria.PARENTESIS_ABRE) {
 			obtenerTokenSiguiente();
 			ExpresionAritmetica expresionAritmetica = esExpresionAritmetica();
@@ -1056,8 +1030,6 @@ public class AnalizadorSintactico {
 					obtenerTokenSiguiente();
 
 					ExpresionAuxiliar expresionAuxiliar = esExpresionAuxiliar();
-
-					System.out.println("si es una expresion aritmetica");
 					return new ExpresionAritmetica(expresionAritmetica, expresionAuxiliar);
 				}
 			}
@@ -1066,21 +1038,18 @@ public class AnalizadorSintactico {
 
 			if (valorNumerico != null) {
 				ExpresionAuxiliar expresionAuxiliar = esExpresionAuxiliar();
-				System.out.println("si es una expresion aritmetica");
 				return new ExpresionAritmetica(valorNumerico, expresionAuxiliar);
 			}
 		}
-		System.out.println("no es una expresion aritmetica");
 		return null;
 	}
-	
+
 	/**
 	 * Metodo que me verifica que dado el BNF de la expresionAuxiliar es o no valido
-	 * <ExpresionAuxiliar> ::= operadorAritmetico <ExpresionAritmetica>[<ExpresionAuxiliar>]
+	 * <ExpresionAuxiliar> ::= operadorAritmetico
+	 * <ExpresionAritmetica>[<ExpresionAuxiliar>]
 	 */
 	private ExpresionAuxiliar esExpresionAuxiliar() {
-		System.out.println("revisemos si es una exoresion auxiliar");
-		System.out.println("Token Actual: " + tokenActual);
 		if (tokenActual.getCategoria() == Categoria.OPERADOR_ARITMETICO) {
 			Token operadorAritmetico = tokenActual;
 			obtenerTokenSiguiente();
@@ -1089,11 +1058,9 @@ public class AnalizadorSintactico {
 
 			if (expresionAritmetica != null) {
 				ExpresionAuxiliar expresionAuxiliar = esExpresionAuxiliar();
-				System.out.println("si es una expresion auxiar");
 				return new ExpresionAuxiliar(operadorAritmetico, expresionAritmetica, expresionAuxiliar);
 			}
 		}
-		System.out.println("no es una expresion auxiar");
 		return null;
 	}
 
@@ -1105,8 +1072,6 @@ public class AnalizadorSintactico {
 	 * @return
 	 */
 	private ValorNumerico esValorNumerico() {
-		
-		System.out.println("revisemos si es valor numerico");
 		Token signo = null;
 		if (tokenActual.getCategoria() == Categoria.OPERADOR_ARITMETICO
 				&& (tokenActual.getPalabra().equals("-") || tokenActual.getPalabra().equals("+"))) {
@@ -1118,14 +1083,10 @@ public class AnalizadorSintactico {
 				|| tokenActual.getCategoria() == Categoria.IDENTIFICADOR) {
 			Token termino = tokenActual;
 			obtenerTokenSiguiente();
-			System.out.println("si es un valor numerico");
 			return new ValorNumerico(signo, termino);
 		}
-		System.out.println("no es un valor numerico");
 		return null;
 	}
-
-	
 
 	/**
 	 * 
@@ -1142,5 +1103,5 @@ public class AnalizadorSintactico {
 	public ArrayList<ErrorSintactico> getListaErrores() {
 		return listaErrores;
 	}
-	
+
 }

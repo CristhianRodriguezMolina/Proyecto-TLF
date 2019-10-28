@@ -11,14 +11,10 @@ import javafx.scene.control.TreeItem;
  */
 public class Ciclo extends Sentencia
 {
-	private Asignacion asignacion;
+	private DeclaracionVariable declaracionVariable;
 	private Condicion condicion;
 	private SentenciaAsignacion sentenciaAsignacion;
 	private BloqueSentencia bloqueSentencia;
-	
-	
-	
-	
 	
 	/**
 	 * @param asignacion
@@ -26,10 +22,10 @@ public class Ciclo extends Sentencia
 	 * @param sentenciaAsignacion
 	 * @param bloqueSentencia
 	 */
-	public Ciclo(Asignacion asignacion, Condicion condicion, SentenciaAsignacion sentenciaAsignacion,
+	public Ciclo(DeclaracionVariable declaracionVariable, Condicion condicion, SentenciaAsignacion sentenciaAsignacion,
 			BloqueSentencia bloqueSentencia) {
 		super();
-		this.asignacion = asignacion;
+		this.declaracionVariable = declaracionVariable;
 		this.condicion = condicion;
 		this.sentenciaAsignacion = sentenciaAsignacion;
 		this.bloqueSentencia = bloqueSentencia;
@@ -45,20 +41,24 @@ public class Ciclo extends Sentencia
 		this.condicion = condicion;
 		this.bloqueSentencia = bloqueSentencia;
 	}
+	
+	
+	/**
+	 * @return the declaracionVariable
+	 */
+	public DeclaracionVariable getDeclaracionVariable() {
+		return declaracionVariable;
+	}
 
 
 	/**
-	 * @return the asignacion
+	 * @param declaracionVariable the declaracionVariable to set
 	 */
-	public Asignacion getAsignacion() {
-		return asignacion;
+	public void setDeclaracionVariable(DeclaracionVariable declaracionVariable) {
+		this.declaracionVariable = declaracionVariable;
 	}
-	/**
-	 * @param asignacion the asignacion to set
-	 */
-	public void setAsignacion(Asignacion asignacion) {
-		this.asignacion = asignacion;
-	}
+
+
 	/**
 	 * @return the condicion
 	 */
@@ -99,8 +99,25 @@ public class Ciclo extends Sentencia
 
 	@Override
 	public TreeItem<String> getArbolVisual() {
-		// TODO Auto-generated method stub
-		return null;
+		TreeItem<String> raiz = new TreeItem<String>("Ciclo");
+		if(declaracionVariable != null) 
+		{
+			raiz.getChildren().add(declaracionVariable.getArbolVisual());
+		}
+		
+		raiz.getChildren().add(condicion.getArbolVisual());
+		
+		if(sentenciaAsignacion != null) 
+		{
+			raiz.getChildren().add(sentenciaAsignacion.getArbolVisual());
+		}
+		
+		TreeItem<String> sentencias = new TreeItem<String>("Sentencias");
+		raiz.getChildren().add(sentencias);
+		for (Sentencia sentencia : bloqueSentencia.getListaSentencias()) {
+			sentencias.getChildren().add(sentencia.getArbolVisual());
+		}
+		return raiz;
 	}
 	
 	

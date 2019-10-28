@@ -131,9 +131,7 @@ public class Sisas extends Sentencia{
 		}		
 		
 		if(this.nonas != null) {
-			TreeItem<String> nonas = new TreeItem<String>("Nonas");
-			raiz.getChildren().add(nonas);
-			nonas.getChildren().add(this.nonas.getArbolVisual());
+			raiz.getChildren().add(this.nonas.getArbolVisual());
 		}		
 
 		return raiz;

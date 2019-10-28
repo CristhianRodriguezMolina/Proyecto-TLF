@@ -33,7 +33,9 @@ public class Condicion {
 
 	public TreeItem<String> getArbolVisual() {
 
-		return expresion.getArbolVisual();
+		TreeItem<String> raiz = new TreeItem<String>("Condicion");
+		raiz.getChildren().add(expresion.getArbolVisual());
+		return raiz;
 		
 	}
 
