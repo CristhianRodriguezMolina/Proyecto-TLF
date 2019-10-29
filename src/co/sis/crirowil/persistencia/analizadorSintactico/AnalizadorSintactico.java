@@ -406,6 +406,9 @@ public class AnalizadorSintactico {
 		posActual++;
 		if (posActual < tokens.size()) {
 			tokenActual = tokens.get(posActual);
+			if(tokenActual.getCategoria() == Categoria.COMENTARIO_LINEA || tokenActual.getCategoria() == Categoria.COMENTARIO_BLOQUE) {
+				obtenerTokenSiguiente();
+			}
 			return true;
 		} else {
 			tokenActual = new Token(Categoria.DESCONOCIDO, "?", 0, 0);
@@ -441,6 +444,12 @@ public class AnalizadorSintactico {
 		s = esCiclo();
 		if (s != null)
 			return s;
+		
+		tokenActual = tokenTemp;
+		posActual = posTemp;
+		s = esImpresion();
+		if (s != null)
+			return s;
 
 		tokenActual = tokenTemp;
 		posActual = posTemp;
@@ -465,9 +474,49 @@ public class AnalizadorSintactico {
 		s = esRetorno();
 		if (s != null)
 			return s;
-
+		
 		return null;
 
+	}
+	
+	public Impresion esImpresion() {
+		
+		if(tokenActual.getCategoria() != Categoria.PALABRA_RESERVADA || !tokenActual.getPalabra().equals("imprimir")) {
+			return null;
+		}
+		
+		obtenerTokenSiguiente();
+		
+		if(tokenActual.getCategoria() != Categoria.PARENTESIS_ABRE) {
+			reportarError("Falta el parentesis que abre");
+			return null;
+		}
+		
+		obtenerTokenSiguiente();
+		
+		Argumento argumento = esArgumento();
+		
+		if(argumento == null)
+		{
+			reportarError("Falta el argumento en la impresion");
+			return null;
+		}
+		
+		if(tokenActual.getCategoria() != Categoria.PARENTESIS_CIERRA) {
+			reportarError("Falta el parentesis que cierra");
+			return null;
+		}
+		
+		obtenerTokenSiguiente();
+		
+		if (tokenActual.getCategoria() != Categoria.TERMINAL) {
+			reportarError("Falta el terminal de la sentecia");
+			return null;
+		}
+		
+		obtenerTokenSiguiente();
+		
+		return new Impresion(argumento);
 	}
 
 	/**
@@ -578,6 +627,34 @@ public class AnalizadorSintactico {
 		}
 		return null;
 	}
+	
+	/**
+	 * <Arreglo> ::= "{" <ListaArgumentos> "}"
+	 * @return
+	 */
+	public Arreglo esArreglo() {
+		
+		if(tokenActual.getCategoria() != Categoria.LLAVES_ABRE) {
+			return null;
+		}
+		
+		obtenerTokenSiguiente();
+		ArrayList<Argumento> listaArgumentos = esListaArgumentos();
+		
+		if(listaArgumentos == null) {
+			reportarError("Falta la lista de argumentos");
+			return null;
+		}
+		
+		if(tokenActual.getCategoria() != Categoria.LLAVES_CIERRA) {
+			reportarError("Faltan las llaves que cierran en el arreglo");
+			return null;
+		}
+		
+		obtenerTokenSiguiente();
+		return new Arreglo(listaArgumentos);
+		
+	}
 
 	/**
 	 * Metodo que me verifica que dado el BNF de la lista de argumentos es o no
@@ -614,7 +691,7 @@ public class AnalizadorSintactico {
 	 * Metodo que me verifica que dado el BNF de un argumento es o no valido
 	 * <Argumento> ::= identificador | <Expresion>
 	 */
-	private Argumento esArgumento() {
+	public Argumento esArgumento() {
 
 		if (tokenActual.getCategoria() == Categoria.IDENTIFICADOR) {
 			Token nombre = tokenActual;
@@ -770,6 +847,7 @@ public class AnalizadorSintactico {
 	 * <Expresion> | operadorIncrementoDecremento;
 	 */
 	public Asignacion esAsignacion() {
+		
 		if (tokenActual.getCategoria() == Categoria.OPERADOR_ASIGNACION) {
 			Token operadorAsignacion = tokenActual;
 			obtenerTokenSiguiente();
@@ -777,9 +855,18 @@ public class AnalizadorSintactico {
 			if (invocacionFuncion != null) {
 				return new Asignacion(operadorAsignacion, invocacionFuncion);
 			} else {
-				Expresion expresion = esExpresion();
-				if (expresion != null) {
-					return new Asignacion(operadorAsignacion, expresion);
+				Argumento argumento = esArgumento();
+				if (argumento != null) {
+					return new Asignacion(operadorAsignacion, argumento);
+				}else {
+					Arreglo arreglo = esArreglo();
+					if(arreglo != null) {
+						if(operadorAsignacion.getCategoria() == Categoria.OPERADOR_ASIGNACION && operadorAsignacion.getPalabra().equals("=")) {
+							return new Asignacion(operadorAsignacion, arreglo);
+						}else {
+							reportarError("Un arreglo solo se puede inicializar con un igual simple (=)");
+						}
+					}
 				}
 			}
 			reportarError("La asignacion que esta haciendo es invalida");

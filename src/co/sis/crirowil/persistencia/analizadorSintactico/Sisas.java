@@ -109,10 +109,8 @@ public class Sisas extends Sentencia{
 	@Override
 	public TreeItem<String> getArbolVisual() {
 		TreeItem<String> raiz = new TreeItem<String>("Sisas");
-
-		TreeItem<String> condicion = new TreeItem<String>("Condición");
-		raiz.getChildren().add(condicion);
-		condicion.getChildren().add(this.condicion.getArbolVisual());
+		
+		raiz.getChildren().add(condicion.getArbolVisual());
 
 		TreeItem<String> sentencias = new TreeItem<String>("Sentencias");
 		raiz.getChildren().add(sentencias);
@@ -132,7 +130,7 @@ public class Sisas extends Sentencia{
 		
 		if(this.nonas != null) {
 			raiz.getChildren().add(this.nonas.getArbolVisual());
-		}		
+		}
 
 		return raiz;
 	}

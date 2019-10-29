@@ -14,9 +14,11 @@ public class Asignacion {
 
 	private Token operadorAsignacion;
 
-	private Expresion expresion;
+	private Argumento argumento;
 
 	private InvocacionFuncion invocacionFuncion;
+
+	private Arreglo arreglo;
 
 	/**
 	 * @param operadorAsignacion
@@ -30,10 +32,10 @@ public class Asignacion {
 	 * @param operadorAsignacion
 	 * @param expresion
 	 */
-	public Asignacion(Token operadorAsignacion, Expresion expresion) {
+	public Asignacion(Token operadorAsignacion, Argumento argumento) {
 		super();
 		this.operadorAsignacion = operadorAsignacion;
-		this.expresion = expresion;
+		this.argumento = argumento;
 	}
 
 	/**
@@ -44,6 +46,12 @@ public class Asignacion {
 		super();
 		this.operadorAsignacion = operadorAsignacion;
 		this.invocacionFuncion = invocacionFuncion;
+	}
+
+	public Asignacion(Token operadorAsignacion, Arreglo arreglo) {
+		super();
+		this.operadorAsignacion = operadorAsignacion;
+		this.arreglo = arreglo;
 	}
 
 	/**
@@ -61,17 +69,17 @@ public class Asignacion {
 	}
 
 	/**
-	 * @return the expresion
+	 * @return the argumento
 	 */
-	public Expresion getExpresion() {
-		return expresion;
+	public Argumento getArgumento() {
+		return argumento;
 	}
 
 	/**
-	 * @param expresion the expresion to set
+	 * @param argumento the argumento to set
 	 */
-	public void setExpresion(Expresion expresion) {
-		this.expresion = expresion;
+	public void setArgumento(Argumento argumento) {
+		this.argumento = argumento;
 	}
 
 	/**
@@ -88,7 +96,19 @@ public class Asignacion {
 		this.invocacionFuncion = invocacionFuncion;
 	}
 
+	/**
+	 * @return the arreglo
+	 */
+	public Arreglo getArreglo() {
+		return arreglo;
+	}
 
+	/**
+	 * @param arreglo the arreglo to set
+	 */
+	public void setArreglo(Arreglo arreglo) {
+		this.arreglo = arreglo;
+	}
 
 	public TreeItem<String> getArbolVisual() {
 		
@@ -96,10 +116,12 @@ public class Asignacion {
 		
 		raiz.getChildren().add(new TreeItem<>("Operador de asignacion: " + operadorAsignacion.getPalabra()));
 		
-		if(expresion != null) {
-			raiz.getChildren().add(expresion.getArbolVisual());
+		if(argumento != null) {
+			raiz.getChildren().add(argumento.getArbolVisual());
 		}else if (invocacionFuncion != null){
 			raiz.getChildren().add(invocacionFuncion.getArbolVisual());
+		}else if(arreglo != null) {
+			raiz.getChildren().add(arreglo.getArbolVisual());
 		}
 		
 		return raiz;
