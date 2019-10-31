@@ -20,6 +20,8 @@ public class Asignacion {
 
 	private Arreglo arreglo;
 
+	private Mapa mapa;
+
 	/**
 	 * @param operadorAsignacion
 	 */
@@ -52,6 +54,20 @@ public class Asignacion {
 		super();
 		this.operadorAsignacion = operadorAsignacion;
 		this.arreglo = arreglo;
+	}
+
+	public Asignacion(Token operadorAsignacion, Mapa mapa) {
+		super();
+		this.operadorAsignacion = operadorAsignacion;
+		this.mapa = mapa;
+	}
+
+	public Mapa getMapa() {
+		return mapa;
+	}
+
+	public void setMapa(Mapa mapa) {
+		this.mapa = mapa;
 	}
 
 	/**
@@ -122,6 +138,8 @@ public class Asignacion {
 			raiz.getChildren().add(invocacionFuncion.getArbolVisual());
 		}else if(arreglo != null) {
 			raiz.getChildren().add(arreglo.getArbolVisual());
+		}else if(mapa != null) {
+			raiz.getChildren().add(mapa.getArbolVisual());
 		}
 		
 		return raiz;

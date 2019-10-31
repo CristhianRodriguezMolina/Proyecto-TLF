@@ -216,7 +216,7 @@ public class AnalizadorSintactico {
 	public Token esTipoRetorno() {
 		if (tokenActual.getPalabra().equals("real") || tokenActual.getPalabra().equals("entero")
 				|| tokenActual.getPalabra().equals("cadena") || tokenActual.getPalabra().equals("bool")
-				|| tokenActual.getPalabra().equals("char")) {
+				|| tokenActual.getPalabra().equals("char") || tokenActual.getPalabra().equals("mapa")) {
 			return tokenActual;
 		}
 		return null;
@@ -826,6 +826,75 @@ public class AnalizadorSintactico {
 	}
 	
 	/**
+	 * <Mapa> ::= mapaDe( tipoDato, tipoDato )"{" <ListaArgumentos> "}"
+	 * @return
+	 */
+	public Mapa esMapa() {
+		
+		if(tokenActual.getCategoria() != Categoria.PALABRA_RESERVADA || !tokenActual.getPalabra().equals("mapDe")) {
+			return null;
+		}
+		
+		obtenerTokenSiguiente();
+		
+		if(tokenActual.getCategoria() != Categoria.PARENTESIS_ABRE) {
+			reportarError("Falta un parentesis que abre en declaracion de mapa");
+			return null;
+		}
+		
+		obtenerTokenSiguiente();
+		
+		Token llave = esTipoRetorno();
+		if(llave == null) {
+			reportarError("Falta una llave en declaracion de mapa");
+			return null;
+		}
+		
+		obtenerTokenSiguiente();
+		
+		if(tokenActual.getCategoria() != Categoria.SEPARADOR) {
+			reportarError("Falta un separador en declaracion de mapa");
+			return null;
+		}
+		
+		obtenerTokenSiguiente();
+		
+		Token tipoDato = esTipoRetorno();
+		if(tipoDato == null) {
+			reportarError("Falta un tipo de dato en declaracion de mapa");
+			return null;
+		}
+		
+		obtenerTokenSiguiente();
+		
+		if(tokenActual.getCategoria() != Categoria.PARENTESIS_CIERRA) {
+			reportarError("Falta un parentesis que cierra en declaracion de mapa");
+			return null;
+		}
+		
+		obtenerTokenSiguiente();
+		
+		if(tokenActual.getCategoria() != Categoria.LLAVES_ABRE) {
+			reportarError("Falta una llave que abre en declaracion de mapa");
+			return null;
+		}
+		
+		obtenerTokenSiguiente();
+		
+		ArrayList<Argumento> listaArgumentos = esListaArgumentos();
+		
+		if(tokenActual.getCategoria() != Categoria.LLAVES_CIERRA) {
+			reportarError("Faltan las llaves que cierran en declaracion de mapa");
+			return null;
+		}
+		
+		obtenerTokenSiguiente();
+		
+		return new Mapa(listaArgumentos);	
+		
+	}
+	
+	/**
 	 * <Arreglo> ::= "{" <ListaArgumentos> "}"
 	 * @return
 	 */
@@ -1040,8 +1109,8 @@ public class AnalizadorSintactico {
 
 	/**
 	 * Metodo que me verifica que dado el BNF de la asignacion es o no valido
-	 * <Asignacion> ::= operadorAsignacion <InvocacionFuncion> | operadorAsignacion
-	 * <Expresion> | operadorIncrementoDecremento;
+	 * <Asignacion> ::= operadorAsignacion <InvocacionFuncion> | operadorAsignacion identificador | operadorAsignacion
+	 * <Expresion> | operadorAsignacion <Mapa> | operadorAsignacion <Arreglo> | operadorIncrementoDecremento;
 	 */
 	public Asignacion esAsignacion() {
 		
@@ -1062,6 +1131,15 @@ public class AnalizadorSintactico {
 							return new Asignacion(operadorAsignacion, arreglo);
 						}else {
 							reportarError("Un arreglo solo se puede inicializar con un igual simple (=)");
+						}
+					}
+					
+					Mapa mapa = esMapa();
+					if(mapa != null) {
+						if(operadorAsignacion.getCategoria() == Categoria.OPERADOR_ASIGNACION && operadorAsignacion.getPalabra().equals("=")) {
+							return new Asignacion(operadorAsignacion, mapa);
+						}else {
+							reportarError("Un mapa solo se puede inicializar con un igual simple (=)");
 						}
 					}
 				}
