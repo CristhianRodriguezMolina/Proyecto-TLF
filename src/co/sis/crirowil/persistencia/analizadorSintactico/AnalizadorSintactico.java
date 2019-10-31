@@ -804,6 +804,10 @@ public class AnalizadorSintactico {
 	 * @return
 	 */
 	public InvocacionFuncion esInvocacionFuncion() {
+		
+		Token tokenAux = tokenActual;
+		int posAux = posActual;
+		
 		if (tokenActual.getCategoria() == Categoria.IDENTIFICADOR) {
 			Token nombre = tokenActual;
 			obtenerTokenSiguiente();
@@ -819,9 +823,14 @@ public class AnalizadorSintactico {
 					return null;
 				}
 			} else {
+				tokenActual = tokenAux;
+				posActual = posAux;
 				return null;
 			}
 		}
+		
+		tokenActual = tokenAux;
+		posActual = posAux;
 		return null;
 	}
 	
@@ -959,16 +968,24 @@ public class AnalizadorSintactico {
 	 */
 	public Argumento esArgumento() {
 
+		Token tokenAux = tokenActual;
+		int posAux = posActual;
 		if (tokenActual.getCategoria() == Categoria.IDENTIFICADOR) {
 			Token nombre = tokenActual;
 			obtenerTokenSiguiente();
-			return new Argumento(nombre);
-		} else {
-			Expresion expresion = esExpresion();
-			if (expresion != null) {
-				return new Argumento(expresion);
-			}
-		}
+			if(tokenActual.getCategoria() == Categoria.TERMINAL) {
+				return new Argumento(nombre);
+			}else {
+				tokenActual = tokenAux;
+				posActual = posAux;
+			}			
+		} 
+
+		Expresion expresion = esExpresion();
+		if (expresion != null) {
+			return new Argumento(expresion);
+		}	
+			
 		return null;
 	}
 
@@ -997,9 +1014,11 @@ public class AnalizadorSintactico {
 				return new DeclaracionVariable(tipoDato, identificador, asignacion);
 			} else {
 				reportarError("Falta el terminal \";\"");
+				System.out.println(identificador.getPalabra() +" "+ tokenActual.getPalabra());
 				return null;
 			}
-		}
+		}		
+		
 		return null;
 	}
 
@@ -1117,10 +1136,12 @@ public class AnalizadorSintactico {
 		if (tokenActual.getCategoria() == Categoria.OPERADOR_ASIGNACION) {
 			Token operadorAsignacion = tokenActual;
 			obtenerTokenSiguiente();
+						
 			InvocacionFuncion invocacionFuncion = esInvocacionFuncion();
 			if (invocacionFuncion != null) {
 				return new Asignacion(operadorAsignacion, invocacionFuncion);
 			} else {
+				
 				Argumento argumento = esArgumento();
 				if (argumento != null) {
 					return new Asignacion(operadorAsignacion, argumento);
@@ -1145,6 +1166,7 @@ public class AnalizadorSintactico {
 				}
 			}
 			reportarError("La asignacion que esta haciendo es invalida");
+			System.out.println(operadorAsignacion.getPalabra() + " " + tokenActual.getPalabra());
 			return null;
 		} else if (tokenActual.getCategoria() == Categoria.INCREMENTO_DECREMENTO) {
 			Token operadorAsignacion = tokenActual;
