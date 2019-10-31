@@ -149,10 +149,8 @@ public class AnalizadorSintactico {
 				reportarError("identificador de la funcion no es valido");
 				return null;
 			}
-		} else {
-			reportarError("Se esperaba la palabra metodo");
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -426,7 +424,7 @@ public class AnalizadorSintactico {
 	}
 
 	/**
-	 * 
+	 * <Sentencia> ::= <Sisas> | <Ciclo> | <Impresion> | <DeclaracionVariable> | <SentenciaInvocacion> | <SentenciaAsignacion> | <Retorno>
 	 * @return
 	 */
 	public Sentencia esSentencia() {
@@ -448,6 +446,12 @@ public class AnalizadorSintactico {
 		tokenActual = tokenTemp;
 		posActual = posTemp;
 		s = esImpresion();
+		if (s != null)
+			return s;
+		
+		tokenActual = tokenTemp;
+		posActual = posTemp;
+		s = esLecturaDatos();
 		if (s != null)
 			return s;
 
@@ -475,10 +479,204 @@ public class AnalizadorSintactico {
 		if (s != null)
 			return s;
 		
+		tokenActual = tokenTemp;
+		posActual = posTemp;
+		s = esSwitch();
+		if (s != null)
+			return s;
+		
 		return null;
 
 	}
 	
+	/**
+	 * <Switch> ::= switch <Expresion> ":" "{" <ListaCasos> "}" 
+	 * @return
+	 */
+	public Switch esSwitch() {
+		
+		if(tokenActual.getCategoria() != Categoria.PALABRA_RESERVADA || !tokenActual.getPalabra().equals("switch")) {
+			return null;
+		}
+		
+		obtenerTokenSiguiente();
+		
+		Expresion expresion = esExpresion();
+		if(expresion == null) {
+			reportarError("Falta la expresion de un switch");
+			return null;
+		}
+		
+		if(tokenActual.getCategoria() != Categoria.DOS_PUNTOS) {
+			reportarError("Falta los dos puntos de un caso");
+			return null;
+		}
+		
+		obtenerTokenSiguiente();
+		
+		if(tokenActual.getCategoria() != Categoria.LLAVES_ABRE) {
+			reportarError("Falta la llave que abre");
+			return null;
+		}
+		
+		obtenerTokenSiguiente();
+		
+		ArrayList<Caso> listaCasos = esListaCasos();
+		
+		if(listaCasos == null) {
+			reportarError("El bloque de un switch no existe");
+			return null;
+		}
+		
+		if(tokenActual.getCategoria() != Categoria.LLAVES_CIERRA) {
+			reportarError("Falta la llave que cierra");
+			return null;
+		}
+		
+		obtenerTokenSiguiente();
+		
+		return new Switch(expresion, listaCasos);
+	}
+	
+	/**
+	 * <ListaCasos> ::= <Caso> [<ListaCasos>]
+	 * @return
+	 */
+	public ArrayList<Caso> esListaCasos() {
+		
+		ArrayList<Caso> listaCasos = new ArrayList<Caso>();
+		Caso caso = esCaso();
+		
+		while(caso != null) {
+			listaCasos.add(caso);
+			if(caso.getTipoCaso().getPalabra().equals("defecto")) {
+				caso = esCaso();
+				if(caso != null) {
+					reportarError("No pueden haber casos demas despues del caso defecto");
+					return null;
+				}
+			}else {
+				caso = esCaso();
+			}			
+		}
+		
+		return listaCasos;
+	}
+
+	/**
+	 * <Caso> ::= caso <Expresion> ":" "{" [<ListaSentencias>] "}" | defecto <Expresion> ":" "{" [<ListaSentencias>] "}"
+	 * @return
+	 */
+	public Caso esCaso() {
+
+		if(tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && tokenActual.getPalabra().equals("caso")) {
+			Token tipoCaso = tokenActual;
+			obtenerTokenSiguiente();
+			
+			Expresion expresion = esExpresion();
+			if(expresion == null) {
+				reportarError("Falta la expresion de un caso");
+				return null;
+			}
+			
+			if(tokenActual.getCategoria() != Categoria.DOS_PUNTOS) {
+				reportarError("Falta los dos puntos de un caso");
+				return null;
+			}
+			
+			obtenerTokenSiguiente();
+			
+			if(tokenActual.getCategoria() != Categoria.LLAVES_ABRE) {
+				reportarError("Falta la llave que abre");
+				return null;
+			}
+			
+			obtenerTokenSiguiente();
+			
+			ArrayList<Sentencia> listaSentencias = esListaSentencias();
+			
+			if(tokenActual.getCategoria() != Categoria.LLAVES_CIERRA) {
+				reportarError("Falta la llave que cierra");
+				return null;
+			}
+			
+			obtenerTokenSiguiente();
+			
+			return new Caso(tipoCaso, expresion, listaSentencias);
+			
+		}else if(tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && tokenActual.getPalabra().equals("defecto")) {
+			Token tipoCaso = tokenActual;
+			obtenerTokenSiguiente();
+			
+			if(tokenActual.getCategoria() != Categoria.LLAVES_ABRE) {
+				reportarError("Falta la llave que abre");
+				return null;
+			}
+			
+			obtenerTokenSiguiente();
+			
+			ArrayList<Sentencia> listaSentencias = esListaSentencias();
+			
+			if(tokenActual.getCategoria() != Categoria.LLAVES_CIERRA) {
+				reportarError("Falta la llave que cierra");
+				return null;
+			}
+			
+			obtenerTokenSiguiente();
+			
+			return new Caso(tipoCaso, null, listaSentencias);
+		}
+		return null;
+	}
+
+	/**
+	 * <LecturaDatos> ::= leer "(" <ExpresionCadena ")" terminal
+	 * @return
+	 */
+	public LecturaDatos esLecturaDatos() {
+
+		if (tokenActual.getCategoria() != Categoria.PALABRA_RESERVADA || !tokenActual.getPalabra().equals("leer")) {
+			return null;
+		}
+
+		obtenerTokenSiguiente();
+
+		if (tokenActual.getCategoria() != Categoria.PARENTESIS_ABRE) {
+			reportarError("Falta parentesis que abre");
+			return null;
+		}
+
+		obtenerTokenSiguiente();
+
+		ExpresionCadena expresionCadena = esExpresionCadena();
+		if (expresionCadena == null) {
+			reportarError("Falta la expresion cadena");
+			return null;
+		}
+
+		if (tokenActual.getCategoria() != Categoria.PARENTESIS_CIERRA) {
+			reportarError("Falta parentesis que abre");
+			return null;
+		}
+
+		obtenerTokenSiguiente();
+
+		if (tokenActual.getCategoria() != Categoria.TERMINAL) {
+			reportarError("Falta el terminal");
+			return null;
+		}
+
+		obtenerTokenSiguiente();
+
+		return new LecturaDatos(expresionCadena);
+		
+		
+	}
+	
+	/**
+	 * <Impresion> ::= imprimir "(" <Argumento> ")" terminal 
+	 * @return
+	 */
 	public Impresion esImpresion() {
 		
 		if(tokenActual.getCategoria() != Categoria.PALABRA_RESERVADA || !tokenActual.getPalabra().equals("imprimir")) {
@@ -538,9 +736,8 @@ public class AnalizadorSintactico {
 	}
 
 	/**
-	 * Metodo que me verifica que dado el BNF del Retorno es o no valido <Retorno>
-	 * ::= "retorno" identificador ";"| "retorno" <Expresion> ";"| "retorno"
-	 * <InvocacionFuncion> ";"
+	 * Metodo que me verifica que dado el BNF del Retorno es o no valido 
+	 * <Retorno> ::= "retorno" identificador ";"| "retorno" <Expresion> ";"| "retorno" <InvocacionFuncion> ";"
 	 * 
 	 * @return
 	 */
