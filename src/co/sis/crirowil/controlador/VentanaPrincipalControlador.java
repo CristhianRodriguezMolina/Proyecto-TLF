@@ -173,7 +173,7 @@ public class VentanaPrincipalControlador {
 		
 		textArea.setText("metodo main(cadena args, cadena resp)\r\n" + 
 				"{\r\n" + 
-				"	mapa b = mapDe(entero , cadena){a, v, b, d, g, we,f , df};\r\n" + 
+				"	mapa b = mapDe(entero , cadena){ {a, v}, {b, d}, {g, we},{f , df}};\r\n" + 
 				"	entero numero1 = 345;\r\n" + 
 				"	real numero2 = 5.63;\r\n" + 
 				"	real numero3 = .45;\r\n" + 

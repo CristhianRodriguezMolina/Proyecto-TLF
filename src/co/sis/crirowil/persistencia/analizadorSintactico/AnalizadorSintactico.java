@@ -1,5 +1,6 @@
 package co.sis.crirowil.persistencia.analizadorSintactico;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import co.sis.crirowil.persistencia.analizadorLexico.Categoria;
@@ -890,7 +891,7 @@ public class AnalizadorSintactico {
 		
 		obtenerTokenSiguiente();
 		
-		ArrayList<Argumento> listaArgumentos = esListaArgumentos();
+		ArrayList<ArgumentoMapa> listaArgumentos = esListaArgumentosMapa();
 		
 		if(tokenActual.getCategoria() != Categoria.LLAVES_CIERRA) {
 			reportarError("Faltan las llaves que cierran en declaracion de mapa");
@@ -900,6 +901,83 @@ public class AnalizadorSintactico {
 		obtenerTokenSiguiente();
 		
 		return new Mapa(listaArgumentos);	
+		
+	}
+	
+	/**
+	 * Metodo que me verifica que dado el BNF de la lista de argumentos de un mapa es o no
+	 * valido <ListaArgumentosMapa> ::= <ArgumentoMapa>[, <ListaArgumentosMapa>]
+	 */
+	public ArrayList<ArgumentoMapa> esListaArgumentosMapa(){
+		ArrayList<ArgumentoMapa> listaArgumentos = new ArrayList<>();
+		ArgumentoMapa argumento = esArgumentoMapa();
+
+		while (argumento != null) {
+			listaArgumentos.add(argumento);
+			if (tokenActual.getCategoria() == Categoria.LLAVES_CIERRA) {
+				argumento = null;
+			} else if (tokenActual.getCategoria() == Categoria.SEPARADOR) {
+				obtenerTokenSiguiente();
+				argumento = esArgumentoMapa();
+				if (argumento == null) {
+					reportarError("Separador (,) demas en la lista de argumentos de un mapa");
+					return null;
+				}
+			} else {
+				argumento = esArgumentoMapa();
+				if (argumento != null) {
+					reportarError("falta el separador de argumentos en un mapa");
+					return null;
+				}
+			}
+		}
+
+		return listaArgumentos;
+	}
+	
+	/**
+	 * <ArgumentoMapa> ::= "{" identificador "," identificador "}"
+	 * @return
+	 */
+	public ArgumentoMapa esArgumentoMapa() {
+		
+		if(tokenActual.getCategoria() != Categoria.LLAVES_ABRE) {
+			return null;
+		}
+		
+		obtenerTokenSiguiente();
+		
+		if(tokenActual.getCategoria() != Categoria.IDENTIFICADOR) {
+			reportarError("LLave de argumento de mapa erronea");
+			return null;
+		}
+		
+		Token llave = tokenActual;
+		obtenerTokenSiguiente();
+		
+		if(tokenActual.getCategoria() != Categoria.SEPARADOR) {
+			reportarError("LLave un separador en un argumento de un mapa");
+			return null;
+		}
+		
+		obtenerTokenSiguiente();
+		
+		if(tokenActual.getCategoria() != Categoria.IDENTIFICADOR) {
+			reportarError("Dato de argumento de mapa erroneo");
+			return null;
+		}
+		
+		Token dato = tokenActual;
+		obtenerTokenSiguiente();
+		
+		if(tokenActual.getCategoria() == Categoria.LLAVES_ABRE) {
+			reportarError("Falta llave que cierra en argumento de mapa");
+			return null;
+		}
+		
+		obtenerTokenSiguiente();
+		
+		return new ArgumentoMapa(llave, dato);
 		
 	}
 	

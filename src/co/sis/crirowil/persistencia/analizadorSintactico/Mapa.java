@@ -6,17 +6,17 @@ import javafx.scene.control.TreeItem;
 
 public class Mapa {
 
-	private ArrayList<Argumento> listaArgumentos;
+	private ArrayList<ArgumentoMapa> listaArgumentos;
 
-	public Mapa(ArrayList<Argumento> listaArgumentos) {
+	public Mapa(ArrayList<ArgumentoMapa> listaArgumentos) {
 		this.listaArgumentos = listaArgumentos;
 	}
 
-	public ArrayList<Argumento> getListaArgumentos() {
+	public ArrayList<ArgumentoMapa> getListaArgumentos() {
 		return listaArgumentos;
 	}
 
-	public void setListaArgumentos(ArrayList<Argumento> listaArgumentos) {
+	public void setListaArgumentos(ArrayList<ArgumentoMapa> listaArgumentos) {
 		this.listaArgumentos = listaArgumentos;
 	}
 
@@ -28,7 +28,7 @@ public class Mapa {
 		if(this.listaArgumentos.size() > 0) {
 			TreeItem<String> listaArgumentos = new TreeItem<>("Argumentos");
 			raiz.getChildren().add(listaArgumentos);
-			for (Argumento argumento : this.listaArgumentos) {
+			for (ArgumentoMapa argumento : this.listaArgumentos) {
 				listaArgumentos.getChildren().add(argumento.getArbolVisual());
 			}
 		}
