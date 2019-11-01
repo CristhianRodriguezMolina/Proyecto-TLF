@@ -3,6 +3,8 @@ package co.sis.crirowil.persistencia.analizadorSintactico;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import org.omg.CORBA.IdentifierHelper;
+
 import co.sis.crirowil.persistencia.analizadorLexico.Categoria;
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
 
@@ -486,8 +488,57 @@ public class AnalizadorSintactico {
 		if (s != null)
 			return s;
 		
+		tokenActual = tokenTemp;
+		posActual = posTemp;
+		s = esPorCada();
+		if (s != null)
+			return s;
+		
 		return null;
 
+	}
+	
+	/**
+	 * <PorCada> ::= porcada <DeclaracionVariable> ":" identificador <BloqueSentencias>
+	 * @return
+	 */
+	public PorCada esPorCada() {
+		
+		if(tokenActual.getCategoria() != Categoria.PALABRA_RESERVADA || !tokenActual.getPalabra().equals("porcada")) {
+			return null;
+		}
+		
+		obtenerTokenSiguiente();
+		
+		DeclaracionVariable declaracionVariable = esDeclaracionVariableSimple();
+		if(declaracionVariable == null) {
+			reportarError("Falta la declaracion de variable de un porcada");
+			return null;
+		}
+		
+		if(tokenActual.getCategoria() != Categoria.DOS_PUNTOS) {
+			reportarError("Falta los dos puntos de un porcada");
+			return null;
+		}
+		
+		obtenerTokenSiguiente();
+		
+		if(tokenActual.getCategoria() != Categoria.IDENTIFICADOR) {
+			reportarError("Falta la lista de un porcada");
+			return null;
+		}
+		
+		Token lista = tokenActual;
+		obtenerTokenSiguiente();
+		
+		BloqueSentencia bloqueSentencia = esBloqueSentencia();
+		if(bloqueSentencia == null) {
+			reportarError("Falta el bloque de sentencias de un porcada");
+			return null;
+		}
+		
+		return new PorCada(declaracionVariable, lista, bloqueSentencia);
+		
 	}
 	
 	/**
@@ -1066,6 +1117,31 @@ public class AnalizadorSintactico {
 			
 		return null;
 	}
+	
+	/**
+	 * Metodo que me verifica que dado el BNF del DeclaracionVariable es o no valido
+	 * <DeclaracionVariable> ::= <TipoRetorno> identificador [<Asignacion>]";"
+	 * 
+	 * @return
+	 */
+	public DeclaracionVariable esDeclaracionVariableSimple() {
+		if (tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && esTipoRetorno() != null) {
+			Token tipoDato = tokenActual;
+			obtenerTokenSiguiente();
+			
+			if (tokenActual.getCategoria() != Categoria.IDENTIFICADOR) {
+				reportarError("El nombre de la varible no es valido");
+				return null;
+			}
+
+			Token identificador = tokenActual;
+			obtenerTokenSiguiente();
+			
+			return new DeclaracionVariable(tipoDato, identificador, null);
+		}		
+		
+		return null;
+	}
 
 	/**
 	 * Metodo que me verifica que dado el BNF del DeclaracionVariable es o no valido
@@ -1077,6 +1153,7 @@ public class AnalizadorSintactico {
 		if (tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && esTipoRetorno() != null) {
 			Token tipoDato = tokenActual;
 			obtenerTokenSiguiente();
+			
 			if (tokenActual.getCategoria() != Categoria.IDENTIFICADOR) {
 				reportarError("El nombre de la varible no es valido");
 				return null;
