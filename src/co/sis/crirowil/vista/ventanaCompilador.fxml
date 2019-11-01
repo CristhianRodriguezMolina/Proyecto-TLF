@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.BorderPane?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="602.0" prefWidth="825.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.sis.crirowil.controlador.VentanaPrincipalControlador">
+   <center>
+      <BorderPane prefHeight="362.0" prefWidth="825.0" BorderPane.alignment="CENTER">
+         <top>
+            <SplitPane dividerPositions="0.5006075334143378" prefHeight="351.0" prefWidth="825.0" BorderPane.alignment="CENTER">
+              <items>
+                  <BorderPane prefHeight="381.0" prefWidth="382.0">
+                     <center>
+                        <TextArea fx:id="textArea" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <center>
+                        <TreeView fx:id="treeArbolVisual" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+              </items>
+            </SplitPane>
+         </top>
+         <center>
+            <TabPane prefHeight="194.0" prefWidth="825.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+              <tabs>
+                <Tab text="     Tokens     ">
+                     <content>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0">
+                           <center>
+                              <TableView fx:id="tablaTokens" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                <columns>
+                                  <TableColumn fx:id="categoriaColumna" prefWidth="405.0" text="Categoria" />
+                                  <TableColumn fx:id="palabraColumna" prefWidth="418.0" text="Lexema" />
+                                </columns>
+                              </TableView>
+                           </center>
+                        </BorderPane>
+                     </content>
+                </Tab>
+                <Tab text="Errores lexicos">
+                     <content>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0">
+                           <center>
+                              <TableView fx:id="tablaErrores" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                <columns>
+                                  <TableColumn fx:id="lineaColumna" prefWidth="411.0" text="Linea" />
+                                  <TableColumn fx:id="errorColumna" prefWidth="412.0" text="Error" />
+                                </columns>
+                              </TableView>
+                           </center>
+                        </BorderPane>
+                     </content>
+                </Tab>
+                  <Tab text="Errores sintacticos">
+                     <content>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0">
+                           <center>
+                              <TableView fx:id="tblErroresSintacticos" prefHeight="218.0" prefWidth="825.0" BorderPane.alignment="CENTER">
+                                <columns>
+                                  <TableColumn fx:id="filaColumna" prefWidth="202.0" text="Fila" />
+                                  <TableColumn fx:id="columnaColumna" prefWidth="212.0" text="Columna" />
+                                    <TableColumn fx:id="mensajeColumna" prefWidth="410.0" text="Error" />
+                                </columns>
+                              </TableView>
+                           </center>
+                        </BorderPane>
+                     </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+         </center>
+         <bottom>
+            <BorderPane prefHeight="48.0" prefWidth="825.0" BorderPane.alignment="CENTER">
+               <center>
+                  <Button mnemonicParsing="false" onAction="#analizar" prefHeight="45.0" prefWidth="185.0" text="Analizar" BorderPane.alignment="CENTER" />
+               </center>
+            </BorderPane>
+         </bottom>
+      </BorderPane>
+   </center>
+</BorderPane>

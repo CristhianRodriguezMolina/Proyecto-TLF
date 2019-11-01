@@ -57,6 +57,9 @@ public class AnalizadorSintactico {
 	 * Analiza los tokens para verificar la sintactica correcta del lenguaje
 	 */
 	public void analizar() {
+		if(tokenActual.getCategoria() == Categoria.COMENTARIO_BLOQUE || tokenActual.getCategoria() == Categoria.COMENTARIO_LINEA) {
+			obtenerTokenSiguiente();
+		}
 		unidadDeCompilacion = esUnidadDeCompilacion();
 	}
 

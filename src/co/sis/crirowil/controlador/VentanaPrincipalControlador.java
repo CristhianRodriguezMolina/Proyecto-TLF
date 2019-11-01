@@ -83,12 +83,6 @@ public class VentanaPrincipalControlador {
      */
     @FXML
     private TableColumn<ErrorSintacticoObservable, String> mensajeColumna;
-
-    /**
-     * 
-     */
-    @FXML
-    private StackPane root;
     
     /**
      * 
@@ -171,7 +165,11 @@ public class VentanaPrincipalControlador {
 				"	}\r\n" + 
 				"}");
 		
-		textArea.setText("metodo main(cadena args, cadena resp)\r\n" + 
+		textArea.setText("$$\r\n" + 
+				"	$Esto es un comentario de bloque\r\n" + 
+				"$$\r\n" + 
+				"\r\n" + 
+				"metodo main(cadena args, cadena resp)\r\n" + 
 				"{\r\n" + 
 				"	mapa b = mapDe(entero , cadena){ {a, v}, {b, d}, {g, we},{f , df}};\r\n" + 
 				"	entero numero1 = 345;\r\n" + 
@@ -215,6 +213,15 @@ public class VentanaPrincipalControlador {
 				"		numero = holis();\r\n" + 
 				"	}nonas{\r\n" + 
 				"		numero = 2 + numero;\r\n" + 
+				"\r\n" + 
+				"		porcada cadena s : arregloCadenas {\r\n" + 
+				"\r\n" + 
+				"			ciclo entero i=0; a + b == 2; i++ : \r\n" + 
+				"			{\r\n" + 
+				"				#real mundo;\r\n" + 
+				"			}\r\n" + 
+				"\r\n" + 
+				"		}\r\n" + 
 				"	}\r\n" + 
 				"}\r\n" + 
 				"\r\n" + 

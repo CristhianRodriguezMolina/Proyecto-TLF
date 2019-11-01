@@ -76,7 +76,7 @@ public class ManejadorEscenarios {
 
 			// se carga la vista
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(Main.class.getResource("./vista/ventanaAnalizadorSintactico.fxml"));
+			loader.setLocation(Main.class.getResource("./vista/ventanaCompilador.fxml"));
 
 			anchorPanel = (BorderPane) loader.load();
 			
