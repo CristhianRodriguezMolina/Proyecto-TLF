@@ -83,12 +83,6 @@ public class VentanaPrincipalControlador {
      */
     @FXML
     private TableColumn<ErrorSintacticoObservable, String> mensajeColumna;
-
-    /**
-     * 
-     */
-    @FXML
-    private StackPane root;
     
     /**
      * 
@@ -147,6 +141,87 @@ public class VentanaPrincipalControlador {
 				"		numero = holis();\r\n" + 
 				"	}nonas{\r\n" + 
 				"		numero = 2 + numero;\r\n" + 
+				"	}\r\n" + 
+				"}\r\n" + 
+				"\r\n" + 
+				"metodo sumar(entero n, entero n2): real\r\n" + 
+				"{\r\n" + 
+				"	real numero;\r\n" + 
+				"	real numero1 = 5 > 6;\r\n" + 
+				"	real numero3 = hola(5 + 6, numero);\r\n" + 
+				"	hola(1, 3,hola,d);\r\n" + 
+				"}\r\n" + 
+				"\r\n" + 
+				"metodo sumar(entero n, entero n2): real\r\n" + 
+				"{\r\n" + 
+				"	ciclo a + b == 2: \r\n" + 
+				"	{\r\n" + 
+				"		 retorno hola;\r\n" + 
+				"	}\r\n" + 
+				"\r\n" + 
+				"	ciclo entero i=0; a + b == 2; i++ : \r\n" + 
+				"	{\r\n" + 
+				"		real mundo;\r\n" + 
+				"	}\r\n" + 
+				"}");
+		
+		textArea.setText("$$\r\n" + 
+				"	$Esto es un comentario de bloque\r\n" + 
+				"$$\r\n" + 
+				"\r\n" + 
+				"metodo main(cadena args, cadena resp)\r\n" + 
+				"{\r\n" + 
+				"	mapa b = mapDe(entero , cadena){ {a, v}, {b, d}, {g, we},{f , df}};\r\n" + 
+				"	entero numero1 = 345;\r\n" + 
+				"	real numero2 = 5.63;\r\n" + 
+				"	real numero3 = .45;\r\n" + 
+				"	real numero4 = 456.;\r\n" + 
+				"	real numero5 *= numero1;\r\n" + 
+				"	real numero6 /= numero2;\r\n" + 
+				"	real numero7 -= numero3;\r\n" + 
+				"	real numero8 ^= numero4;\r\n" + 
+				"	entero o = 1;\r\n" + 
+				"	entero y = 0 + o;\r\n" + 
+				"	entero numero9 = numero2 - numero3 % 2;\r\n" + 
+				"	cadena d = \"hola mundo\";\r\n" + 
+				"	cadena temp = \"\";\r\n" + 
+				"	cadena res2 = \"hola\" + \"mundo\" + \"\";\r\n" + 
+				"	cadena a = {a, v, b};\r\n" + 
+				"	switch 6+5:{\r\n" + 
+				"		caso 6:{\r\n" + 
+				"		}\r\n" + 
+				"		caso 89 + 9:{\r\n" + 
+				"			sisas 5>6:{\r\n" + 
+				"				numero = 3 < 4 yy 4>3;\r\n" + 
+				"			} nonais 5 < 6 oo 4 <2: {\r\n" + 
+				"				numero++;\r\n" + 
+				"			}\r\n" + 
+				"		}\r\n" + 
+				"\r\n" + 
+				"		defecto{}	\r\n" + 
+				"	}\r\n" + 
+				"	retorno nada;\r\n" + 
+				"}\r\n" + 
+				"\r\n" + 
+				"metodo sumar(entero n, entero n2): real\r\n" + 
+				"{\r\n" + 
+				"	sisas 5>6:{\r\n" + 
+				"		numero = 3 < 4 yy 4>3;\r\n" + 
+				"	} nonais 5 < 6 oo 4 <2: {\r\n" + 
+				"		numero++;\r\n" + 
+				"	}nonais 4 > 3:{\r\n" + 
+				"		numero = holis();\r\n" + 
+				"	}nonas{\r\n" + 
+				"		numero = 2 + numero;\r\n" + 
+				"\r\n" + 
+				"		porcada cadena s : arregloCadenas {\r\n" + 
+				"\r\n" + 
+				"			ciclo entero i=0; a + b == 2; i++ : \r\n" + 
+				"			{\r\n" + 
+				"				#real mundo;\r\n" + 
+				"			}\r\n" + 
+				"\r\n" + 
+				"		}\r\n" + 
 				"	}\r\n" + 
 				"}\r\n" + 
 				"\r\n" + 

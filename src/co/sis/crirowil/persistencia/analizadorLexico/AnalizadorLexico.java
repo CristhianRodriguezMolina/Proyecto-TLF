@@ -25,8 +25,8 @@ public class AnalizadorLexico {
 	/**
 	 * Arreglo que guarda las palabras reservadas del lenguaje
 	 */
-	private String[] palabrasReservadas = { "ciclo", "metodo", "cadena", "entero", "real", "retorno", 
-			"sisas", "nonas", "nada" , "nonais", "bool", "char", "imprimir", "leer", "true", "false"};
+	private String[] palabrasReservadas = { "ciclo", "metodo", "cadena", "entero", "real", "retorno", "caso", "defecto",
+		"mapa", "mapDe", "porcada", "sisas", "nonas", "nada" , "nonais", "bool", "char", "imprimir", "leer", "true", "false", "switch"};
 
 	/**
 	 * Variable que guarda el caracter que esta Actualmente en revision
