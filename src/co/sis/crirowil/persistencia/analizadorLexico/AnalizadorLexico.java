@@ -68,7 +68,7 @@ public class AnalizadorLexico {
 	 * las categorias que cuenta el lenguaje
 	 * @throws ErrorLexico 
 	 */
-	public void analizar() throws ErrorLexico {
+	public void analizar() {
 
 		while (caracterActual != finCodigo) {
 
@@ -82,8 +82,6 @@ public class AnalizadorLexico {
 				continue;
 			if (esComentarioLinea())
 				continue;
-//			if (esHexadecimal())
-//				continue;
 			if (esTerminal())
 				continue;
 			if (esSeparador())
@@ -418,7 +416,7 @@ public class AnalizadorLexico {
 	 *         Categoria.CADENA_CARACTERES
 	 * @throws ErrorLexico 
 	 */
-	public boolean esCadenaCaracteres() throws ErrorLexico {
+	public boolean esCadenaCaracteres() {
 
 		// 32 = caracter de "
 		// RI

@@ -104,15 +104,14 @@ public class ManejadorEscenarios {
 		
 		//ANALISIS LEXICO
 		AnalizadorLexico al = new AnalizadorLexico(cFuente);		
-		try {
-			al.analizar();
-		} catch (ErrorLexico e) {
-			Utilidades.mostrarMensaje("Error Lexico", e.getMessage());
-		}
+		al.analizar();
+		
 		ArrayList<Token> tokens = al.getListaTokens();
 		ArrayList<ErrorLexico> errores = al.getListaErrores();
+		
 		ObservableList<TokenObservable> tokensObservablesTemp = FXCollections.observableArrayList();
 		ObservableList<ErrorLexicoObservable> erroresObservablesTemp = FXCollections.observableArrayList();
+		
 		for(Token token: tokens) 
 		{
 			tokensObservablesTemp.add(new TokenObservable(token));			
@@ -121,18 +120,22 @@ public class ManejadorEscenarios {
 		{
 			erroresObservablesTemp.add(new ErrorLexicoObservable(error));			
 		}
+		
 		setTokensObservables(tokensObservablesTemp);
 		setErroresObservables(erroresObservablesTemp);
 		
 		//ANALISIS SINTACTICO
 		AnalizadorSintactico as = new AnalizadorSintactico(tokens);
 		as.analizar();
+		
 		ArrayList<ErrorSintactico> erroresSintacticos = as.getListaErrores();
 		ObservableList<ErrorSintacticoObservable> erroresSintacticosObservablesTemp = FXCollections.observableArrayList();
+		
 		for(ErrorSintactico error: erroresSintacticos) 
 		{
 			erroresSintacticosObservablesTemp.add(new ErrorSintacticoObservable(error));			
 		}
+		
 		setErroresSintacticosObservables(erroresSintacticosObservablesTemp);
 		setUnidadDeCompilacion(as.getUnidadDeCompilacion());
 	}

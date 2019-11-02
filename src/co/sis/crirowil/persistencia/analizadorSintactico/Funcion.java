@@ -3,6 +3,7 @@ package co.sis.crirowil.persistencia.analizadorSintactico;
 import java.util.ArrayList;
 
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
+import co.sis.crirowil.persistencia.analizadorSemantico.TablaSimbolos;
 import javafx.scene.control.TreeItem;
 
 /**
@@ -135,6 +136,12 @@ public class Funcion {
 
 		return raiz;
 			
+	}
+
+	public void llenarTablaSimbolos(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos) {
+
+		
+		
 	}
 	
 	
