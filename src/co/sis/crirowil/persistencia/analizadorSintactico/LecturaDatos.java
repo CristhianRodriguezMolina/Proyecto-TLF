@@ -1,5 +1,9 @@
 package co.sis.crirowil.persistencia.analizadorSintactico;
 
+import java.util.ArrayList;
+
+import co.sis.crirowil.persistencia.analizadorSemantico.Simbolo;
+import co.sis.crirowil.persistencia.analizadorSemantico.TablaSimbolos;
 import javafx.scene.control.TreeItem;
 
 public class LecturaDatos extends Sentencia {
@@ -22,9 +26,25 @@ public class LecturaDatos extends Sentencia {
 	@Override
 	public TreeItem<String> getArbolVisual() {
 		
-		TreeItem<String> raiz = new TreeItem<String>("Raiz");
-		raiz.getChildren().add(expresionCadena.getArbolVisual());
+		TreeItem<String> raiz = new TreeItem<String>("Lectura de datos");
+		
+		if(expresionCadena != null) {
+			raiz.getChildren().add(expresionCadena.getArbolVisual());
+		}
+		
 		return raiz;
+	}
+
+	@Override
+	public void llenarTablaSimbolos(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

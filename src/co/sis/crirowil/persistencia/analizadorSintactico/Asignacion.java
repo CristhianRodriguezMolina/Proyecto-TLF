@@ -1,6 +1,10 @@
 package co.sis.crirowil.persistencia.analizadorSintactico;
 
+import java.util.ArrayList;
+
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
+import co.sis.crirowil.persistencia.analizadorSemantico.Simbolo;
+import co.sis.crirowil.persistencia.analizadorSemantico.TablaSimbolos;
 import javafx.scene.control.TreeItem;
 
 /**
@@ -21,6 +25,8 @@ public class Asignacion {
 	private Arreglo arreglo;
 
 	private Mapa mapa;
+
+	private LecturaDatos lecturaDatos;
 
 	/**
 	 * @param operadorAsignacion
@@ -62,12 +68,26 @@ public class Asignacion {
 		this.mapa = mapa;
 	}
 
+	public Asignacion(Token operadorAsignacion, LecturaDatos lecturaDatos) {
+		super();
+		this.operadorAsignacion = operadorAsignacion;
+		this.lecturaDatos = lecturaDatos;
+	}
+
 	public Mapa getMapa() {
 		return mapa;
 	}
 
 	public void setMapa(Mapa mapa) {
 		this.mapa = mapa;
+	}
+
+	public LecturaDatos getLecturaDatos() {
+		return lecturaDatos;
+	}
+
+	public void setLecturaDatos(LecturaDatos lecturaDatos) {
+		this.lecturaDatos = lecturaDatos;
 	}
 
 	/**
@@ -140,9 +160,41 @@ public class Asignacion {
 			raiz.getChildren().add(arreglo.getArbolVisual());
 		}else if(mapa != null) {
 			raiz.getChildren().add(mapa.getArbolVisual());
-		}
+		}else if(lecturaDatos != null) {
+			raiz.getChildren().add(lecturaDatos.getArbolVisual());
+		}		
 		
 		return raiz;
+		
+	}
+	
+	public void llenarTablaSimbolos(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
+		
+	}
+
+	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
+		
+//		Simbolo s = tablaSimbolos.buscarSimboloVariable(nombre.getPa, ambito, identificador.getFila(), identificador.getColumna());
+//		
+//		if(s==null) {
+//			erroresSemanticos.add("La variable no existe");
+//		}else {
+//			
+//			Expresion expresion = 
+//			
+//			if(expresion!=null) {
+//				
+//				if( !s.getTipo().equals( expresion.obtenerTipo() )) {
+//					erroresSemanticos.add("El tipo de la expresión no es correcto");
+//				}
+//			}
+//		}
+//		
+//		
+//		if(expresion!=null) {
+//			expresion.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
+//		}
+		
 		
 	}
 }

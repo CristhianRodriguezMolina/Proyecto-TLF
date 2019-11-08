@@ -74,7 +74,8 @@ public class ExpresionAritmetica extends Expresion
 
 		TreeItem<String> raiz = new TreeItem<String>("Expresion Aritmetica");
 		
-		raiz.getChildren().add(valorNumerico.getArbolVisual());
+		if(getValorNumerico() != null)
+			raiz.getChildren().add(valorNumerico.getArbolVisual());
 		
 		if(getExpresionAritmetica() != null)
 			raiz.getChildren().add(getExpresionAritmetica().getArbolVisual());
