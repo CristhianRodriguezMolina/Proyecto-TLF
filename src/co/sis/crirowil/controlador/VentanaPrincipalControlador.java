@@ -17,9 +17,7 @@ import javafx.scene.layout.StackPane;
  * @author Cristhian Camilo Rodriguez Molina
  * @version 1.0
  */
-public class VentanaPrincipalControlador {
-
-		
+public class VentanaPrincipalControlador {		
 		
 	/**
 	 * Relacion al textArea a disposicion del usuario
