@@ -704,10 +704,6 @@ public class AnalizadorSintactico {
 		obtenerTokenSiguiente();
 
 		ExpresionCadena expresionCadena = esExpresionCadena();
-		if (expresionCadena == null) {
-			reportarError("Falta la expresion cadena");
-			return null;
-		}
 
 		if (tokenActual.getCategoria() != Categoria.PARENTESIS_CIERRA) {
 			reportarError("Falta parentesis que abre");
@@ -1321,6 +1317,15 @@ public class AnalizadorSintactico {
 							reportarError("Un mapa solo se puede inicializar con un igual simple (=)");
 						}
 					}
+					
+					LecturaDatos lecturaDatos = esLecturaDatos();
+					if(lecturaDatos != null) {
+						if(operadorAsignacion.getCategoria() == Categoria.OPERADOR_ASIGNACION && operadorAsignacion.getPalabra().equals("=")) {
+							return new Asignacion(operadorAsignacion, lecturaDatos);
+						}else {
+							reportarError("Una lectura de datos solo se puede inicializar con un igual simple (=)");
+						}
+					}
 				}
 			}
 			reportarError("La asignacion que esta haciendo es invalida");
@@ -1398,7 +1403,7 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <ExpresionLogica> ::= "(" <ExpresionLogica> ")" [<ExpresionAuxiliarLogica>] |
-	 * "!" <ExpresionLogica> [<ExpresionAuxiliarLogica>] | <ExpresionRelacional>
+	 * "!" "(" <ExpresionLogica> ")" [<ExpresionAuxiliarLogica>] | <ExpresionRelacional>
 	 * [<ExpresionAuxiliarLogica>]
 	 * 
 	 * @return
@@ -1432,18 +1437,29 @@ public class AnalizadorSintactico {
 		} else if (tokenActual.getCategoria() == Categoria.OPERADOR_LOGICO && tokenActual.getPalabra().equals("!")) {
 
 			obtenerTokenSiguiente();
+			
+			if(tokenActual.getCategoria() == Categoria.PARENTESIS_ABRE) {
+				obtenerTokenSiguiente();
+				ExpresionLogica expresionLogica = esExpresionLogica();
 
-			ExpresionLogica expresionLogica = esExpresionLogica();
+				if (expresionLogica != null) {
+					
+					if(tokenActual.getCategoria() == Categoria.PARENTESIS_CIERRA) {
+						obtenerTokenSiguiente();
+						ExpresionAuxiliarLogica expresionAuxiliarLogica = esExpresionAuxiliarLogica();
 
-			if (expresionLogica != null) {
+						return new ExpresionLogica(expresionLogica, null, expresionAuxiliarLogica, true);
+					}else {
+						reportarError("Falta un parentesis que cierra en una expresion logica");
+					}
 
-				ExpresionAuxiliarLogica expresionAuxiliarLogica = esExpresionAuxiliarLogica();
-
-				return new ExpresionLogica(expresionLogica, null, expresionAuxiliarLogica, true);
-
-			} else {
-				reportarError("Falta una expresion logica");
-				return null;
+				} else {
+					reportarError("Falta una expresion logica");
+					return null;
+				}
+				
+			}else {
+				reportarError("Falta un parentesis que abre en una expresion logica");
 			}
 
 		} else {
@@ -1502,7 +1518,7 @@ public class AnalizadorSintactico {
 			if (expresionRelacional != null) {
 
 				if (tokenActual.getCategoria() == Categoria.PARENTESIS_CIERRA) {
-
+					obtenerTokenSiguiente();
 					return expresionRelacional;
 
 				} else if (tokenActual.getCategoria() != Categoria.OPERADOR_LOGICO) {
