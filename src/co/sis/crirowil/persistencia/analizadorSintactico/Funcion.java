@@ -137,6 +137,8 @@ public class Funcion {
 		return raiz;
 			
 	}
+	
+	
 
 	public void llenarTablaSimbolos(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos) {
 		ArrayList<String> tipoParametros = new ArrayList<>();
