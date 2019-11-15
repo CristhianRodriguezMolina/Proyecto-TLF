@@ -66,11 +66,17 @@ public class Simbolo {
 		this.invocacionFuncion = invocacionFuncion;
 	}
 
-	public Simbolo(String nombre, String tipo, ArrayList<String> tipoParametros) {
+	public Simbolo(String nombre, String tipo, Simbolo ambito, ArrayList<String> tipoParametros) {
 		super();
 		this.nombre = nombre;
 		this.tipo = tipo;
 		this.tipoParametros = tipoParametros;
+		this.ambito = ambito;
+	}
+	
+	public Simbolo(String nombre) {
+		super();
+		this.nombre = nombre;
 	}
 
 	public String getNombre() {

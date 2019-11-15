@@ -110,7 +110,7 @@ public class Funcion {
 
 	public TreeItem<String> getArbolVisual() {
 			
-		TreeItem<String> raiz = new TreeItem<String>("Función");
+		TreeItem<String> raiz = new TreeItem<String>("Funciï¿½n");
 
 		raiz.getChildren().add(new TreeItem<String>("Nombre: " + nombre.getPalabra()));
 
@@ -120,7 +120,7 @@ public class Funcion {
 			raiz.getChildren().add(new TreeItem<String>("Tipo de retorno: void"));
 		}
 
-		TreeItem<String> params = new TreeItem<String>("Parámetros");
+		TreeItem<String> params = new TreeItem<String>("Parï¿½metros");
 		raiz.getChildren().add(params);
 
 		for (Parametro parametro : listaParametros) {
@@ -146,8 +146,18 @@ public class Funcion {
 		{
 			tipoParametros.add(parametro.obtenerTipo());
 		}
+
+		if(retorno != null) {
+			tablaSimbolos.guardarSimboloFuncion(nombre.getPalabra(), retorno.getPalabra(), tipoParametros);			
+		}else {
+			tablaSimbolos.guardarSimboloFuncion(nombre.getPalabra(), "void", tipoParametros);	
+		}
 		
-		tablaSimbolos.guardarSimboloFuncion(nombre.getPalabra(), retorno.getPalabra(), tipoParametros);
+		for(Parametro parametro: listaParametros) 
+		{
+			tablaSimbolos.guardarSimboloVariable(parametro.getNombre().getPalabra(), parametro.obtenerTipo(), parametro.getRetorno().getFila(), parametro.getRetorno().getColumna(), tablaSimbolos.buscarSimboloFuncion(nombre.getPalabra(), tipoParametros), null, null, null);
+		}
+
 		
 		for(Sentencia sentencia: bloqueSentencias.listaSentencias) 
 		{
