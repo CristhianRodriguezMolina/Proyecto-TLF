@@ -43,7 +43,7 @@ public class TablaSimbolos {
 		Simbolo s = buscarSimboloFuncion(nombre, tipoParametros);
 		
 		if(s==null) {
-			Simbolo nuevo = new Simbolo(nombre, tipo, tipoParametros);
+			Simbolo nuevo = new Simbolo(nombre, tipo, new Simbolo("Unidad de compilacion"), tipoParametros);
 			listaSimbolos.add(nuevo);
 			
 			return nuevo;

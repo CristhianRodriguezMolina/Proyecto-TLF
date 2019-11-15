@@ -139,7 +139,12 @@ public class Sisas extends Sentencia{
 
 	@Override
 	public void llenarTablaSimbolos(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
-		// TODO Auto-generated method stub
+
+		
+		for(Sentencia sentencia: bloqueSentenciaSisas.listaSentencias) 
+		{
+			sentencia.llenarTablaSimbolos(tablaSimbolos, erroresSemanticos, ambito);
+		}
 		
 	}
 

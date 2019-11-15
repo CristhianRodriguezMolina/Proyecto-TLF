@@ -144,7 +144,17 @@ public class Funcion {
 		{
 			tipoParametros.add(parametro.obtenerTipo());
 		}
-		tablaSimbolos.guardarSimboloFuncion(nombre.getPalabra(), retorno.getPalabra(), tipoParametros);
+		
+		if(retorno != null) {
+			tablaSimbolos.guardarSimboloFuncion(nombre.getPalabra(), retorno.getPalabra(), tipoParametros);			
+		}else {
+			tablaSimbolos.guardarSimboloFuncion(nombre.getPalabra(), "void", tipoParametros);	
+		}
+		
+		for(Parametro parametro: listaParametros) 
+		{
+			tablaSimbolos.guardarSimboloVariable(parametro.getNombre().getPalabra(), parametro.obtenerTipo(), parametro.getRetorno().getFila(), parametro.getRetorno().getColumna(), tablaSimbolos.buscarSimboloFuncion(nombre.getPalabra(), tipoParametros), null, null, null);
+		}
 		
 		for(Sentencia sentencia: bloqueSentencias.listaSentencias) 
 		{

@@ -991,6 +991,9 @@ public class AnalizadorLexico {
 		if(palabra.equals(caracterActual+"")) {
 			//Transicion 2
 			palabra = hacerTransicion(palabra, caracterActual);
+		}else {
+			hacerBT(posTemp, fila, columna);	
+			return false;
 		}
 		
 		listaTokens.add(new Token(Categoria.OPERADOR_LOGICO, palabra, fila, columna));

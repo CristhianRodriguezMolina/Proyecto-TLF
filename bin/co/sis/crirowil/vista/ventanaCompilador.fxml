@@ -10,7 +10,6 @@
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.BorderPane?>
 
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="602.0" prefWidth="825.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.sis.crirowil.controlador.VentanaPrincipalControlador">
    <center>
       <BorderPane prefHeight="362.0" prefWidth="825.0" BorderPane.alignment="CENTER">
@@ -71,6 +70,36 @@
                                   <TableColumn fx:id="columnaColumna" prefWidth="212.0" text="Columna" />
                                     <TableColumn fx:id="mensajeColumna" prefWidth="410.0" text="Error" />
                                 </columns>
+                              </TableView>
+                           </center>
+                        </BorderPane>
+                     </content>
+                  </Tab>
+                  <Tab text="Errores semanticos">
+                     <content>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0">
+                           <center>
+                              <TableView fx:id="tblErroresSemanticos" prefHeight="218.0" prefWidth="825.0" BorderPane.alignment="CENTER">
+                                 <columns>
+                                    <TableColumn fx:id="errorColumnaSemantico" prefWidth="821.0" text="Error" />
+                                 </columns>
+                              </TableView>
+                           </center>
+                        </BorderPane>
+                     </content>
+                  </Tab>
+                  <Tab text="Errores sintacticos">
+                     <content>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0">
+                           <center>
+                              <TableView fx:id="tblSimbolos" prefHeight="218.0" prefWidth="825.0" BorderPane.alignment="CENTER">
+                                 <columns>
+                                    <TableColumn fx:id="nombreColumnaSimbolos" prefWidth="157.0" text="Nombre" />
+                                    <TableColumn fx:id="tipoColumnaSimbolos" prefWidth="158.0" text="Tipo" />
+                                    <TableColumn fx:id="ambitoColumnaSimbolos" prefWidth="179.0" text="Ambito" />
+                                    <TableColumn fx:id="filaColumnaSimbolos" prefWidth="165.0" text="Fila" />
+                                    <TableColumn fx:id="columnaColumnaSimbolos" prefWidth="164.0" text="Columna" />
+                                 </columns>
                               </TableView>
                            </center>
                         </BorderPane>

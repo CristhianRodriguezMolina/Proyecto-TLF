@@ -3,6 +3,8 @@ package co.sis.crirowil.controlador;
 import co.sis.crirowil.modelo.ErrorLexicoObservable;
 import co.sis.crirowil.modelo.ErrorSintacticoObservable;
 import co.sis.crirowil.modelo.TokenObservable;
+import co.sis.crirowil.persistencia.analizadorSemantico.Simbolo;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -86,6 +88,54 @@ public class VentanaPrincipalControlador {
      * 
      */
     @FXML
+    private TableView<String> tblErroresSemanticos;
+
+    /**
+     * 
+     */
+    @FXML
+    private TableColumn<String, String> errorColumnaSemantico;
+
+    /**
+     * 
+     */
+    @FXML
+    private TableView<Simbolo> tblSimbolos;
+
+    /**
+     * 
+     */
+    @FXML
+    private TableColumn<Simbolo, String> nombreColumnaSimbolos;
+
+    /**
+     * 
+     */
+    @FXML
+    private TableColumn<Simbolo, String> tipoColumnaSimbolos;
+
+    /**
+     * 
+     */
+    @FXML
+    private TableColumn<Simbolo, String> ambitoColumnaSimbolos;
+
+    /**
+     * 
+     */
+    @FXML
+    private TableColumn<Simbolo, String> filaColumnaSimbolos;
+
+    /**
+     * 
+     */
+    @FXML
+    private TableColumn<Simbolo, String> columnaColumnaSimbolos;
+    
+    /**
+     * 
+     */
+    @FXML
     private TreeView<String> treeArbolVisual;
 		
     /**
@@ -101,12 +151,22 @@ public class VentanaPrincipalControlador {
 	@FXML
 	private void initialize() {
 		categoriaColumna.setCellValueFactory(TokenCelda -> TokenCelda.getValue().getCategoria());
-		palabraColumna.setCellValueFactory(TokenCelda -> TokenCelda.getValue().getPalabra());	
+		palabraColumna.setCellValueFactory(TokenCelda -> TokenCelda.getValue().getPalabra());
+		
 		errorColumna.setCellValueFactory(ErrorCelda -> ErrorCelda.getValue().getMensaje());
 		lineaColumna.setCellValueFactory(LineaColumna -> LineaColumna.getValue().getLine());
+		
 		filaColumna.setCellValueFactory(FilaCelda -> FilaCelda.getValue().getFila());
 		columnaColumna.setCellValueFactory(ColumnaCelda -> ColumnaCelda.getValue().getColumna());
 		mensajeColumna.setCellValueFactory(MensajeCelda -> MensajeCelda.getValue().getMensaje());
+		
+		errorColumnaSemantico.setCellValueFactory(error -> new SimpleStringProperty(error.getValue()));
+		
+		nombreColumnaSimbolos.setCellValueFactory(nombreColumna -> new SimpleStringProperty(nombreColumna.getValue().getNombre()));
+		tipoColumnaSimbolos.setCellValueFactory(tipoColumna -> new SimpleStringProperty(tipoColumna.getValue().getTipo()));
+		ambitoColumnaSimbolos.setCellValueFactory(ambitoColumna -> new SimpleStringProperty(ambitoColumna.getValue().getAmbito().getNombre()));
+		filaColumnaSimbolos.setCellValueFactory(filaColumna -> new SimpleStringProperty(filaColumna.getValue().getFila()+""));
+		columnaColumnaSimbolos.setCellValueFactory(columnaColumna -> new SimpleStringProperty(columnaColumna.getValue().getColumna()+""));
 		
 		textArea.setText(
 //				"$$Comentario de prueba$$\r\n" + 
@@ -253,9 +313,13 @@ public class VentanaPrincipalControlador {
 		tablaTokens.getItems().clear();
 		tablaErrores.getItems().clear();
 		tblErroresSintacticos.getItems().clear();
+		tblErroresSemanticos.getItems().clear();
+		tblSimbolos.getItems().clear();
 		ObservableList<ErrorLexicoObservable> ErroresObservables = manejador.getErroresObservables();
 		ObservableList<TokenObservable> TokensObservables = manejador.getTokensObservables();
 		ObservableList<ErrorSintacticoObservable> ErroresSintacticosObservables = manejador.getErroresSintacticosObservables();
+		ObservableList<String> ErroresSemanticosObservables = manejador.getErroresSemanticosObservables();
+		ObservableList<Simbolo> SimbolosObservables = manejador.getSimbolosObservables();
 		
 		for (TokenObservable TokenObs : TokensObservables) {
 			tablaTokens.getItems().add(TokenObs);
@@ -265,6 +329,12 @@ public class VentanaPrincipalControlador {
 		}
 		for (ErrorSintacticoObservable ErrorOb : ErroresSintacticosObservables) {
 			tblErroresSintacticos.getItems().add(ErrorOb);
+		}
+		for (String string : ErroresSemanticosObservables) {
+			tblErroresSemanticos.getItems().add(string);
+		}
+		for (Simbolo simbolo : SimbolosObservables) {
+			tblSimbolos.getItems().add(simbolo);
 		}
 		
 		tablaTokens.getColumns().get(0).setVisible(false);

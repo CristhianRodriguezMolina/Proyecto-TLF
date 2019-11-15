@@ -2,6 +2,7 @@ package co.sis.crirowil.controlador;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import co.sis.crirowil.Main;
 import co.sis.crirowil.modelo.ErrorLexicoObservable;
@@ -11,6 +12,8 @@ import co.sis.crirowil.persistencia.analizadorLexico.AnalizadorLexico;
 import co.sis.crirowil.persistencia.analizadorLexico.ErrorLexico;
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
 import co.sis.crirowil.persistencia.analizadorLexico.Utilidades;
+import co.sis.crirowil.persistencia.analizadorSemantico.AnalizadorSemantico;
+import co.sis.crirowil.persistencia.analizadorSemantico.Simbolo;
 import co.sis.crirowil.persistencia.analizadorSintactico.AnalizadorSintactico;
 import co.sis.crirowil.persistencia.analizadorSintactico.ErrorSintactico;
 import co.sis.crirowil.persistencia.analizadorSintactico.UnidadDeCompilacion;
@@ -56,6 +59,16 @@ public class ManejadorEscenarios {
 	 * Lista de errores sintacticos observables
 	 */
 	private ObservableList<ErrorSintacticoObservable> erroresSintacticosObservables;
+	
+	/**
+	 * Lista de errores sintacticos observables
+	 */
+	private ObservableList<String> erroresSemanticosObservables;
+	
+	/**
+	 * Lista de errores sintacticos observables
+	 */
+	private ObservableList<Simbolo> simbolosObservables;
 	
 	/**
 	 * La unidad de compilacion del programa
@@ -138,6 +151,20 @@ public class ManejadorEscenarios {
 		
 		setErroresSintacticosObservables(erroresSintacticosObservablesTemp);
 		setUnidadDeCompilacion(as.getUnidadDeCompilacion());
+		
+		//ANALISIS SEMANTICO
+		AnalizadorSemantico aSem = new AnalizadorSemantico(getUnidadDeCompilacion());
+		aSem.llenarTablaSimbolos();
+		
+		List<String> erroresSemanticos = aSem.getErroresSemanticos();
+		List<Simbolo> simbolos = aSem.getTablaSimbolos().getListaSimbolos();
+		
+		ObservableList<String> erroresSemanticosObservablesTemp = FXCollections.observableArrayList(erroresSemanticos);
+		ObservableList<Simbolo> simbolosObservables = FXCollections.observableArrayList(simbolos);
+		
+		setSimbolosObservables(simbolosObservables);		
+		setErroresSemanticosObservables(erroresSemanticosObservablesTemp);
+				
 	}
 
 	/**
@@ -186,6 +213,36 @@ public class ManejadorEscenarios {
 		this.erroresSintacticosObservables = erroresSintacticosObservables;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
+	public ObservableList<String> getErroresSemanticosObservables() {
+		return erroresSemanticosObservables;
+	}
+
+	/**
+	 * 
+	 * @param erroresSemanticosObservables
+	 */
+	public void setErroresSemanticosObservables(ObservableList<String> erroresSemanticosObservables) {
+		this.erroresSemanticosObservables = erroresSemanticosObservables;
+	}
+
+	/**
+	 * @return the simbolosObservables
+	 */
+	public ObservableList<Simbolo> getSimbolosObservables() {
+		return simbolosObservables;
+	}
+
+	/**
+	 * @param simbolosObservables the simbolosObservables to set
+	 */
+	public void setSimbolosObservables(ObservableList<Simbolo> simbolosObservables) {
+		this.simbolosObservables = simbolosObservables;
+	}
+
 	/**
 	 * 
 	 * @return
