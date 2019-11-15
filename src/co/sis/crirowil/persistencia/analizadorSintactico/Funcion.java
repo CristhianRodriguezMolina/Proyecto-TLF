@@ -153,7 +153,7 @@ public class Funcion {
 		
 		for(Parametro parametro: listaParametros) 
 		{
-			tablaSimbolos.guardarSimboloVariable(parametro.getNombre().getPalabra(), parametro.obtenerTipo(), parametro.getRetorno().getFila(), parametro.getRetorno().getColumna(), tablaSimbolos.buscarSimboloFuncion(nombre.getPalabra(), tipoParametros), null, null, null);
+			tablaSimbolos.guardarSimboloVariable(parametro.getNombre().getPalabra(), parametro.obtenerTipo(), parametro.getRetorno().getFila(), parametro.getRetorno().getColumna(), tablaSimbolos.buscarSimboloFuncion(nombre.getPalabra(), tipoParametros));
 		}
 
 		

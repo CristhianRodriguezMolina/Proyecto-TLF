@@ -7,6 +7,7 @@ import co.sis.crirowil.persistencia.analizadorSintactico.Arreglo;
 import co.sis.crirowil.persistencia.analizadorSintactico.Expresion;
 import co.sis.crirowil.persistencia.analizadorSintactico.InvocacionFuncion;
 import co.sis.crirowil.persistencia.analizadorSintactico.Mapa;
+import co.sis.crirowil.persistencia.analizadorSintactico.Sentencia;
 
 public class Simbolo {
 
@@ -20,6 +21,22 @@ public class Simbolo {
 	private Arreglo arreglo;
 	private Argumento argumento;
 	private InvocacionFuncion invocacionFuncion;
+	private Sentencia sentencia;
+	
+	public Simbolo(Sentencia sentencia, int fila, int columna, Simbolo ambito) {
+		this.sentencia = sentencia;
+		this.fila = fila;
+		this.columna = columna;
+		this.ambito = ambito;
+	}
+	
+	public Simbolo(String nombre, String tipo, int fila, int columna, Simbolo ambito) {
+		this.nombre = nombre;
+		this.tipo = tipo;
+		this.fila = fila;
+		this.columna = columna;
+		this.ambito = ambito;
+	}
 	
 	public Simbolo(String nombre, String tipo, int fila, int columna, Simbolo ambito, Expresion expresion) {
 		this.nombre = nombre;
@@ -77,6 +94,22 @@ public class Simbolo {
 	public Simbolo(String nombre) {
 		super();
 		this.nombre = nombre;
+	}
+	
+	
+
+	/**
+	 * @return the sentencia
+	 */
+	public Sentencia getSentencia() {
+		return sentencia;
+	}
+
+	/**
+	 * @param sentencia the sentencia to set
+	 */
+	public void setSentencia(Sentencia sentencia) {
+		this.sentencia = sentencia;
 	}
 
 	public String getNombre() {
