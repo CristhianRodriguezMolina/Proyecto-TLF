@@ -144,6 +144,7 @@ public class Funcion {
 		{
 			tipoParametros.add(parametro.obtenerTipo());
 		}
+		
 		tablaSimbolos.guardarSimboloFuncion(nombre.getPalabra(), retorno.getPalabra(), tipoParametros);
 		
 		for(Sentencia sentencia: bloqueSentencias.listaSentencias) 

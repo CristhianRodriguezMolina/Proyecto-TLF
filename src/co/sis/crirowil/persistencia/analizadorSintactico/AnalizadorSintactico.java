@@ -1,9 +1,6 @@
 package co.sis.crirowil.persistencia.analizadorSintactico;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-
-import org.omg.CORBA.IdentifierHelper;
 
 import co.sis.crirowil.persistencia.analizadorLexico.Categoria;
 import co.sis.crirowil.persistencia.analizadorLexico.Token;

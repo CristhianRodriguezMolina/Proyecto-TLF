@@ -88,12 +88,30 @@ public class DeclaracionVariable extends Sentencia
 			raiz.getChildren().add(asignacion.getArbolVisual());
 		}
 		
+		
+		
 		return raiz;
 	}
 
 	@Override
 	public void llenarTablaSimbolos(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
-//		tablaSimbolos.guardarSimboloVariable(identificador.getPalabra(), tipoDato.getPalabra(), identificador.getFila(), identificador.getColumna(), ambito, expresion)
+		if(asignacion.getInvocacionFuncion() != null) 
+		{
+			tablaSimbolos.guardarSimboloVariable(identificador.getPalabra(), tipoDato.getPalabra(), identificador.getFila(), identificador.getColumna(), ambito, asignacion.getInvocacionFuncion());
+		}
+		else if(asignacion.getArgumento() != null) 
+		{
+			tablaSimbolos.guardarSimboloVariable(identificador.getPalabra(), tipoDato.getPalabra(), identificador.getFila(), identificador.getColumna(), ambito, asignacion.getArgumento());
+		}
+		else if(asignacion.getArreglo() != null) 
+		{
+			tablaSimbolos.guardarSimboloVariable(identificador.getPalabra(), tipoDato.getPalabra(), identificador.getFila(), identificador.getColumna(), ambito, asignacion.getArreglo());
+		}
+		else 
+		{
+			tablaSimbolos.guardarSimboloVariable(identificador.getPalabra(), tipoDato.getPalabra(), identificador.getFila(), identificador.getColumna(), ambito, asignacion.getMapa());
+		}
+		
 		
 	}
 
