@@ -142,6 +142,7 @@ public class Sisas extends Sentencia{
 
 		
 		for(Sentencia sentencia: bloqueSentenciaSisas.listaSentencias) 
+
 		{
 			sentencia.llenarTablaSimbolos(tablaSimbolos, erroresSemanticos, ambito);
 		}

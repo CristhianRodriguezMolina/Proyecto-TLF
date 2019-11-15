@@ -2,7 +2,11 @@ package co.sis.crirowil.persistencia.analizadorSemantico;
 
 import java.util.ArrayList;
 
+import co.sis.crirowil.persistencia.analizadorSintactico.Argumento;
+import co.sis.crirowil.persistencia.analizadorSintactico.Arreglo;
 import co.sis.crirowil.persistencia.analizadorSintactico.Expresion;
+import co.sis.crirowil.persistencia.analizadorSintactico.InvocacionFuncion;
+import co.sis.crirowil.persistencia.analizadorSintactico.Mapa;
 
 public class Simbolo {
 
@@ -12,6 +16,10 @@ public class Simbolo {
 	private Simbolo ambito;
 	private Expresion expresion;
 	private ArrayList<String> tipoParametros;
+	private Mapa mapa;
+	private Arreglo arreglo;
+	private Argumento argumento;
+	private InvocacionFuncion invocacionFuncion;
 	
 	public Simbolo(String nombre, String tipo, int fila, int columna, Simbolo ambito, Expresion expresion) {
 		this.nombre = nombre;
@@ -20,6 +28,42 @@ public class Simbolo {
 		this.columna = columna;
 		this.ambito = ambito;
 		this.expresion = expresion;
+	}
+	
+	public Simbolo(String nombre, String tipo, int fila, int columna, Simbolo ambito, Mapa mapa) {
+		this.nombre = nombre;
+		this.tipo = tipo;
+		this.fila = fila;
+		this.columna = columna;
+		this.ambito = ambito;
+		this.mapa = mapa;
+	}
+	
+	public Simbolo(String nombre, String tipo, int fila, int columna, Simbolo ambito, Arreglo arreglo) {
+		this.nombre = nombre;
+		this.tipo = tipo;
+		this.fila = fila;
+		this.columna = columna;
+		this.ambito = ambito;
+		this.arreglo = arreglo;
+	}
+	
+	public Simbolo(String nombre, String tipo, int fila, int columna, Simbolo ambito, Argumento argumento) {
+		this.nombre = nombre;
+		this.tipo = tipo;
+		this.fila = fila;
+		this.columna = columna;
+		this.ambito = ambito;
+		this.argumento = argumento;
+	}
+	
+	public Simbolo(String nombre, String tipo, int fila, int columna, Simbolo ambito, InvocacionFuncion invocacionFuncion) {
+		this.nombre = nombre;
+		this.tipo = tipo;
+		this.fila = fila;
+		this.columna = columna;
+		this.ambito = ambito;
+		this.invocacionFuncion = invocacionFuncion;
 	}
 
 	public Simbolo(String nombre, String tipo, Simbolo ambito, ArrayList<String> tipoParametros) {
@@ -158,5 +202,60 @@ public class Simbolo {
 		
 		return true;
 	}
-	
+
+	/**
+	 * @return the mapa
+	 */
+	public Mapa getMapa() {
+		return mapa;
+	}
+
+	/**
+	 * @param mapa the mapa to set
+	 */
+	public void setMapa(Mapa mapa) {
+		this.mapa = mapa;
+	}
+
+	/**
+	 * @return the arreglo
+	 */
+	public Arreglo getArreglo() {
+		return arreglo;
+	}
+
+	/**
+	 * @param arreglo the arreglo to set
+	 */
+	public void setArreglo(Arreglo arreglo) {
+		this.arreglo = arreglo;
+	}
+
+	/**
+	 * @return the argumento
+	 */
+	public Argumento getArgumento() {
+		return argumento;
+	}
+
+	/**
+	 * @param argumento the argumento to set
+	 */
+	public void setArgumento(Argumento argumento) {
+		this.argumento = argumento;
+	}
+
+	/**
+	 * @return the invocacionFuncion
+	 */
+	public InvocacionFuncion getInvocacionFuncion() {
+		return invocacionFuncion;
+	}
+
+	/**
+	 * @param invocacionFuncion the invocacionFuncion to set
+	 */
+	public void setInvocacionFuncion(InvocacionFuncion invocacionFuncion) {
+		this.invocacionFuncion = invocacionFuncion;
+	}
 }

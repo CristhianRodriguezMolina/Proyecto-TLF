@@ -66,12 +66,28 @@ public class SentenciaAsignacion extends Sentencia{
 	
 	@Override
 	public void llenarTablaSimbolos(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
-		return;
+		Simbolo simbolo = tablaSimbolos.buscarSimboloVariable(nombre.getPalabra(), ambito);
+		if(asignacion.getInvocacionFuncion() != null) 
+		{
+			simbolo.setInvocacionFuncion(asignacion.getInvocacionFuncion());
+		}
+		else if(asignacion.getArgumento() != null) 
+		{
+			simbolo.setArgumento(asignacion.getArgumento());
+		}
+		else if(asignacion.getArreglo() != null) 
+		{
+			simbolo.setArreglo(asignacion.getArreglo());
+		}
+		else 
+		{
+			simbolo.setMapa(asignacion.getMapa());
+		}
 	}
 	@Override
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
 
-		Simbolo s = tablaSimbolos.buscarSimboloVariable(nombre.getPalabra(), ambito, nombre.getFila(), nombre.getColumna());
+		Simbolo s = tablaSimbolos.buscarSimboloVariable(nombre.getPalabra(), ambito);
 		Expresion expresion = asignacion.getArgumento().getExpresion();
 		Arreglo arreglo = asignacion.getArreglo();
 		

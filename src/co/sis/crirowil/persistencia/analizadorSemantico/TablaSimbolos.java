@@ -2,9 +2,11 @@ package co.sis.crirowil.persistencia.analizadorSemantico;
 
 import java.util.ArrayList;
 
+import co.sis.crirowil.persistencia.analizadorSintactico.Argumento;
+import co.sis.crirowil.persistencia.analizadorSintactico.Arreglo;
 import co.sis.crirowil.persistencia.analizadorSintactico.Expresion;
 import co.sis.crirowil.persistencia.analizadorSintactico.InvocacionFuncion;
-import co.sis.crirowil.persistencia.analizadorSintactico.LecturaDatos;
+import co.sis.crirowil.persistencia.analizadorSintactico.Mapa;
 
 public class TablaSimbolos {
 	
@@ -19,9 +21,9 @@ public class TablaSimbolos {
 	/**
 	 * Permite guardar un símbolo de tipo variable en la tabla de símbolos 
 	 */
-	public Simbolo guardarSimboloVariable(String nombre, String tipo, int fila, int columna, Simbolo ambito, Expresion expresion, InvocacionFuncion invocacionFuncion, LecturaDatos lecturaDatos) {
+	public Simbolo guardarSimboloVariable(String nombre, String tipo, int fila, int columna, Simbolo ambito, Expresion expresion) {
 		
-		Simbolo s = buscarSimboloVariable(nombre, ambito, fila, columna);
+		Simbolo s = buscarSimboloVariable(nombre, ambito);
 		
 		if(s==null) {			
 			Simbolo nuevo = new Simbolo(nombre, tipo, fila, columna, ambito, expresion);			
@@ -30,6 +32,82 @@ public class TablaSimbolos {
 			return nuevo; 
 		}else {
 			listaErrores.add("La variable "+nombre+" ya existe en el ámbito "+ambito);
+		}
+				
+		return null;
+	}
+	
+	/**
+	 * Permite guardar un símbolo de tipo variable en la tabla de símbolos 
+	 */
+	public Simbolo guardarSimboloVariable(String nombre, String tipo, int fila, int columna, Simbolo ambito, InvocacionFuncion invocacionFuncion) {
+		
+		Simbolo s = buscarSimboloVariable(nombre, ambito);
+		
+		if(s==null) {			
+			Simbolo nuevo = new Simbolo(nombre, tipo, fila, columna, ambito, invocacionFuncion);			
+			listaSimbolos.add(nuevo);
+			
+			return nuevo; 
+		}else {
+			listaErrores.add("La variable "+nombre+" ya existe en el ámbito "+ambito);
+		}
+				
+		return null;
+	}
+	
+	/**
+	 * Permite guardar un símbolo de tipo variable en la tabla de símbolos 
+	 */
+	public Simbolo guardarSimboloVariable(String nombre, String tipo, int fila, int columna, Simbolo ambito, Mapa mapa) {
+		
+		Simbolo s = buscarSimboloVariable(nombre, ambito);
+		
+		if(s==null) {			
+			Simbolo nuevo = new Simbolo(nombre, tipo, fila, columna, ambito, mapa);			
+			listaSimbolos.add(nuevo);
+			
+			return nuevo; 
+		}else {
+			listaErrores.add("La variable "+nombre+" ya existe en el ámbito "+ambito.getNombre());
+		}
+				
+		return null;
+	}
+	
+	/**
+	 * Permite guardar un símbolo de tipo variable en la tabla de símbolos 
+	 */
+	public Simbolo guardarSimboloVariable(String nombre, String tipo, int fila, int columna, Simbolo ambito, Arreglo arreglo) {
+		
+		Simbolo s = buscarSimboloVariable(nombre, ambito);
+		
+		if(s==null) {			
+			Simbolo nuevo = new Simbolo(nombre, tipo, fila, columna, ambito, arreglo);			
+			listaSimbolos.add(nuevo);
+			
+			return nuevo; 
+		}else {
+			listaErrores.add("La variable "+nombre+" ya existe en el ámbito "+ambito.getNombre());
+		}
+				
+		return null;
+	}
+	
+	/**
+	 * Permite guardar un símbolo de tipo variable en la tabla de símbolos 
+	 */
+	public Simbolo guardarSimboloVariable(String nombre, String tipo, int fila, int columna, Simbolo ambito, Argumento argumento) {
+		
+		Simbolo s = buscarSimboloVariable(nombre, ambito);
+		
+		if(s==null) {			
+			Simbolo nuevo = new Simbolo(nombre, tipo, fila, columna, ambito, argumento);			
+			listaSimbolos.add(nuevo);
+			
+			return nuevo; 
+		}else {
+			listaErrores.add("La variable "+nombre+" ya existe en el ámbito "+ambito.getNombre());
 		}
 				
 		return null;
@@ -54,7 +132,7 @@ public class TablaSimbolos {
 		return null;
 	}
 	
-	public Simbolo buscarSimboloVariable(String nombre, Simbolo ambito, int fila, int columna) {
+	public Simbolo buscarSimboloVariable(String nombre, Simbolo ambito) {
 		
 		for (Simbolo simbolo : listaSimbolos) {
 			if(simbolo.getAmbito()!=null) {

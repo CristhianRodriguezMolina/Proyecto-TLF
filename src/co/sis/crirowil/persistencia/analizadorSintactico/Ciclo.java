@@ -127,7 +127,10 @@ public class Ciclo extends Sentencia
 
 	@Override
 	public void llenarTablaSimbolos(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
-		// TODO Auto-generated method stub
+		for(Sentencia sentencia: bloqueSentencia.getListaSentencias()) 
+		{
+			sentencia.llenarTablaSimbolos(tablaSimbolos, erroresSemanticos, ambito);
+		}
 		
 	}
 
