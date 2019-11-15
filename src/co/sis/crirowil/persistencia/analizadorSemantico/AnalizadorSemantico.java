@@ -8,16 +8,16 @@ public class AnalizadorSemantico {
 	
 	TablaSimbolos tablaSimbolos;
 	ArrayList<String> erroresSemanticos;
-	UnidadDeCompilacion uc;
+	UnidadDeCompilacion unidadCompilacion;
 
-	public AnalizadorSemantico( UnidadDeCompilacion uc ) {
+	public AnalizadorSemantico( UnidadDeCompilacion unidadCompilacion ) {
 		this.erroresSemanticos = new ArrayList<String>();
-		this.uc = uc;
+		this.unidadCompilacion = unidadCompilacion;
 		this.tablaSimbolos = new TablaSimbolos( erroresSemanticos );
 	}
 	
 	public void llenarTablaSimbolos() {
-		this.uc.llenarTablaSimbolos(tablaSimbolos, erroresSemanticos);
+		this.unidadCompilacion.llenarTablaSimbolos(tablaSimbolos, erroresSemanticos);
 	}
 
 	public TablaSimbolos getTablaSimbolos() {

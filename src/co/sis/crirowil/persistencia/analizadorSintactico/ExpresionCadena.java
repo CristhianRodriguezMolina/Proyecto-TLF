@@ -53,6 +53,11 @@ public class ExpresionCadena extends Expresion{
 		
 		return raiz;
 	}
+
+	@Override
+	public String obtenerTipo() {
+		return "cadena";
+	}
 	
 	
 }

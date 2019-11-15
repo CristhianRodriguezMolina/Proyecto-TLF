@@ -86,6 +86,11 @@ public class ExpresionAritmetica extends Expresion
 		return raiz;
 		
 	}
+	@Override
+	public String obtenerTipo() {
+		return "aritmetica";
+	}
+	
 	
 	
 	

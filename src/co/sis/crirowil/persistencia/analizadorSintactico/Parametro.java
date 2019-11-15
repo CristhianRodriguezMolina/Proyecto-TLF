@@ -64,4 +64,8 @@ public class Parametro {
 	public TreeItem<String> getArbolVisual() {
 		return new TreeItem<String>( nombre.getPalabra()+" : "+retorno.getPalabra() );
 	}
+
+	public String obtenerTipo() {
+		return retorno.getPalabra();
+	}
 }

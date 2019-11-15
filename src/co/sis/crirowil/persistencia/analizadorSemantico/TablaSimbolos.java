@@ -3,6 +3,8 @@ package co.sis.crirowil.persistencia.analizadorSemantico;
 import java.util.ArrayList;
 
 import co.sis.crirowil.persistencia.analizadorSintactico.Expresion;
+import co.sis.crirowil.persistencia.analizadorSintactico.InvocacionFuncion;
+import co.sis.crirowil.persistencia.analizadorSintactico.LecturaDatos;
 
 public class TablaSimbolos {
 	
@@ -17,7 +19,7 @@ public class TablaSimbolos {
 	/**
 	 * Permite guardar un símbolo de tipo variable en la tabla de símbolos 
 	 */
-	public Simbolo guardarSimboloVariable(String nombre, String tipo, int fila, int columna, Simbolo ambito, Expresion expresion) {
+	public Simbolo guardarSimboloVariable(String nombre, String tipo, int fila, int columna, Simbolo ambito, Expresion expresion, InvocacionFuncion invocacionFuncion, LecturaDatos lecturaDatos) {
 		
 		Simbolo s = buscarSimboloVariable(nombre, ambito, fila, columna);
 		

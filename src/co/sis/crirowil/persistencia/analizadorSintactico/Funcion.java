@@ -139,10 +139,16 @@ public class Funcion {
 	}
 
 	public void llenarTablaSimbolos(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos) {
-
+		ArrayList<String> tipoParametros = new ArrayList<>();
+		for(Parametro parametro: listaParametros) 
+		{
+			tipoParametros.add(parametro.obtenerTipo());
+		}
+		tablaSimbolos.guardarSimboloFuncion(nombre.getPalabra(), retorno.getPalabra(), tipoParametros);
 		
-		
+		for(Sentencia sentencia: bloqueSentencias.listaSentencias) 
+		{
+			sentencia.llenarTablaSimbolos(tablaSimbolos, erroresSemanticos, tablaSimbolos.buscarSimboloFuncion(nombre.getPalabra(), tipoParametros));
+		}
 	}
-	
-	
 }

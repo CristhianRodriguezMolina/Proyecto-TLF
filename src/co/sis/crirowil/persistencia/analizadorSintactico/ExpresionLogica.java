@@ -76,6 +76,11 @@ public class ExpresionLogica extends Expresion{
 		return raiz;
 		
 	}
+
+	@Override
+	public String obtenerTipo() {
+		return "logica";
+	}
 	
 	
 }

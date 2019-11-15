@@ -77,6 +77,11 @@ public class ExpresionRelacional extends Expresion{
 		return raiz;
 		
 	}
+
+	@Override
+	public String obtenerTipo() {
+		return "relacional";
+	}
 	
 	
 }

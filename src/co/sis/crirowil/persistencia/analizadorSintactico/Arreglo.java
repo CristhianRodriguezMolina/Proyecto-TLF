@@ -2,6 +2,8 @@ package co.sis.crirowil.persistencia.analizadorSintactico;
 
 import java.util.ArrayList;
 
+import co.sis.crirowil.persistencia.analizadorSemantico.Simbolo;
+import co.sis.crirowil.persistencia.analizadorSemantico.TablaSimbolos;
 import javafx.scene.control.TreeItem;
 
 public class Arreglo {
@@ -36,4 +38,11 @@ public class Arreglo {
 		return raiz;
 		
 	}
+
+	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
+		// TODO Auto-generated method stub
+		
+	}
+		
+	
 }
