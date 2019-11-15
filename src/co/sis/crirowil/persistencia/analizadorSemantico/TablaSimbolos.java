@@ -7,6 +7,7 @@ import co.sis.crirowil.persistencia.analizadorSintactico.Arreglo;
 import co.sis.crirowil.persistencia.analizadorSintactico.Expresion;
 import co.sis.crirowil.persistencia.analizadorSintactico.InvocacionFuncion;
 import co.sis.crirowil.persistencia.analizadorSintactico.Mapa;
+import co.sis.crirowil.persistencia.analizadorSintactico.Sentencia;
 
 public class TablaSimbolos {
 	
@@ -16,6 +17,36 @@ public class TablaSimbolos {
 	public TablaSimbolos( ArrayList<String> listaErrores ) {
 		this.listaSimbolos = new ArrayList<Simbolo>();
 		this.listaErrores = listaErrores;
+	}
+	
+	/**
+	 * Permite guardar un símbolo de tipo variable en la tabla de símbolos 
+	 */
+	public Simbolo guardarSimboloVariable(String nombre, String tipo, int fila, int columna, Simbolo ambito) {
+		
+		Simbolo s = buscarSimboloVariable(nombre, ambito);
+		
+		if(s==null) {			
+			Simbolo nuevo = new Simbolo(nombre, tipo, fila, columna, ambito);			
+			listaSimbolos.add(nuevo);
+			
+			return nuevo; 
+		}else {
+			listaErrores.add("La variable "+nombre+" ya existe en el ámbito "+ambito);
+		}
+				
+		return null;
+	}
+	
+	/**
+	 * Permite guardar un símbolo de tipo variable en la tabla de símbolos 
+	 */
+	public Simbolo guardarSimboloSentencia(Sentencia sentencia, int fila, int columna, Simbolo ambito) {
+						
+		Simbolo nuevo = new Simbolo(sentencia, fila, columna, ambito);
+		listaSimbolos.add(nuevo);
+
+		return nuevo;
 	}
 	
 	/**
