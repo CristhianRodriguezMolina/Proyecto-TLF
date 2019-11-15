@@ -143,6 +143,12 @@ public class Sisas extends Sentencia{
 		{
 			sentencia.llenarTablaSimbolos(tablaSimbolos, erroresSemanticos, ambito);
 		}
+		for (Nonais nonais : listaNonais) {
+			nonais.llenarTablaSimbolos(tablaSimbolos, erroresSemanticos, ambito);
+		}
+		if(nonas != null) {
+			nonas.llenarTablaSimbolos(tablaSimbolos, erroresSemanticos, ambito);
+		}
 		
 	}
 

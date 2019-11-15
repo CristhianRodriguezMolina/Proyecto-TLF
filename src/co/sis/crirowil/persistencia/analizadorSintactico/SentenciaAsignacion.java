@@ -86,7 +86,7 @@ public class SentenciaAsignacion extends Sentencia{
 				simbolo.setMapa(asignacion.getMapa());
 			}
 		}else {
-			
+			erroresSemanticos.add("La variable " + nombre.getPalabra() + " no ha sido declarada previamente");
 		}
 	}
 	@Override
