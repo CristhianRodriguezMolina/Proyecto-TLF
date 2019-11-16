@@ -116,7 +116,33 @@ public class DeclaracionVariable extends Sentencia {
 
 	@Override
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
-		// TODO Auto-generated method stub
+
+		if (asignacion != null) {
+
+			if (asignacion.getOperadorAsignacion().getPalabra().equals("=")) {
+				
+				Simbolo s = tablaSimbolos.buscarSimboloVariable(identificador.getPalabra(), ambito);
+				
+				if(asignacion.getArgumento() != null){
+					
+				}else if(asignacion.getInvocacionFuncion() != null) {
+					
+				}else if(asignacion.getArreglo() != null) {
+					
+				}else if(asignacion.getLecturaDatos() != null) {
+					
+				}else if(asignacion.getMapa() != null) {
+					
+				}
+
+			} else {
+
+				erroresSemanticos.add("El operador de asignacion en una declaracion no puede ser "
+						+ asignacion.getOperadorAsignacion().getPalabra());
+
+			}
+
+		}
 
 	}
 }
