@@ -41,9 +41,9 @@ public class TablaSimbolos {
 	/**
 	 * Permite guardar un símbolo de tipo variable en la tabla de símbolos 
 	 */
-	public Simbolo guardarSimboloSentencia(Sentencia sentencia, int fila, int columna, Simbolo ambito) {
+	public Simbolo guardarSimboloSentencia(Sentencia sentencia, Simbolo ambito) {
 						
-		Simbolo nuevo = new Simbolo(sentencia, fila, columna, ambito);
+		Simbolo nuevo = new Simbolo(sentencia.getClass().getSimpleName(), sentencia, ambito);
 		listaSimbolos.add(nuevo);
 
 		return nuevo;
@@ -163,14 +163,47 @@ public class TablaSimbolos {
 		return null;
 	}
 	
+	public Simbolo buscarSimboloSentencia(Sentencia sentencia, Simbolo ambito) {
+
+		for (Simbolo simbolo : listaSimbolos) {
+			
+			Simbolo ambitoActual = ambito;
+			
+			do {
+				if(simbolo.getAmbito()!=null && simbolo.getSentencia()!=null) {
+					if( simbolo.getSentencia().equals(sentencia) && ambitoActual.equals(simbolo.getAmbito()) ) {
+						return simbolo;
+					}
+				}
+				
+				if(!ambitoActual.getNombre().equals("Unidad de compilacion")) {
+					ambitoActual = ambitoActual.getAmbito();
+				}
+			}while(!ambitoActual.getNombre().equals("Unidad de compilacion"));			
+			
+		}
+		
+		return null;
+	}
+	
 	public Simbolo buscarSimboloVariable(String nombre, Simbolo ambito) {
 		
 		for (Simbolo simbolo : listaSimbolos) {
-			if(simbolo.getAmbito()!=null) {
-				if( nombre.equals(simbolo.getNombre()) && ambito.equals(simbolo.getAmbito()) ) {
-					return simbolo;
+			
+			Simbolo ambitoActual = ambito;
+			
+			do {
+				if(simbolo.getAmbito()!=null) {
+					if( nombre.equals(simbolo.getNombre()) && ambitoActual.equals(simbolo.getAmbito()) ) {
+						return simbolo;
+					}
 				}
-			}
+				
+				if(!ambitoActual.getNombre().equals("Unidad de compilacion")) {
+					ambitoActual = ambitoActual.getAmbito();
+				}
+			}while(!ambitoActual.getNombre().equals("Unidad de compilacion"));			
+			
 		}
 		
 		return null;

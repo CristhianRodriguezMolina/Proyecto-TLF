@@ -52,7 +52,13 @@ public class Switch extends Sentencia {
 
 	@Override
 	public void llenarTablaSimbolos(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
-		// TODO Auto-generated method stub
+
+		tablaSimbolos.guardarSimboloSentencia(this, ambito);
+		
+		for(Caso caso: listaCasos) 
+		{
+			caso.llenarTablaSimbolos(tablaSimbolos, erroresSemanticos, tablaSimbolos.buscarSimboloSentencia(this, ambito));
+		}
 		
 	}
 

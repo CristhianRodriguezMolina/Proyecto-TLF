@@ -58,7 +58,12 @@ public class Nonas extends Sentencia {
 
 	@Override
 	public void llenarTablaSimbolos(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
-		// TODO Auto-generated method stub
+
+		tablaSimbolos.guardarSimboloSentencia(this, ambito);
+		
+		for (Sentencia sentencia : bloqueSentencia.getListaSentencias()) {
+			sentencia.llenarTablaSimbolos(tablaSimbolos, erroresSemanticos, tablaSimbolos.buscarSimboloSentencia(this, ambito));
+		}
 		
 	}
 

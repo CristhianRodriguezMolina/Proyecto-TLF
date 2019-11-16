@@ -23,10 +23,9 @@ public class Simbolo {
 	private InvocacionFuncion invocacionFuncion;
 	private Sentencia sentencia;
 	
-	public Simbolo(Sentencia sentencia, int fila, int columna, Simbolo ambito) {
+	public Simbolo(String nombre, Sentencia sentencia, Simbolo ambito) {
+		this.nombre = nombre;
 		this.sentencia = sentencia;
-		this.fila = fila;
-		this.columna = columna;
 		this.ambito = ambito;
 	}
 	
@@ -92,11 +91,8 @@ public class Simbolo {
 	}
 	
 	public Simbolo(String nombre) {
-		super();
 		this.nombre = nombre;
 	}
-	
-	
 
 	/**
 	 * @return the sentencia
