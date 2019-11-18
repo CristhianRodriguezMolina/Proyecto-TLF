@@ -116,7 +116,7 @@ public class DeclaracionVariable extends Sentencia {
 
 	@Override
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
-
+		
 		if (asignacion != null) {
 
 			if (asignacion.getOperadorAsignacion().getPalabra().equals("=")) {
@@ -125,7 +125,29 @@ public class DeclaracionVariable extends Sentencia {
 				
 				if(asignacion.getArgumento() != null){
 					
+					asignacion.getArgumento().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
+					
+					String tipoArgumentoAux = asignacion.getArgumento().getTipo(tablaSimbolos, erroresSemanticos, ambito);
+					
+					if(!tipoArgumentoAux.equals(s.getTipo())) {
+						
+						erroresSemanticos.add("Tipo incorrecto: No se puede convertir de "+tipoArgumentoAux+" a "+s.getTipo());
+						
+					}
+					
 				}else if(asignacion.getInvocacionFuncion() != null) {
+					
+					Simbolo funcionAux = tablaSimbolos.buscarSimboloFuncion(asignacion.getInvocacionFuncion().getNombre().getPalabra(), asignacion.getInvocacionFuncion().getTiposParametros(tablaSimbolos, erroresSemanticos, ambito));
+					
+					if(funcionAux != null) {
+						if(!funcionAux.getTipo().equals(s.getTipo())) {
+							
+							erroresSemanticos.add("Tipo incorrecto: No se puede convertir de "+funcionAux.getTipo()+" a "+s.getTipo());
+							
+						}						
+					}else {
+						erroresSemanticos.add("No existe la funcion "+asignacion.getInvocacionFuncion().getNombre()+asignacion.getInvocacionFuncion().getTiposParametros(tablaSimbolos, erroresSemanticos, ambito).toString());
+					}
 					
 				}else if(asignacion.getArreglo() != null) {
 					
@@ -137,8 +159,8 @@ public class DeclaracionVariable extends Sentencia {
 
 			} else {
 
-				erroresSemanticos.add("El operador de asignacion en una declaracion no puede ser "
-						+ asignacion.getOperadorAsignacion().getPalabra());
+				erroresSemanticos.add("Token erroneo en declaracion \""
+						+ asignacion.getOperadorAsignacion().getPalabra() + "\", se esperaba =");
 
 			}
 

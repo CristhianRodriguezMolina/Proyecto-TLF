@@ -65,5 +65,13 @@ public class UnidadDeCompilacion {
 		
 	}
 
+	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos) {
+
+		for (Funcion funcion : listaFunciones) {
+			funcion.analizarSemantica(tablaSimbolos, erroresSemanticos);
+		}
+		
+	}
+
 
 }

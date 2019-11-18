@@ -87,6 +87,29 @@ public class Argumento {
 
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
 		
+		if(expresion != null) {
+			
+			expresion.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
+			
+		}
+		
+	}
+	
+	public String getTipo(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
+		
+		if(nombre != null) {
+			Simbolo s = tablaSimbolos.buscarSimboloVariable(nombre.getPalabra(), ambito);
+			if(s == null) {
+				erroresSemanticos.add("La variable "+nombre.getPalabra()+" no ha sido declarada anteriormente");
+			}else {
+				return s.getTipo();
+			}			
+		}else if(expresion != null) {
+			return expresion.obtenerTipo();
+		}
+		
+		return "nulo";
+		
 	}
 	
 	
