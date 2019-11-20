@@ -67,21 +67,28 @@ public class SentenciaAsignacion extends Sentencia{
 	@Override
 	public void llenarTablaSimbolos(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
 		Simbolo simbolo = tablaSimbolos.buscarSimboloVariable(nombre.getPalabra(), ambito);
-		if(asignacion.getInvocacionFuncion() != null) 
+		if(simbolo != null) 
 		{
-			simbolo.setInvocacionFuncion(asignacion.getInvocacionFuncion());
-		}
-		else if(asignacion.getArgumento() != null) 
-		{
-			simbolo.setArgumento(asignacion.getArgumento());
-		}
-		else if(asignacion.getArreglo() != null) 
-		{
-			simbolo.setArreglo(asignacion.getArreglo());
+			if(asignacion.getInvocacionFuncion() != null) 
+			{
+				simbolo.setInvocacionFuncion(asignacion.getInvocacionFuncion());
+			}
+			else if(asignacion.getArgumento() != null) 
+			{
+				simbolo.setArgumento(asignacion.getArgumento());
+			}
+			else if(asignacion.getArreglo() != null) 
+			{
+				simbolo.setArreglo(asignacion.getArreglo());
+			}
+			else 
+			{
+				simbolo.setMapa(asignacion.getMapa());
+			}			
 		}
 		else 
 		{
-			simbolo.setMapa(asignacion.getMapa());
+			erroresSemanticos.add("La variable " + nombre.getPalabra() + " no ha sido declarada previamente");
 		}
 	}
 	@Override
