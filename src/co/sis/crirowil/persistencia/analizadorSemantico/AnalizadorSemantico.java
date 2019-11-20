@@ -19,6 +19,10 @@ public class AnalizadorSemantico {
 	public void llenarTablaSimbolos() {
 		this.unidadCompilacion.llenarTablaSimbolos(tablaSimbolos, erroresSemanticos);
 	}
+	
+	public void analizarSemantica() {
+		this.unidadCompilacion.analizarSemantica(tablaSimbolos, erroresSemanticos);
+	}
 
 	public TablaSimbolos getTablaSimbolos() {
 		return tablaSimbolos;

@@ -139,9 +139,18 @@ public class Sisas extends Sentencia{
 
 	@Override
 	public void llenarTablaSimbolos(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
+		
+		tablaSimbolos.guardarSimboloSentencia(this, ambito);
+		
 		for(Sentencia sentencia: bloqueSentenciaSisas.getListaSentencias()) 
 		{
-			sentencia.llenarTablaSimbolos(tablaSimbolos, erroresSemanticos, ambito);
+			sentencia.llenarTablaSimbolos(tablaSimbolos, erroresSemanticos, tablaSimbolos.buscarSimboloSentencia(this, ambito));
+		}
+		for (Nonais nonais : listaNonais) {
+			nonais.llenarTablaSimbolos(tablaSimbolos, erroresSemanticos, ambito);
+		}
+		if(nonas != null) {
+			nonas.llenarTablaSimbolos(tablaSimbolos, erroresSemanticos, ambito);
 		}
 		
 	}

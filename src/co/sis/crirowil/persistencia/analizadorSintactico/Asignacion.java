@@ -34,6 +34,9 @@ public class Asignacion {
 	public Asignacion(Token operadorAsignacion) {
 		super();
 		this.operadorAsignacion = operadorAsignacion;
+		
+		String s = "";
+		s += "s";
 	}
 	
 	/**

@@ -3,6 +3,8 @@ package co.sis.crirowil.persistencia.analizadorSintactico;
 import java.util.ArrayList;
 
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
+import co.sis.crirowil.persistencia.analizadorSemantico.Simbolo;
+import co.sis.crirowil.persistencia.analizadorSemantico.TablaSimbolos;
 import javafx.scene.control.TreeItem;
 
 /**
@@ -88,6 +90,22 @@ public class InvocacionFuncion{
 		}
 		
 		return raiz;
+	}
+
+	public ArrayList<String> getTiposParametros(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito){
+		
+		ArrayList<String> tipoParametros = new ArrayList<>();
+		for (Argumento argumento : listaArgumentos) {
+			tipoParametros.add(argumento.getTipo(tablaSimbolos, erroresSemanticos, ambito));
+		}
+		return tipoParametros;
+		
+	}
+
+
+	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	

@@ -155,6 +155,7 @@ public class ManejadorEscenarios {
 		//ANALISIS SEMANTICO
 		AnalizadorSemantico aSem = new AnalizadorSemantico(getUnidadDeCompilacion());
 		aSem.llenarTablaSimbolos();
+		aSem.analizarSemantica();
 		
 		List<String> erroresSemanticos = aSem.getErroresSemanticos();
 		List<Simbolo> simbolos = aSem.getTablaSimbolos().getListaSimbolos();

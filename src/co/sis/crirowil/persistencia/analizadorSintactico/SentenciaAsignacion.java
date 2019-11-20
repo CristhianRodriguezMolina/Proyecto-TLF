@@ -67,7 +67,7 @@ public class SentenciaAsignacion extends Sentencia{
 	@Override
 	public void llenarTablaSimbolos(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
 		Simbolo simbolo = tablaSimbolos.buscarSimboloVariable(nombre.getPalabra(), ambito);
-		if(simbolo != null) 
+		if(simbolo != null)
 		{
 			if(asignacion.getInvocacionFuncion() != null) 
 			{
@@ -84,10 +84,8 @@ public class SentenciaAsignacion extends Sentencia{
 			else 
 			{
 				simbolo.setMapa(asignacion.getMapa());
-			}			
-		}
-		else 
-		{
+			}
+		}else {
 			erroresSemanticos.add("La variable " + nombre.getPalabra() + " no ha sido declarada previamente");
 		}
 	}

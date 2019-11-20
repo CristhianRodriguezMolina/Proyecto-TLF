@@ -138,14 +138,19 @@ public class Funcion {
 			
 	}
 	
-	
-
-	public void llenarTablaSimbolos(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos) {
+	public ArrayList<String> getTiposParametros(){
+		
 		ArrayList<String> tipoParametros = new ArrayList<>();
 		for(Parametro parametro: listaParametros) 
 		{
-			tipoParametros.add(parametro.obtenerTipo());
+			tipoParametros.add(parametro.getNombre()+":"+parametro.obtenerTipo());
 		}
+		return tipoParametros;
+		
+	}
+
+	public void llenarTablaSimbolos(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos) {
+		ArrayList<String> tipoParametros = getTiposParametros();		
 
 		if(retorno != null) {
 			tablaSimbolos.guardarSimboloFuncion(nombre.getPalabra(), retorno.getPalabra(), tipoParametros);			
@@ -163,5 +168,14 @@ public class Funcion {
 		{
 			sentencia.llenarTablaSimbolos(tablaSimbolos, erroresSemanticos, tablaSimbolos.buscarSimboloFuncion(nombre.getPalabra(), tipoParametros));
 		}
+	}
+
+	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos) {
+
+		for(Sentencia sentencia: bloqueSentencias.listaSentencias) 
+		{
+			sentencia.analizarSemantica(tablaSimbolos, erroresSemanticos, tablaSimbolos.buscarSimboloFuncion(nombre.getPalabra(), getTiposParametros()));
+		}
+		
 	}
 }

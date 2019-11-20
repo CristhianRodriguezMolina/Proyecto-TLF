@@ -111,12 +111,59 @@ public class DeclaracionVariable extends Sentencia {
 			tablaSimbolos.guardarSimboloVariable(identificador.getPalabra(), tipoDato.getPalabra(),
 					identificador.getFila(), identificador.getColumna(), ambito);
 		}
-
 	}
 
 	@Override
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
-		// TODO Auto-generated method stub
+		
+		if (asignacion != null) {
+
+			if (asignacion.getOperadorAsignacion().getPalabra().equals("=")) {
+				
+				Simbolo s = tablaSimbolos.buscarSimboloVariable(identificador.getPalabra(), ambito);
+				
+				if(asignacion.getArgumento() != null){
+					
+					asignacion.getArgumento().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
+					
+					String tipoArgumentoAux = asignacion.getArgumento().getTipo(tablaSimbolos, erroresSemanticos, ambito);
+					
+					if(!tipoArgumentoAux.equals(s.getTipo())) {
+						
+						erroresSemanticos.add("Tipo incorrecto: No se puede convertir de "+tipoArgumentoAux+" a "+s.getTipo());
+						
+					}
+					
+				}else if(asignacion.getInvocacionFuncion() != null) {
+					
+					Simbolo funcionAux = tablaSimbolos.buscarSimboloFuncion(asignacion.getInvocacionFuncion().getNombre().getPalabra(), asignacion.getInvocacionFuncion().getTiposParametros(tablaSimbolos, erroresSemanticos, ambito));
+					
+					if(funcionAux != null) {
+						if(!funcionAux.getTipo().equals(s.getTipo())) {
+							
+							erroresSemanticos.add("Tipo incorrecto: No se puede convertir de "+funcionAux.getTipo()+" a "+s.getTipo());
+							
+						}						
+					}else {
+						erroresSemanticos.add("No existe la funcion "+asignacion.getInvocacionFuncion().getNombre()+asignacion.getInvocacionFuncion().getTiposParametros(tablaSimbolos, erroresSemanticos, ambito).toString());
+					}
+					
+				}else if(asignacion.getArreglo() != null) {
+					
+				}else if(asignacion.getLecturaDatos() != null) {
+					
+				}else if(asignacion.getMapa() != null) {
+					
+				}
+
+			} else {
+
+				erroresSemanticos.add("Token erroneo en declaracion \""
+						+ asignacion.getOperadorAsignacion().getPalabra() + "\", se esperaba =");
+
+			}
+
+		}
 
 	}
 }
