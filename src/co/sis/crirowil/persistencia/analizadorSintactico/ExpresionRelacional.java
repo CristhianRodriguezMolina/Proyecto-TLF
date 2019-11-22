@@ -88,7 +88,7 @@ public class ExpresionRelacional extends Expresion{
 	}
 
 	@Override
-	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
+	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito, String identificador) {
 		// TODO Auto-generated method stub
 		
 	}

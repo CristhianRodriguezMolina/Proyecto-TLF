@@ -124,7 +124,7 @@ public class DeclaracionVariable extends Sentencia {
 				
 				if(asignacion.getArgumento() != null){
 					
-					asignacion.getArgumento().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
+					asignacion.getArgumento().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador.getPalabra());
 					
 					String tipoArgumentoAux = asignacion.getArgumento().getTipo(tablaSimbolos, erroresSemanticos, ambito);
 					

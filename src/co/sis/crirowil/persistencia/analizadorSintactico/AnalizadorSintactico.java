@@ -1571,7 +1571,6 @@ public class AnalizadorSintactico {
 	/**
 	 * <ExpresionAritmetica> ::= "(" <ExpresionAritmetica> ")" [<ExpresionAuxiliar>]
 	 * | <ValorNumerico>[<ExpresionAuxiliar>]
-	 * 
 	 * @return
 	 */
 	public ExpresionAritmetica esExpresionAritmetica() {
@@ -1616,6 +1615,7 @@ public class AnalizadorSintactico {
 			}
 		}
 		return null;
+		
 	}
 
 	/**

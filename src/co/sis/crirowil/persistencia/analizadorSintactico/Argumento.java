@@ -85,11 +85,11 @@ public class Argumento {
 		
 	}
 
-	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
+	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito, String identificador) {
 		
 		if(expresion != null) {
 			
-			expresion.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
+			expresion.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador);
 			
 		}
 		

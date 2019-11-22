@@ -17,7 +17,7 @@ public abstract class Expresion {
 	public abstract String obtenerTipo();
 
 	public abstract void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos,
-			Simbolo ambito);
+			Simbolo ambito, String identificador);
 	
 	
 	
