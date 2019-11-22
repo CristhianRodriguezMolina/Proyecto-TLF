@@ -51,7 +51,11 @@ public class ArgumentoMapa {
 		if(s == null) {
 			erroresSemanticos.add("La variable "+llave.getPalabra()+" no ha sido declarada anteriormente (En argumento de mapa)");
 		}else {
-			return s.getTipo();
+			if(llave.getColumna()>s.getColumna() && llave.getFila()>s.getFila()) {
+				return s.getTipo();	
+			}else {
+				erroresSemanticos.add("La variable "+llave.getPalabra()+" no ha sido declarada anteriormente (En argumento de mapa)");	
+			}
 		}
 		return "nulo"; 
 		
@@ -63,7 +67,11 @@ public class ArgumentoMapa {
 		if(s == null) {
 			erroresSemanticos.add("La variable "+dato.getPalabra()+" no ha sido declarada anteriormente (En argumento de mapa)");
 		}else {
-			return s.getTipo();
+			if(dato.getColumna()>s.getColumna() && dato.getFila()>s.getFila()) {
+				return s.getTipo();			
+			}else {
+				erroresSemanticos.add("La variable "+dato.getPalabra()+" no ha sido declarada anteriormente (En argumento de mapa)");	
+			}
 		}
 		return "nulo"; 
 		

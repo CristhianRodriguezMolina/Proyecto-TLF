@@ -111,7 +111,11 @@ public class Argumento {
 			if(s == null) {
 				erroresSemanticos.add("La variable "+nombre.getPalabra()+" no ha sido declarada anteriormente");
 			}else {
-				return s.getTipo();
+				if(nombre.getColumna()>s.getColumna() && nombre.getFila()>s.getFila()) {
+					return s.getTipo();					
+				}else {
+					erroresSemanticos.add("La variable "+nombre.getPalabra()+" no ha sido declarada anteriormente");
+				}
 			}			
 		}else if(expresion != null) {
 			return expresion.obtenerTipo();

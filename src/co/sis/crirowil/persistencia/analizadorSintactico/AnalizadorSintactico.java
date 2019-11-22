@@ -1098,11 +1098,12 @@ public class AnalizadorSintactico {
 		if (tokenActual.getCategoria() == Categoria.IDENTIFICADOR) {
 			Token nombre = tokenActual;
 			obtenerTokenSiguiente();
-			if(tokenActual.getCategoria() == Categoria.TERMINAL) {
-				return new Argumento(nombre);
-			}else {
+			if(tokenActual.getCategoria() == Categoria.OPERADOR_ARITMETICO || tokenActual.getCategoria() == Categoria.OPERADOR_LOGICO
+					|| tokenActual.getCategoria() == Categoria.OPERADOR_RELACIONAL) {
 				tokenActual = tokenAux;
-				posActual = posAux;
+				posActual = posAux;				
+			}else {
+				return new Argumento(nombre);
 			}			
 		} 
 

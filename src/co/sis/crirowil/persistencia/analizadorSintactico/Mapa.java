@@ -74,11 +74,17 @@ public class Mapa {
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
 		
 		for (ArgumentoMapa argumentoMapa : listaArgumentos) {
-			if(!argumentoMapa.getTipoLlave(tablaSimbolos, erroresSemanticos, ambito).equals(tipoLlave.getPalabra())) {
-				erroresSemanticos.add("Tipo incorrecto: No se puede convertir de "+argumentoMapa.getTipoLlave(tablaSimbolos, erroresSemanticos, ambito)+" a "+tipoLlave.getPalabra());
+			String tipoLlaveAux = argumentoMapa.getTipoLlave(tablaSimbolos, erroresSemanticos, ambito);
+			if(!tipoLlaveAux.equals("nulo")) {
+				if(!tipoLlaveAux.equals(tipoLlave.getPalabra())) {
+					erroresSemanticos.add("Tipo incorrecto: No se puede convertir de "+argumentoMapa.getTipoLlave(tablaSimbolos, erroresSemanticos, ambito)+" a "+tipoLlave.getPalabra());
+				}
 			}
-			if(!argumentoMapa.getTipoDato(tablaSimbolos, erroresSemanticos, ambito).equals(tipoDato.getPalabra())) {
-				erroresSemanticos.add("Tipo incorrecto: No se puede convertir de "+argumentoMapa.getTipoDato(tablaSimbolos, erroresSemanticos, ambito)+" a "+tipoDato.getPalabra());
+			String tipoDatoAux = argumentoMapa.getTipoDato(tablaSimbolos, erroresSemanticos, ambito); 
+			if(!tipoDatoAux.equals("nulo")) {
+				if(!tipoDatoAux.equals(tipoDato.getPalabra())) {
+					erroresSemanticos.add("Tipo incorrecto: No se puede convertir de "+argumentoMapa.getTipoDato(tablaSimbolos, erroresSemanticos, ambito)+" a "+tipoDato.getPalabra());
+				}
 			}
 		}
 		

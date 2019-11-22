@@ -92,47 +92,60 @@ public class SentenciaAsignacion extends Sentencia{
 	@Override
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
 
-		Simbolo s = tablaSimbolos.buscarSimboloVariable(nombre.getPalabra(), ambito);
-		Expresion expresion = asignacion.getArgumento().getExpresion();
-//		Arreglo arreglo = asignacion.getArreglo();
-//		
-//		if(s==null) {
-//			erroresSemanticos.add("La variable no existe");
-//		}else {
+//		if (asignacion.getOperadorAsignacion().getPalabra().equals("=")) {
 //			
+//			Simbolo s = tablaSimbolos.buscarSimboloVariable(nombre.getPalabra(), ambito);
 //			
-//			if(expresion!=null) {
+//			if(asignacion.getArgumento() != null){
 //				
-//				if( !s.getTipo().equals( expresion.obtenerTipo() )) {
-//					erroresSemanticos.add("El tipo de la expresión no es correcto");
+//				asignacion.getArgumento().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
+//				
+//				String tipoArgumentoAux = asignacion.getArgumento().getTipo(tablaSimbolos, erroresSemanticos, ambito);
+//				
+//				if(!tipoArgumentoAux.equals(s.getTipo())) {
+//					
+//					erroresSemanticos.add("Tipo incorrecto: No se puede convertir de "+tipoArgumentoAux+" a "+s.getTipo());
+//					
 //				}
-//			}
-//			
-//			
-//			if(arreglo != null) 
-//			{
-//				for(Argumento argumento: arreglo.getListaArgumentos()) 
-//				{
-//					if(!s.getTipo().equals(argumento.obtenerTipo())) 
-//					{
-//						erroresSemanticos.add("El tipo del argumento no es correcto");
-//					}
+//				
+//			}else if(asignacion.getInvocacionFuncion() != null) {
+//				
+//				Simbolo funcionAux = tablaSimbolos.buscarSimboloFuncion(asignacion.getInvocacionFuncion().getNombre().getPalabra(), asignacion.getInvocacionFuncion().getTiposParametros(tablaSimbolos, erroresSemanticos, ambito));
+//				
+//				if(funcionAux != null) {
+//					asignacion.getInvocacionFuncion().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
+//					if(!funcionAux.getTipo().equals(s.getTipo())) {
+//						
+//						erroresSemanticos.add("Tipo incorrecto: No se puede convertir de "+funcionAux.getTipo()+" a "+s.getTipo());
+//						
+//					}						
+//				}else {
+//					erroresSemanticos.add("No existe la funcion "+asignacion.getInvocacionFuncion().getNombre()+asignacion.getInvocacionFuncion().getTiposParametros(tablaSimbolos, erroresSemanticos, ambito).toString());
 //				}
+//				
+//			}else if(asignacion.getArreglo() != null) {
+//				
+//				asignacion.getArreglo().analizarSemantica(s.getTipo(), tablaSimbolos, erroresSemanticos, ambito);
+//				
+//			}else if(asignacion.getLecturaDatos() != null) { 
+//				
+//				if(!s.getTipo().equals("cadena")) {
+//					erroresSemanticos.add("Tipo incorrecto: No se puede convertir de cadena a "+s.getTipo());
+//				}
+//				
+//			}else if(asignacion.getMapa() != null) { 
+//				
+//				asignacion.getMapa().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);;
+//				
 //			}
-//		}
-//		
-//		
-//		if(expresion!=null) {
-//			// expresion.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
-//		}
-//		
-//		if(arreglo != null) 
-//		{
-//			arreglo.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
+//
+//		} else {
+//
+//			erroresSemanticos.add("Token erroneo en declaracion \""
+//					+ asignacion.getOperadorAsignacion().getPalabra() + "\", se esperaba =");
+//
 //		}
 		
 	}
 	
-	
-
 }
