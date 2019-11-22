@@ -157,7 +157,19 @@ public class Sisas extends Sentencia{
 
 	@Override
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
-		// TODO Auto-generated method stub
+
+		condicion.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
+		
+		for(Sentencia sentencia: bloqueSentenciaSisas.getListaSentencias()) 
+		{
+			sentencia.analizarSemantica(tablaSimbolos, erroresSemanticos, tablaSimbolos.buscarSimboloSentencia(this, ambito));
+		}
+		for (Nonais nonais : listaNonais) {
+			nonais.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
+		}
+		if(nonas != null) {
+			nonas.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
+		}
 		
 	}
 	

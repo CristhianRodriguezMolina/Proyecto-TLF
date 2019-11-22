@@ -947,7 +947,7 @@ public class AnalizadorSintactico {
 		
 		obtenerTokenSiguiente();
 		
-		return new Mapa(listaArgumentos);	
+		return new Mapa(llave, tipoDato, listaArgumentos);	
 		
 	}
 	
@@ -1098,11 +1098,12 @@ public class AnalizadorSintactico {
 		if (tokenActual.getCategoria() == Categoria.IDENTIFICADOR) {
 			Token nombre = tokenActual;
 			obtenerTokenSiguiente();
-			if(tokenActual.getCategoria() == Categoria.TERMINAL) {
-				return new Argumento(nombre);
-			}else {
+			if(tokenActual.getCategoria() == Categoria.OPERADOR_ARITMETICO || tokenActual.getCategoria() == Categoria.OPERADOR_LOGICO
+					|| tokenActual.getCategoria() == Categoria.OPERADOR_RELACIONAL) {
 				tokenActual = tokenAux;
-				posActual = posAux;
+				posActual = posAux;				
+			}else {
+				return new Argumento(nombre);
 			}			
 		} 
 
@@ -1185,7 +1186,7 @@ public class AnalizadorSintactico {
 		if (tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && tokenActual.getPalabra().equals("ciclo")) {
 			obtenerTokenSiguiente();
 			boolean tieneAsignacion = false;
-
+			
 			Token tokenTemp = tokenActual;
 			int posTemp = posActual;
 			DeclaracionVariable declaracionVariable = esDeclaracionVariable();

@@ -2,6 +2,8 @@ package co.sis.crirowil.persistencia.analizadorSintactico;
 
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
 import co.sis.crirowil.persistencia.analizadorSemantico.Simbolo;
 import co.sis.crirowil.persistencia.analizadorSemantico.TablaSimbolos;
@@ -87,7 +89,14 @@ public class Argumento {
 
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito, String identificador) {
 		
-		if(expresion != null) {
+		if(nombre != null) {
+			
+			Simbolo s = tablaSimbolos.buscarSimboloVariable(nombre.getPalabra(), ambito);
+			if(s == null) {
+				erroresSemanticos.add("La variable "+nombre.getPalabra()+" no existe.");
+			}
+			
+		}else if(expresion != null) {
 			
 			expresion.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador);
 			
@@ -102,7 +111,11 @@ public class Argumento {
 			if(s == null) {
 				erroresSemanticos.add("La variable "+nombre.getPalabra()+" no ha sido declarada anteriormente");
 			}else {
-				return s.getTipo();
+				if(nombre.getColumna()>s.getColumna() && nombre.getFila()>s.getFila()) {
+					return s.getTipo();					
+				}else {
+					erroresSemanticos.add("La variable "+nombre.getPalabra()+" no ha sido declarada anteriormente");
+				}
 			}			
 		}else if(expresion != null) {
 			return expresion.obtenerTipo();

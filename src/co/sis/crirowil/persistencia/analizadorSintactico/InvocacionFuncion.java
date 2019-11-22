@@ -104,7 +104,19 @@ public class InvocacionFuncion{
 
 
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
-		// TODO Auto-generated method stub
+
+		ArrayList<String> tipoParametros = getTiposParametros(tablaSimbolos, erroresSemanticos, ambito);
+		Simbolo s = tablaSimbolos.buscarSimboloFuncion(nombre.getPalabra(), tipoParametros);
+		
+		if(s != null) {
+			
+			for (Argumento argumento : listaArgumentos) {
+				argumento.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
+			}
+			
+		}else {
+			erroresSemanticos.add("La funcion que esta tratando de invocar \""+ nombre.getPalabra() +"\" no existe.");
+		}
 		
 	}
 

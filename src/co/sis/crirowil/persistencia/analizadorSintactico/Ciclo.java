@@ -33,6 +33,10 @@ public class Ciclo extends Sentencia
 		this.condicion = condicion;
 		this.sentenciaAsignacion = sentenciaAsignacion;
 		this.bloqueSentencia = bloqueSentencia;
+		
+		for(String s = "cm"; s.length() > 5;) {
+			
+		}
 	}
 	
 	
@@ -130,6 +134,12 @@ public class Ciclo extends Sentencia
 		
 		tablaSimbolos.guardarSimboloSentencia(this, ambito);
 		
+		if(declaracionVariable != null) {
+			declaracionVariable.llenarTablaSimbolos(tablaSimbolos, erroresSemanticos, tablaSimbolos.buscarSimboloSentencia(this, ambito));
+		}else if(sentenciaAsignacion != null) {
+			sentenciaAsignacion.llenarTablaSimbolos(tablaSimbolos, erroresSemanticos, tablaSimbolos.buscarSimboloSentencia(this, ambito));	
+		}		
+		
 		for(Sentencia sentencia: bloqueSentencia.getListaSentencias()) 
 		{
 			sentencia.llenarTablaSimbolos(tablaSimbolos, erroresSemanticos, tablaSimbolos.buscarSimboloSentencia(this, ambito));
@@ -140,7 +150,18 @@ public class Ciclo extends Sentencia
 
 	@Override
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
-		// TODO Auto-generated method stub
+
+		if(declaracionVariable != null) {
+			declaracionVariable.analizarSemantica(tablaSimbolos, erroresSemanticos, tablaSimbolos.buscarSimboloSentencia(this, ambito));			
+		}else if(sentenciaAsignacion != null) {
+			sentenciaAsignacion.analizarSemantica(tablaSimbolos, erroresSemanticos, tablaSimbolos.buscarSimboloSentencia(this, ambito));			
+		}
+		condicion.analizarSemantica(tablaSimbolos, erroresSemanticos, tablaSimbolos.buscarSimboloSentencia(this, ambito));
+		
+		for(Sentencia sentencia: bloqueSentencia.getListaSentencias()) 
+		{
+			sentencia.analizarSemantica(tablaSimbolos, erroresSemanticos, tablaSimbolos.buscarSimboloSentencia(this, ambito));
+		}
 		
 	}
 	

@@ -139,6 +139,7 @@ public class DeclaracionVariable extends Sentencia {
 					Simbolo funcionAux = tablaSimbolos.buscarSimboloFuncion(asignacion.getInvocacionFuncion().getNombre().getPalabra(), asignacion.getInvocacionFuncion().getTiposParametros(tablaSimbolos, erroresSemanticos, ambito));
 					
 					if(funcionAux != null) {
+						asignacion.getInvocacionFuncion().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
 						if(!funcionAux.getTipo().equals(s.getTipo())) {
 							
 							erroresSemanticos.add("Tipo incorrecto: No se puede convertir de "+funcionAux.getTipo()+" a "+s.getTipo());
@@ -148,11 +149,19 @@ public class DeclaracionVariable extends Sentencia {
 						erroresSemanticos.add("No existe la funcion "+asignacion.getInvocacionFuncion().getNombre()+asignacion.getInvocacionFuncion().getTiposParametros(tablaSimbolos, erroresSemanticos, ambito).toString());
 					}
 					
-				}else if(asignacion.getArreglo() != null) {
+				}else if(asignacion.getArreglo() != null) { //AQUIIIIII
 					
-				}else if(asignacion.getLecturaDatos() != null) {
+					asignacion.getArreglo().analizarSemantica(s.getTipo(), tablaSimbolos, erroresSemanticos, ambito);
 					
-				}else if(asignacion.getMapa() != null) {
+				}else if(asignacion.getLecturaDatos() != null) { //AQUIIIIII 
+					
+					if(!s.getTipo().equals("cadena")) {
+						erroresSemanticos.add("Tipo incorrecto: No se puede convertir de cadena a "+s.getTipo());
+					}
+					
+				}else if(asignacion.getMapa() != null) { //AQUIIIIII
+					
+					asignacion.getMapa().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);;
 					
 				}
 

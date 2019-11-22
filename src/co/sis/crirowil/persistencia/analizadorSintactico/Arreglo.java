@@ -38,9 +38,21 @@ public class Arreglo {
 		return raiz;
 		
 	}
+	
+	public String getTipo() {
+		return "";
+	}
 
-	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
-		// TODO Auto-generated method stub
+	public void analizarSemantica(String tipo, TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
+
+		for (Argumento argumento : listaArgumentos) {
+			String tipoAux = argumento.getTipo(tablaSimbolos, erroresSemanticos, ambito); 
+			if(!tipoAux.equals("nulo")) {
+				if(!tipoAux.equals(tipo)) {
+					erroresSemanticos.add("Tipo incorrecto: No se puede convertir de "+argumento.getTipo(tablaSimbolos, erroresSemanticos, ambito)+" a "+tipo+", en declaración de arreglo.");
+				}
+			}				
+		}
 		
 	}
 		

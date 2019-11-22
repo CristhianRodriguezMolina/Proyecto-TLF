@@ -64,7 +64,13 @@ public class Switch extends Sentencia {
 
 	@Override
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
-		// TODO Auto-generated method stub
+
+		expresion.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
+		
+		for(Caso caso: listaCasos) 
+		{
+			caso.analizarSemantica(tablaSimbolos, erroresSemanticos, tablaSimbolos.buscarSimboloSentencia(this, ambito));
+		}
 		
 	}
 

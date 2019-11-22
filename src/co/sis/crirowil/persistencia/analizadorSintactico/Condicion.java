@@ -1,5 +1,9 @@
 package co.sis.crirowil.persistencia.analizadorSintactico;
 
+import java.util.ArrayList;
+
+import co.sis.crirowil.persistencia.analizadorSemantico.Simbolo;
+import co.sis.crirowil.persistencia.analizadorSemantico.TablaSimbolos;
 import javafx.scene.control.TreeItem;
 
 public class Condicion {
@@ -36,6 +40,10 @@ public class Condicion {
 		TreeItem<String> raiz = new TreeItem<String>("Condicion");
 		raiz.getChildren().add(expresion.getArbolVisual());
 		return raiz;
+		
+	}
+	
+	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
 		
 	}
 

@@ -68,6 +68,7 @@ public class PorCada extends Sentencia {
 	public void llenarTablaSimbolos(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
 
 		tablaSimbolos.guardarSimboloSentencia(this, ambito);
+		declaracionVariable.llenarTablaSimbolos(tablaSimbolos, erroresSemanticos, tablaSimbolos.buscarSimboloSentencia(this, ambito));
 		
 		for(Sentencia sentencia: bloqueSentencia.getListaSentencias()) 
 		{
@@ -78,7 +79,18 @@ public class PorCada extends Sentencia {
 
 	@Override
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
-		// TODO Auto-generated method stub
+
+		declaracionVariable.analizarSemantica(tablaSimbolos, erroresSemanticos, tablaSimbolos.buscarSimboloSentencia(this, ambito));
+		
+		Simbolo s = tablaSimbolos.buscarSimboloVariable(lista.getPalabra(), ambito);
+		if(s == null) {
+			erroresSemanticos.add("La lista " + lista.getPalabra() + " no existe."); //AQUIIIIIII	
+		}
+		
+		for(Sentencia sentencia: bloqueSentencia.getListaSentencias()) 
+		{
+			sentencia.analizarSemantica(tablaSimbolos, erroresSemanticos, tablaSimbolos.buscarSimboloSentencia(this, ambito));
+		}
 		
 	}
 	

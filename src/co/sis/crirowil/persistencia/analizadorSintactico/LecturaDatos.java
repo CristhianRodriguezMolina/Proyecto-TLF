@@ -38,12 +38,12 @@ public class LecturaDatos extends Sentencia {
 	@Override
 	public void llenarTablaSimbolos(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
 		return;
-		
 	}
 
 	@Override
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
-		// TODO Auto-generated method stub
+
+		expresionCadena.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
 		
 	}
 
