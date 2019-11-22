@@ -947,7 +947,7 @@ public class AnalizadorSintactico {
 		
 		obtenerTokenSiguiente();
 		
-		return new Mapa(listaArgumentos);	
+		return new Mapa(llave, tipoDato, listaArgumentos);	
 		
 	}
 	
@@ -1185,7 +1185,7 @@ public class AnalizadorSintactico {
 		if (tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && tokenActual.getPalabra().equals("ciclo")) {
 			obtenerTokenSiguiente();
 			boolean tieneAsignacion = false;
-
+			
 			Token tokenTemp = tokenActual;
 			int posTemp = posActual;
 			DeclaracionVariable declaracionVariable = esDeclaracionVariable();

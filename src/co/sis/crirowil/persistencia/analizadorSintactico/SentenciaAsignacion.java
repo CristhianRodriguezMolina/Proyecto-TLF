@@ -94,42 +94,42 @@ public class SentenciaAsignacion extends Sentencia{
 
 		Simbolo s = tablaSimbolos.buscarSimboloVariable(nombre.getPalabra(), ambito);
 		Expresion expresion = asignacion.getArgumento().getExpresion();
-		Arreglo arreglo = asignacion.getArreglo();
-		
-		if(s==null) {
-			erroresSemanticos.add("La variable no existe");
-		}else {
-			
-			
-			if(expresion!=null) {
-				
-				if( !s.getTipo().equals( expresion.obtenerTipo() )) {
-					erroresSemanticos.add("El tipo de la expresión no es correcto");
-				}
-			}
-			
-			
-			if(arreglo != null) 
-			{
-				for(Argumento argumento: arreglo.getListaArgumentos()) 
-				{
+//		Arreglo arreglo = asignacion.getArreglo();
+//		
+//		if(s==null) {
+//			erroresSemanticos.add("La variable no existe");
+//		}else {
+//			
+//			
+//			if(expresion!=null) {
+//				
+//				if( !s.getTipo().equals( expresion.obtenerTipo() )) {
+//					erroresSemanticos.add("El tipo de la expresión no es correcto");
+//				}
+//			}
+//			
+//			
+//			if(arreglo != null) 
+//			{
+//				for(Argumento argumento: arreglo.getListaArgumentos()) 
+//				{
 //					if(!s.getTipo().equals(argumento.obtenerTipo())) 
 //					{
 //						erroresSemanticos.add("El tipo del argumento no es correcto");
 //					}
-				}
-			}
-		}
-		
-		
-		if(expresion!=null) {
-			// expresion.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
-		}
-		
-		if(arreglo != null) 
-		{
-			arreglo.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
-		}
+//				}
+//			}
+//		}
+//		
+//		
+//		if(expresion!=null) {
+//			// expresion.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
+//		}
+//		
+//		if(arreglo != null) 
+//		{
+//			arreglo.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
+//		}
 		
 	}
 	

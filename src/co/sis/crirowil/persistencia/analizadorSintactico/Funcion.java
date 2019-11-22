@@ -143,7 +143,7 @@ public class Funcion {
 		ArrayList<String> tipoParametros = new ArrayList<>();
 		for(Parametro parametro: listaParametros) 
 		{
-			tipoParametros.add(parametro.getNombre()+":"+parametro.obtenerTipo());
+			tipoParametros.add(parametro.obtenerTipo());
 		}
 		return tipoParametros;
 		

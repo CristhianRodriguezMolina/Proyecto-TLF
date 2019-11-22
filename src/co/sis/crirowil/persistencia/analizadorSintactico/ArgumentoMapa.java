@@ -1,6 +1,10 @@
 package co.sis.crirowil.persistencia.analizadorSintactico;
 
+import java.util.ArrayList;
+
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
+import co.sis.crirowil.persistencia.analizadorSemantico.Simbolo;
+import co.sis.crirowil.persistencia.analizadorSemantico.TablaSimbolos;
 import javafx.scene.control.TreeItem;
 
 public class ArgumentoMapa {
@@ -39,6 +43,30 @@ public class ArgumentoMapa {
 		
 		
 		return raiz;
+	}
+	
+	public String getTipoLlave(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
+		
+		Simbolo s = tablaSimbolos.buscarSimboloVariable(llave.getPalabra(), ambito);
+		if(s == null) {
+			erroresSemanticos.add("La variable "+llave.getPalabra()+" no ha sido declarada anteriormente (En argumento de mapa)");
+		}else {
+			return s.getTipo();
+		}
+		return "nulo"; 
+		
+	}
+	
+	public String getTipoDato(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
+		
+		Simbolo s = tablaSimbolos.buscarSimboloVariable(dato.getPalabra(), ambito);
+		if(s == null) {
+			erroresSemanticos.add("La variable "+dato.getPalabra()+" no ha sido declarada anteriormente (En argumento de mapa)");
+		}else {
+			return s.getTipo();
+		}
+		return "nulo"; 
+		
 	}
 
 }

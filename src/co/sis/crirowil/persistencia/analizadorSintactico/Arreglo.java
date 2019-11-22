@@ -38,9 +38,18 @@ public class Arreglo {
 		return raiz;
 		
 	}
+	
+	public String getTipo() {
+		return "";
+	}
 
-	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
-		// TODO Auto-generated method stub
+	public void analizarSemantica(String tipo, TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
+
+		for (Argumento argumento : listaArgumentos) {
+			if(!argumento.getTipo(tablaSimbolos, erroresSemanticos, ambito).equals(tipo)) {
+				erroresSemanticos.add("Tipo incorrecto: No se puede convertir de cadena a "+tipo+", en declaración de arreglo.");
+			}
+		}
 		
 	}
 		

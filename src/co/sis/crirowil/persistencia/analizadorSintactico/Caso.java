@@ -76,7 +76,15 @@ public class Caso extends Sentencia {
 
 	@Override
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
-		// TODO Auto-generated method stub
+
+		if(expresion != null) {
+			expresion.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
+		}
+		
+		for(Sentencia sentencia: listaSentencias) 
+		{
+			sentencia.analizarSemantica(tablaSimbolos, erroresSemanticos, tablaSimbolos.buscarSimboloSentencia(this, ambito));
+		}
 		
 	}
 
