@@ -1,6 +1,10 @@
 package co.sis.crirowil.persistencia.analizadorSintactico;
 
+import java.util.ArrayList;
+
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
+import co.sis.crirowil.persistencia.analizadorSemantico.Simbolo;
+import co.sis.crirowil.persistencia.analizadorSemantico.TablaSimbolos;
 import javafx.scene.control.TreeItem;
 
 /**
@@ -8,7 +12,7 @@ import javafx.scene.control.TreeItem;
  * @author Usuario
  *
  */
-public class ExpresionAuxiliarLogica {
+public class ExpresionAuxiliarLogica extends Expresion{
 	
 	private Token operadorLogico;
 	private ExpresionLogica expresionLogica;
@@ -79,6 +83,28 @@ public class ExpresionAuxiliarLogica {
 			raiz.getChildren().add(getExpresionAuxiliarLogica().getArbolVisual());
 		
 		return raiz;
+		
+	}
+
+
+
+	@Override
+	public String obtenerTipo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito,
+			String identificador, boolean relacional) {
+		
+		expresionLogica.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador, relacional);
+		if(expresionAuxiliarLogica != null) 
+		{
+			expresionAuxiliarLogica.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador, relacional);
+		}
 		
 	}
 }

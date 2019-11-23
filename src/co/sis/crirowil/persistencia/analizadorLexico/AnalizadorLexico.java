@@ -123,6 +123,7 @@ public class AnalizadorLexico {
 			// lenguaje, lo guarda como algo desconocido
 			listaTokens.add(new Token(Categoria.DESCONOCIDO, "" + caracterActual, filaActual, colActual));
 
+			listaErrores.add(new ErrorLexico("El caracter \"" + caracterActual + "\" es desconocido", filaActual));
 			obtenerSgteCaracter();
 		}
 		// Collections.sort((List<Token>) listaTokens);

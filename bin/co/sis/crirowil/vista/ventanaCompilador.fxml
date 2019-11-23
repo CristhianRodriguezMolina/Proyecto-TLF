@@ -124,6 +124,8 @@
                   </BorderPane>
                </items>
             </SplitPane>
+            <!--
+<<<<<<< HEAD
          </top>
          <center>
             <TabPane prefHeight="194.0" prefWidth="825.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
@@ -203,6 +205,9 @@
                   </Tab>
               </tabs>
             </TabPane>
+=======
+>>>>>>> 1c370cf00cecd53e64fade4037ee0cf76aeb394a
+-->
          </center>
       </BorderPane>
    </center>

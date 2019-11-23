@@ -7,7 +7,7 @@ import co.sis.crirowil.persistencia.analizadorSemantico.Simbolo;
 import co.sis.crirowil.persistencia.analizadorSemantico.TablaSimbolos;
 import javafx.scene.control.TreeItem;
 
-public class ExpresionAuxiliar {
+public class ExpresionAuxiliar extends Expresion{
 	
 	private Token operadorAritmetico;
 	private ExpresionAritmetica expresionAritmetica;
@@ -65,14 +65,20 @@ public class ExpresionAuxiliar {
 		return raiz;
 		
 	}
-	
-	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito, String identificador) 
+	@Override
+	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito, String identificador, boolean declaracion) 
 	{
-		expresionAritmetica.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador);
+		expresionAritmetica.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador, declaracion);
 		if(expresionAuxiliar != null) 
 		{
-			expresionAuxiliar.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador);			
+			expresionAuxiliar.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador, declaracion);			
 		}
+	}
+
+	@Override
+	public String obtenerTipo() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

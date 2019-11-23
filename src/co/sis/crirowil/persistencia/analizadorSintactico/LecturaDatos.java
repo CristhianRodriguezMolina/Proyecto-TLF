@@ -43,7 +43,7 @@ public class LecturaDatos extends Sentencia {
 	@Override
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
 
-		expresionCadena.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
+		expresionCadena.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, null, false);
 		
 	}
 

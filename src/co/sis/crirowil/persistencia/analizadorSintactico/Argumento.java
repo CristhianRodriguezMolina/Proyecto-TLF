@@ -87,18 +87,25 @@ public class Argumento {
 		
 	}
 
-	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito, String identificador) {
-		
+	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito, String identificador, boolean declaracion) {
 		if(nombre != null) {
 			
 			Simbolo s = tablaSimbolos.buscarSimboloVariable(nombre.getPalabra(), ambito);
+			Simbolo iden = tablaSimbolos.buscarSimboloVariable(identificador, ambito);
 			if(s == null) {
 				erroresSemanticos.add("La variable "+nombre.getPalabra()+" no existe.");
+			}
+			else 
+			{
+				if(!s.getTipo().equals(iden.getTipo())) 
+				{
+					erroresSemanticos.add("Tipo incorrecto: No se puede convertir de " + s.getTipo() + " a " + iden.getTipo());
+				}
 			}
 			
 		}else if(expresion != null) {
 			
-			expresion.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador);
+			expresion.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador, declaracion);
 			
 		}
 		

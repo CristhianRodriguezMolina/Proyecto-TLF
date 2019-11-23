@@ -148,13 +148,13 @@ public class Retorno extends Sentencia
 	@Override
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
 
+		Simbolo s = tablaSimbolos.buscarSimboloVariable(identificador.getPalabra(), ambito);
 		if(identificador != null) {
-			Simbolo s = tablaSimbolos.buscarSimboloVariable(identificador.getPalabra(), ambito);
 			if(s == null) {
 				erroresSemanticos.add("La variable "+identificador.getPalabra()+" no existe.");
 			} 
 		}else if(expresion != null) {
-			expresion.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
+			expresion.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, s.getNombre(), false);
 		}else if(invocacionFuncion != null) {
 			invocacionFuncion.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
 		}

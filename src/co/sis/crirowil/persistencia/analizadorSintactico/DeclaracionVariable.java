@@ -117,6 +117,9 @@ public class DeclaracionVariable extends Sentencia {
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
 		
 		if (asignacion != null) {
+			
+			if(identificador.equals("b"))
+				System.out.println("herherhehre");
 
 			if (asignacion.getOperadorAsignacion().getPalabra().equals("=")) {
 				
@@ -124,15 +127,27 @@ public class DeclaracionVariable extends Sentencia {
 				
 				if(asignacion.getArgumento() != null){
 					
-					asignacion.getArgumento().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador.getPalabra());
+					asignacion.getArgumento().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador.getPalabra(), false);
 					
-					String tipoArgumentoAux = asignacion.getArgumento().getTipo(tablaSimbolos, erroresSemanticos, ambito);
+//					String tipoArgumentoAux = asignacion.getArgumento().getTipo(tablaSimbolos, erroresSemanticos, ambito);
+//					
+//					String tipo = "";
+//					if(s.getTipo().equals("entero") || s.getTipo().equals("real")) 
+//					{
+//						tipo = "aritmetica";
+//					}
+//					else 
+//					{
+//						tipo = s.getTipo();
+//					}
+//					
+//					if(!tipoArgumentoAux.equals(tipo)) {
+//						
+//						erroresSemanticos.add("Tipo incorrecto: No se puede convertir de "+tipoArgumentoAux+" a "+s.getTipo());
+//						
+//					}
 					
-					if(!tipoArgumentoAux.equals(s.getTipo())) {
-						
-						erroresSemanticos.add("Tipo incorrecto: No se puede convertir de "+tipoArgumentoAux+" a "+s.getTipo());
-						
-					}
+					
 					
 				}else if(asignacion.getInvocacionFuncion() != null) {
 					

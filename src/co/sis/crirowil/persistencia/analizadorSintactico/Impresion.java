@@ -46,7 +46,7 @@ public class Impresion extends Sentencia {
 	@Override
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
 
-		argumento.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
+		argumento.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, null, false);
 		
 	}
 

@@ -108,59 +108,66 @@ public class ExpresionAritmetica extends Expresion {
 
 	@Override
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito,
-			String identificador) {
+			String identificador, boolean relacional) {
 
 		if (valorNumerico != null) {
 			// Me permite saber si se esta analizando una declaracion de variable
 			if (identificador != null) {
-				Simbolo declaracion = tablaSimbolos.buscarSimboloVariable(identificador, ambito);
-				if (declaracion != null) {
+				Simbolo s = tablaSimbolos.buscarSimboloVariable(identificador, ambito);
+				if (!relacional) {
+					if (s != null) {
+						if (valorNumerico.getTermino().getCategoria() == Categoria.IDENTIFICADOR) {
+							Simbolo var = tablaSimbolos.buscarSimboloVariable(valorNumerico.getTermino().getPalabra(),
+									ambito);
+							if (var != null) {
+								if (!var.getTipo().equals(s.getTipo())) {
+									System.out.println("3 sad");
+									erroresSemanticos.add("Tipo incorrecto: No se puede convertir de " + var.getTipo()
+											+ " a " + s.getTipo());
+								}
+							} else {
+								erroresSemanticos.add("La variable " + valorNumerico.getTermino().getPalabra()
+										+ " no existe ene le ambito actual");
+							}
+						} else {
+							if (s.getTipo().equals("entero")) {
+								if (valorNumerico.getTermino().getCategoria() != Categoria.ENTERO) {
+									System.out.println("2 sad");
+									erroresSemanticos
+											.add("Tipo incorrecto: No se puede convertir de real a " + s.getTipo());
+								}
+							} else {
+								if (valorNumerico.getTermino().getCategoria() != Categoria.REAL) {
+									System.out.println("1 sad");
+									erroresSemanticos
+											.add("Tipo incorrecto: No se puede convertir de entero a " + s.getTipo());
+								}
+							}
+						}
+					} else {
+						erroresSemanticos.add("La variable " + valorNumerico.getTermino().getPalabra()
+								+ " no existe en el ambito actual");
+					}
+				} else {
 					if (valorNumerico.getTermino().getCategoria() == Categoria.IDENTIFICADOR) {
 						Simbolo var = tablaSimbolos.buscarSimboloVariable(valorNumerico.getTermino().getPalabra(),
 								ambito);
-						if (var != null) {
-							if (var.getTipo() == declaracion.getTipo()) {
-								if (expresionAuxiliar != null) {
-									expresionAuxiliar.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito,
-											identificador);
-								}
-							} else {
-								erroresSemanticos.add(
-										"El tipo de dato de la variable que esta intentando declarar no coincide con su tipo de variable");
-							}
-						} else {
-							erroresSemanticos.add("La variable " + valorNumerico.getTermino().getPalabra()
-									+ " no existe ene le ambito actual");
-						}
-					} else {
-						if (declaracion.getTipo().equals("entero")) {
-							if (valorNumerico.getTermino().getCategoria() != Categoria.ENTERO) {
-								erroresSemanticos.add(
-										"El tipo de valor que esta intentando asignar es incompatible con el tipo de dato de la variable");
-							}
-						} else {
-							if (valorNumerico.getTermino().getCategoria() != Categoria.REAL) {
-								erroresSemanticos.add(
-										"El tipo de valor que esta intentando asignar es incompatible con el tipo de dato de la variable");
-							}
+						if (!var.getTipo().equals("entero") && !var.getTipo().equals("real")) {
+							erroresSemanticos.add("La variable debe ser de tipo real o entero para poder ser relacionada");
 						}
 					}
-				} else {
-					erroresSemanticos.add("La variable " + valorNumerico.getTermino().getPalabra()
-							+ " no existe ene le ambito actual");
 				}
-			} else {
-				if (valorNumerico.getTermino().getCategoria() == Categoria.IDENTIFICADOR) {
-					if (tablaSimbolos.buscarSimboloVariable(valorNumerico.getTermino().getPalabra(), ambito) != null) {
-						expresionAuxiliar.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador);
-					} else {
-						erroresSemanticos.add("La variable " + valorNumerico.getTermino().getPalabra()
-								+ " no existe ene le ambito actual");
-					}
+				if (expresionAuxiliar != null) {
+					expresionAuxiliar.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador,
+							relacional);
 				}
 			}
 		} else {
-			expresionAritmetica.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador);
+			expresionAritmetica.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador, relacional);
+			if (expresionAuxiliar != null) {
+				expresionAuxiliar.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador,
+						relacional);
+			}
 		}
 	}
 }

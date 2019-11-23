@@ -78,7 +78,7 @@ public class Caso extends Sentencia {
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
 
 		if(expresion != null) {
-			expresion.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
+			expresion.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, null, false);
 		}
 		
 		for(Sentencia sentencia: listaSentencias) 

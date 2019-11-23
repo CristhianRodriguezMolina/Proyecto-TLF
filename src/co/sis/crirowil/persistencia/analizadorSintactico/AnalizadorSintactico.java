@@ -54,7 +54,8 @@ public class AnalizadorSintactico {
 	 * Analiza los tokens para verificar la sintactica correcta del lenguaje
 	 */
 	public void analizar() {
-		if(tokenActual.getCategoria() == Categoria.COMENTARIO_BLOQUE || tokenActual.getCategoria() == Categoria.COMENTARIO_LINEA) {
+		if (tokenActual.getCategoria() == Categoria.COMENTARIO_BLOQUE
+				|| tokenActual.getCategoria() == Categoria.COMENTARIO_LINEA) {
 			obtenerTokenSiguiente();
 		}
 		unidadDeCompilacion = esUnidadDeCompilacion();
@@ -407,7 +408,8 @@ public class AnalizadorSintactico {
 		posActual++;
 		if (posActual < tokens.size()) {
 			tokenActual = tokens.get(posActual);
-			if(tokenActual.getCategoria() == Categoria.COMENTARIO_LINEA || tokenActual.getCategoria() == Categoria.COMENTARIO_BLOQUE) {
+			if (tokenActual.getCategoria() == Categoria.COMENTARIO_LINEA
+					|| tokenActual.getCategoria() == Categoria.COMENTARIO_BLOQUE) {
 				obtenerTokenSiguiente();
 			}
 			return true;
@@ -427,7 +429,9 @@ public class AnalizadorSintactico {
 	}
 
 	/**
-	 * <Sentencia> ::= <Sisas> | <Ciclo> | <Impresion> | <DeclaracionVariable> | <SentenciaInvocacion> | <SentenciaAsignacion> | <Retorno>
+	 * <Sentencia> ::= <Sisas> | <Ciclo> | <Impresion> | <DeclaracionVariable> |
+	 * <SentenciaInvocacion> | <SentenciaAsignacion> | <Retorno>
+	 * 
 	 * @return
 	 */
 	public Sentencia esSentencia() {
@@ -445,13 +449,13 @@ public class AnalizadorSintactico {
 		s = esCiclo();
 		if (s != null)
 			return s;
-		
+
 		tokenActual = tokenTemp;
 		posActual = posTemp;
 		s = esImpresion();
 		if (s != null)
 			return s;
-		
+
 		tokenActual = tokenTemp;
 		posActual = posTemp;
 		s = esLecturaDatos();
@@ -481,201 +485,208 @@ public class AnalizadorSintactico {
 		s = esRetorno();
 		if (s != null)
 			return s;
-		
+
 		tokenActual = tokenTemp;
 		posActual = posTemp;
 		s = esSwitch();
 		if (s != null)
 			return s;
-		
+
 		tokenActual = tokenTemp;
 		posActual = posTemp;
 		s = esPorCada();
 		if (s != null)
 			return s;
-		
+
 		return null;
 
 	}
-	
+
 	/**
-	 * <PorCada> ::= porcada <DeclaracionVariable> ":" identificador <BloqueSentencias>
+	 * <PorCada> ::= porcada <DeclaracionVariable> ":" identificador
+	 * <BloqueSentencias>
+	 * 
 	 * @return
 	 */
 	public PorCada esPorCada() {
-		
-		if(tokenActual.getCategoria() != Categoria.PALABRA_RESERVADA || !tokenActual.getPalabra().equals("porcada")) {
+
+		if (tokenActual.getCategoria() != Categoria.PALABRA_RESERVADA || !tokenActual.getPalabra().equals("porcada")) {
 			return null;
 		}
-		
+
 		obtenerTokenSiguiente();
-		
+
 		DeclaracionVariable declaracionVariable = esDeclaracionVariableSimple();
-		if(declaracionVariable == null) {
+		if (declaracionVariable == null) {
 			reportarError("Falta la declaracion de variable de un porcada");
 			return null;
 		}
-		
-		if(tokenActual.getCategoria() != Categoria.DOS_PUNTOS) {
+
+		if (tokenActual.getCategoria() != Categoria.DOS_PUNTOS) {
 			reportarError("Falta los dos puntos de un porcada");
 			return null;
 		}
-		
+
 		obtenerTokenSiguiente();
-		
-		if(tokenActual.getCategoria() != Categoria.IDENTIFICADOR) {
+
+		if (tokenActual.getCategoria() != Categoria.IDENTIFICADOR) {
 			reportarError("Falta la lista de un porcada");
 			return null;
 		}
-		
+
 		Token lista = tokenActual;
 		obtenerTokenSiguiente();
-		
+
 		BloqueSentencia bloqueSentencia = esBloqueSentencia();
-		if(bloqueSentencia == null) {
+		if (bloqueSentencia == null) {
 			reportarError("Falta el bloque de sentencias de un porcada");
 			return null;
 		}
-		
+
 		return new PorCada(declaracionVariable, lista, bloqueSentencia);
-		
+
 	}
-	
+
 	/**
-	 * <Switch> ::= switch <Expresion> ":" "{" <ListaCasos> "}" 
+	 * <Switch> ::= switch <Expresion> ":" "{" <ListaCasos> "}"
+	 * 
 	 * @return
 	 */
 	public Switch esSwitch() {
-		
-		if(tokenActual.getCategoria() != Categoria.PALABRA_RESERVADA || !tokenActual.getPalabra().equals("switch")) {
+
+		if (tokenActual.getCategoria() != Categoria.PALABRA_RESERVADA || !tokenActual.getPalabra().equals("switch")) {
 			return null;
 		}
-		
+
 		obtenerTokenSiguiente();
-		
+
 		Expresion expresion = esExpresion();
-		if(expresion == null) {
+		if (expresion == null) {
 			reportarError("Falta la expresion de un switch");
 			return null;
 		}
-		
-		if(tokenActual.getCategoria() != Categoria.DOS_PUNTOS) {
+
+		if (tokenActual.getCategoria() != Categoria.DOS_PUNTOS) {
 			reportarError("Falta los dos puntos de un caso");
 			return null;
 		}
-		
+
 		obtenerTokenSiguiente();
-		
-		if(tokenActual.getCategoria() != Categoria.LLAVES_ABRE) {
+
+		if (tokenActual.getCategoria() != Categoria.LLAVES_ABRE) {
 			reportarError("Falta la llave que abre");
 			return null;
 		}
-		
+
 		obtenerTokenSiguiente();
-		
+
 		ArrayList<Caso> listaCasos = esListaCasos();
-		
-		if(listaCasos == null) {
+
+		if (listaCasos == null) {
 			reportarError("El bloque de un switch no existe");
 			return null;
 		}
-		
-		if(tokenActual.getCategoria() != Categoria.LLAVES_CIERRA) {
+
+		if (tokenActual.getCategoria() != Categoria.LLAVES_CIERRA) {
 			reportarError("Falta la llave que cierra");
 			return null;
 		}
-		
+
 		obtenerTokenSiguiente();
-		
+
 		return new Switch(expresion, listaCasos);
 	}
-	
+
 	/**
 	 * <ListaCasos> ::= <Caso> [<ListaCasos>]
+	 * 
 	 * @return
 	 */
 	public ArrayList<Caso> esListaCasos() {
-		
+
 		ArrayList<Caso> listaCasos = new ArrayList<Caso>();
 		Caso caso = esCaso();
-		
-		while(caso != null) {
+
+		while (caso != null) {
 			listaCasos.add(caso);
-			if(caso.getTipoCaso().getPalabra().equals("defecto")) {
+			if (caso.getTipoCaso().getPalabra().equals("defecto")) {
 				caso = esCaso();
-				if(caso != null) {
+				if (caso != null) {
 					reportarError("No pueden haber casos demas despues del caso defecto");
 					return null;
 				}
-			}else {
+			} else {
 				caso = esCaso();
-			}			
+			}
 		}
-		
+
 		return listaCasos;
 	}
 
 	/**
-	 * <Caso> ::= caso <Expresion> ":" "{" [<ListaSentencias>] "}" | defecto <Expresion> ":" "{" [<ListaSentencias>] "}"
+	 * <Caso> ::= caso <Expresion> ":" "{" [<ListaSentencias>] "}" | defecto
+	 * <Expresion> ":" "{" [<ListaSentencias>] "}"
+	 * 
 	 * @return
 	 */
 	public Caso esCaso() {
 
-		if(tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && tokenActual.getPalabra().equals("caso")) {
+		if (tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && tokenActual.getPalabra().equals("caso")) {
 			Token tipoCaso = tokenActual;
 			obtenerTokenSiguiente();
-			
+
 			Expresion expresion = esExpresion();
-			if(expresion == null) {
+			if (expresion == null) {
 				reportarError("Falta la expresion de un caso");
 				return null;
 			}
-			
-			if(tokenActual.getCategoria() != Categoria.DOS_PUNTOS) {
+
+			if (tokenActual.getCategoria() != Categoria.DOS_PUNTOS) {
 				reportarError("Falta los dos puntos de un caso");
 				return null;
 			}
-			
+
 			obtenerTokenSiguiente();
-			
-			if(tokenActual.getCategoria() != Categoria.LLAVES_ABRE) {
+
+			if (tokenActual.getCategoria() != Categoria.LLAVES_ABRE) {
 				reportarError("Falta la llave que abre");
 				return null;
 			}
-			
+
 			obtenerTokenSiguiente();
-			
+
 			ArrayList<Sentencia> listaSentencias = esListaSentencias();
-			
-			if(tokenActual.getCategoria() != Categoria.LLAVES_CIERRA) {
+
+			if (tokenActual.getCategoria() != Categoria.LLAVES_CIERRA) {
 				reportarError("Falta la llave que cierra");
 				return null;
 			}
-			
+
 			obtenerTokenSiguiente();
-			
+
 			return new Caso(tipoCaso, expresion, listaSentencias);
-			
-		}else if(tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && tokenActual.getPalabra().equals("defecto")) {
+
+		} else if (tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA
+				&& tokenActual.getPalabra().equals("defecto")) {
 			Token tipoCaso = tokenActual;
 			obtenerTokenSiguiente();
-			
-			if(tokenActual.getCategoria() != Categoria.LLAVES_ABRE) {
+
+			if (tokenActual.getCategoria() != Categoria.LLAVES_ABRE) {
 				reportarError("Falta la llave que abre");
 				return null;
 			}
-			
+
 			obtenerTokenSiguiente();
-			
+
 			ArrayList<Sentencia> listaSentencias = esListaSentencias();
-			
-			if(tokenActual.getCategoria() != Categoria.LLAVES_CIERRA) {
+
+			if (tokenActual.getCategoria() != Categoria.LLAVES_CIERRA) {
 				reportarError("Falta la llave que cierra");
 				return null;
 			}
-			
+
 			obtenerTokenSiguiente();
-			
+
 			return new Caso(tipoCaso, null, listaSentencias);
 		}
 		return null;
@@ -683,6 +694,7 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <LecturaDatos> ::= leer "(" <ExpresionCadena ")" terminal
+	 * 
 	 * @return
 	 */
 	public LecturaDatos esLecturaDatos() {
@@ -717,51 +729,50 @@ public class AnalizadorSintactico {
 		obtenerTokenSiguiente();
 
 		return new LecturaDatos(expresionCadena);
-		
-		
+
 	}
-	
+
 	/**
-	 * <Impresion> ::= imprimir "(" <Argumento> ")" terminal 
+	 * <Impresion> ::= imprimir "(" <Argumento> ")" terminal
+	 * 
 	 * @return
 	 */
 	public Impresion esImpresion() {
-		
-		if(tokenActual.getCategoria() != Categoria.PALABRA_RESERVADA || !tokenActual.getPalabra().equals("imprimir")) {
+
+		if (tokenActual.getCategoria() != Categoria.PALABRA_RESERVADA || !tokenActual.getPalabra().equals("imprimir")) {
 			return null;
 		}
-		
+
 		obtenerTokenSiguiente();
-		
-		if(tokenActual.getCategoria() != Categoria.PARENTESIS_ABRE) {
+
+		if (tokenActual.getCategoria() != Categoria.PARENTESIS_ABRE) {
 			reportarError("Falta el parentesis que abre");
 			return null;
 		}
-		
+
 		obtenerTokenSiguiente();
-		
+
 		Argumento argumento = esArgumento();
-		
-		if(argumento == null)
-		{
+
+		if (argumento == null) {
 			reportarError("Falta el argumento en la impresion");
 			return null;
 		}
-		
-		if(tokenActual.getCategoria() != Categoria.PARENTESIS_CIERRA) {
+
+		if (tokenActual.getCategoria() != Categoria.PARENTESIS_CIERRA) {
 			reportarError("Falta el parentesis que cierra");
 			return null;
 		}
-		
+
 		obtenerTokenSiguiente();
-		
+
 		if (tokenActual.getCategoria() != Categoria.TERMINAL) {
 			reportarError("Falta el terminal de la sentecia");
 			return null;
 		}
-		
+
 		obtenerTokenSiguiente();
-		
+
 		return new Impresion(argumento);
 	}
 
@@ -784,8 +795,9 @@ public class AnalizadorSintactico {
 	}
 
 	/**
-	 * Metodo que me verifica que dado el BNF del Retorno es o no valido 
-	 * <Retorno> ::= "retorno" identificador ";"| "retorno" <Expresion> ";"| "retorno" <InvocacionFuncion> ";"
+	 * Metodo que me verifica que dado el BNF del Retorno es o no valido <Retorno>
+	 * ::= "retorno" identificador ";"| "retorno" <Expresion> ";"| "retorno"
+	 * <InvocacionFuncion> ";"
 	 * 
 	 * @return
 	 */
@@ -852,10 +864,10 @@ public class AnalizadorSintactico {
 	 * @return
 	 */
 	public InvocacionFuncion esInvocacionFuncion() {
-		
+
 		Token tokenAux = tokenActual;
 		int posAux = posActual;
-		
+
 		if (tokenActual.getCategoria() == Categoria.IDENTIFICADOR) {
 			Token nombre = tokenActual;
 			obtenerTokenSiguiente();
@@ -876,86 +888,88 @@ public class AnalizadorSintactico {
 				return null;
 			}
 		}
-		
+
 		tokenActual = tokenAux;
 		posActual = posAux;
 		return null;
 	}
-	
+
 	/**
 	 * <Mapa> ::= mapaDe( tipoDato, tipoDato )"{" <ListaArgumentos> "}"
+	 * 
 	 * @return
 	 */
 	public Mapa esMapa() {
-		
-		if(tokenActual.getCategoria() != Categoria.PALABRA_RESERVADA || !tokenActual.getPalabra().equals("mapDe")) {
+
+		if (tokenActual.getCategoria() != Categoria.PALABRA_RESERVADA || !tokenActual.getPalabra().equals("mapDe")) {
 			return null;
 		}
-		
+
 		obtenerTokenSiguiente();
-		
-		if(tokenActual.getCategoria() != Categoria.PARENTESIS_ABRE) {
+
+		if (tokenActual.getCategoria() != Categoria.PARENTESIS_ABRE) {
 			reportarError("Falta un parentesis que abre en declaracion de mapa");
 			return null;
 		}
-		
+
 		obtenerTokenSiguiente();
-		
+
 		Token llave = esTipoRetorno();
-		if(llave == null) {
+		if (llave == null) {
 			reportarError("Falta una llave en declaracion de mapa");
 			return null;
 		}
-		
+
 		obtenerTokenSiguiente();
-		
-		if(tokenActual.getCategoria() != Categoria.SEPARADOR) {
+
+		if (tokenActual.getCategoria() != Categoria.SEPARADOR) {
 			reportarError("Falta un separador en declaracion de mapa");
 			return null;
 		}
-		
+
 		obtenerTokenSiguiente();
-		
+
 		Token tipoDato = esTipoRetorno();
-		if(tipoDato == null) {
+		if (tipoDato == null) {
 			reportarError("Falta un tipo de dato en declaracion de mapa");
 			return null;
 		}
-		
+
 		obtenerTokenSiguiente();
-		
-		if(tokenActual.getCategoria() != Categoria.PARENTESIS_CIERRA) {
+
+		if (tokenActual.getCategoria() != Categoria.PARENTESIS_CIERRA) {
 			reportarError("Falta un parentesis que cierra en declaracion de mapa");
 			return null;
 		}
-		
+
 		obtenerTokenSiguiente();
-		
-		if(tokenActual.getCategoria() != Categoria.LLAVES_ABRE) {
+
+		if (tokenActual.getCategoria() != Categoria.LLAVES_ABRE) {
 			reportarError("Falta una llave que abre en declaracion de mapa");
 			return null;
 		}
-		
+
 		obtenerTokenSiguiente();
-		
+
 		ArrayList<ArgumentoMapa> listaArgumentos = esListaArgumentosMapa();
-		
-		if(tokenActual.getCategoria() != Categoria.LLAVES_CIERRA) {
+
+		if (tokenActual.getCategoria() != Categoria.LLAVES_CIERRA) {
 			reportarError("Faltan las llaves que cierran en declaracion de mapa");
 			return null;
 		}
-		
+
 		obtenerTokenSiguiente();
-		
-		return new Mapa(llave, tipoDato, listaArgumentos);	
-		
+
+		return new Mapa(llave, tipoDato, listaArgumentos);
+
 	}
-	
+
 	/**
-	 * Metodo que me verifica que dado el BNF de la lista de argumentos de un mapa es o no
-	 * valido <ListaArgumentosMapa> ::= <ArgumentoMapa>[, <ListaArgumentosMapa>]
+	 * Metodo que me verifica que dado el BNF de la lista de argumentos de un mapa
+	 * es o no valido <ListaArgumentosMapa> ::= <ArgumentoMapa>[,
+	 * <ListaArgumentosMapa>]
 	 */
-	public ArrayList<ArgumentoMapa> esListaArgumentosMapa(){
+	public ArrayList<ArgumentoMapa> esListaArgumentosMapa() {
 		ArrayList<ArgumentoMapa> listaArgumentos = new ArrayList<>();
 		ArgumentoMapa argumento = esArgumentoMapa();
 
@@ -981,79 +995,81 @@ public class AnalizadorSintactico {
 
 		return listaArgumentos;
 	}
-	
+
 	/**
 	 * <ArgumentoMapa> ::= "{" identificador "," identificador "}"
+	 * 
 	 * @return
 	 */
 	public ArgumentoMapa esArgumentoMapa() {
-		
-		if(tokenActual.getCategoria() != Categoria.LLAVES_ABRE) {
+
+		if (tokenActual.getCategoria() != Categoria.LLAVES_ABRE) {
 			return null;
 		}
-		
+
 		obtenerTokenSiguiente();
-		
-		if(tokenActual.getCategoria() != Categoria.IDENTIFICADOR) {
+
+		if (tokenActual.getCategoria() != Categoria.IDENTIFICADOR) {
 			reportarError("LLave de argumento de mapa erronea");
 			return null;
 		}
-		
+
 		Token llave = tokenActual;
 		obtenerTokenSiguiente();
-		
-		if(tokenActual.getCategoria() != Categoria.SEPARADOR) {
+
+		if (tokenActual.getCategoria() != Categoria.SEPARADOR) {
 			reportarError("LLave un separador en un argumento de un mapa");
 			return null;
 		}
-		
+
 		obtenerTokenSiguiente();
-		
-		if(tokenActual.getCategoria() != Categoria.IDENTIFICADOR) {
+
+		if (tokenActual.getCategoria() != Categoria.IDENTIFICADOR) {
 			reportarError("Dato de argumento de mapa erroneo");
 			return null;
 		}
-		
+
 		Token dato = tokenActual;
 		obtenerTokenSiguiente();
-		
-		if(tokenActual.getCategoria() == Categoria.LLAVES_ABRE) {
+
+		if (tokenActual.getCategoria() == Categoria.LLAVES_ABRE) {
 			reportarError("Falta llave que cierra en argumento de mapa");
 			return null;
 		}
-		
+
 		obtenerTokenSiguiente();
-		
+
 		return new ArgumentoMapa(llave, dato);
-		
+
 	}
-	
+
 	/**
 	 * <Arreglo> ::= "{" <ListaArgumentos> "}"
+	 * 
 	 * @return
 	 */
 	public Arreglo esArreglo() {
-		
-		if(tokenActual.getCategoria() != Categoria.LLAVES_ABRE) {
+
+		if (tokenActual.getCategoria() != Categoria.LLAVES_ABRE) {
 			return null;
 		}
-		
+
 		obtenerTokenSiguiente();
 		ArrayList<Argumento> listaArgumentos = esListaArgumentos();
-		
-		if(listaArgumentos == null) {
+
+		if (listaArgumentos == null) {
 			reportarError("Falta la lista de argumentos");
 			return null;
 		}
-		
-		if(tokenActual.getCategoria() != Categoria.LLAVES_CIERRA) {
+
+		if (tokenActual.getCategoria() != Categoria.LLAVES_CIERRA) {
 			reportarError("Faltan las llaves que cierran en el arreglo");
 			return null;
 		}
-		
+
 		obtenerTokenSiguiente();
 		return new Arreglo(listaArgumentos);
-		
+
 	}
 
 	/**
@@ -1098,23 +1114,24 @@ public class AnalizadorSintactico {
 		if (tokenActual.getCategoria() == Categoria.IDENTIFICADOR) {
 			Token nombre = tokenActual;
 			obtenerTokenSiguiente();
-			if(tokenActual.getCategoria() == Categoria.OPERADOR_ARITMETICO || tokenActual.getCategoria() == Categoria.OPERADOR_LOGICO
+			if (tokenActual.getCategoria() == Categoria.OPERADOR_ARITMETICO
+					|| tokenActual.getCategoria() == Categoria.OPERADOR_LOGICO
 					|| tokenActual.getCategoria() == Categoria.OPERADOR_RELACIONAL) {
 				tokenActual = tokenAux;
-				posActual = posAux;				
-			}else {
+				posActual = posAux;
+			} else {
 				return new Argumento(nombre);
-			}			
-		} 
+			}
+		}
 
 		Expresion expresion = esExpresion();
 		if (expresion != null) {
 			return new Argumento(expresion);
-		}	
-			
+		}
+
 		return null;
 	}
-	
+
 	/**
 	 * Metodo que me verifica que dado el BNF del DeclaracionVariable es o no valido
 	 * <DeclaracionVariable> ::= <TipoRetorno> identificador [<Asignacion>]";"
@@ -1125,7 +1142,7 @@ public class AnalizadorSintactico {
 		if (tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && esTipoRetorno() != null) {
 			Token tipoDato = tokenActual;
 			obtenerTokenSiguiente();
-			
+
 			if (tokenActual.getCategoria() != Categoria.IDENTIFICADOR) {
 				reportarError("El nombre de la varible no es valido");
 				return null;
@@ -1133,10 +1150,10 @@ public class AnalizadorSintactico {
 
 			Token identificador = tokenActual;
 			obtenerTokenSiguiente();
-			
+
 			return new DeclaracionVariable(tipoDato, identificador, null);
-		}		
-		
+		}
+
 		return null;
 	}
 
@@ -1150,7 +1167,7 @@ public class AnalizadorSintactico {
 		if (tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && esTipoRetorno() != null) {
 			Token tipoDato = tokenActual;
 			obtenerTokenSiguiente();
-			
+
 			if (tokenActual.getCategoria() != Categoria.IDENTIFICADOR) {
 				reportarError("El nombre de la varible no es valido");
 				return null;
@@ -1166,11 +1183,11 @@ public class AnalizadorSintactico {
 				return new DeclaracionVariable(tipoDato, identificador, asignacion);
 			} else {
 				reportarError("Falta el terminal \";\"");
-				System.out.println(identificador.getPalabra() +" "+ tokenActual.getPalabra());
+				System.out.println(identificador.getPalabra() + " " + tokenActual.getPalabra());
 				return null;
 			}
-		}		
-		
+		}
+
 		return null;
 	}
 
@@ -1186,7 +1203,7 @@ public class AnalizadorSintactico {
 		if (tokenActual.getCategoria() == Categoria.PALABRA_RESERVADA && tokenActual.getPalabra().equals("ciclo")) {
 			obtenerTokenSiguiente();
 			boolean tieneAsignacion = false;
-			
+
 			Token tokenTemp = tokenActual;
 			int posTemp = posActual;
 			DeclaracionVariable declaracionVariable = esDeclaracionVariable();
@@ -1280,47 +1297,51 @@ public class AnalizadorSintactico {
 
 	/**
 	 * Metodo que me verifica que dado el BNF de la asignacion es o no valido
-	 * <Asignacion> ::= operadorAsignacion <InvocacionFuncion> | operadorAsignacion identificador | operadorAsignacion
-	 * <Expresion> | operadorAsignacion <Mapa> | operadorAsignacion <Arreglo> | operadorIncrementoDecremento;
+	 * <Asignacion> ::= operadorAsignacion <InvocacionFuncion> | operadorAsignacion
+	 * identificador | operadorAsignacion <Expresion> | operadorAsignacion <Mapa> |
+	 * operadorAsignacion <Arreglo> | operadorIncrementoDecremento;
 	 */
 	public Asignacion esAsignacion() {
-		
+
 		if (tokenActual.getCategoria() == Categoria.OPERADOR_ASIGNACION) {
 			Token operadorAsignacion = tokenActual;
 			obtenerTokenSiguiente();
-						
+
 			InvocacionFuncion invocacionFuncion = esInvocacionFuncion();
 			if (invocacionFuncion != null) {
 				return new Asignacion(operadorAsignacion, invocacionFuncion);
 			} else {
-				
+
 				Argumento argumento = esArgumento();
 				if (argumento != null) {
 					return new Asignacion(operadorAsignacion, argumento);
-				}else {
+				} else {
 					Arreglo arreglo = esArreglo();
-					if(arreglo != null) {
-						if(operadorAsignacion.getCategoria() == Categoria.OPERADOR_ASIGNACION && operadorAsignacion.getPalabra().equals("=")) {
+					if (arreglo != null) {
+						if (operadorAsignacion.getCategoria() == Categoria.OPERADOR_ASIGNACION
+								&& operadorAsignacion.getPalabra().equals("=")) {
 							return new Asignacion(operadorAsignacion, arreglo);
-						}else {
+						} else {
 							reportarError("Un arreglo solo se puede inicializar con un igual simple (=)");
 						}
 					}
-					
+
 					Mapa mapa = esMapa();
-					if(mapa != null) {
-						if(operadorAsignacion.getCategoria() == Categoria.OPERADOR_ASIGNACION && operadorAsignacion.getPalabra().equals("=")) {
+					if (mapa != null) {
+						if (operadorAsignacion.getCategoria() == Categoria.OPERADOR_ASIGNACION
+								&& operadorAsignacion.getPalabra().equals("=")) {
 							return new Asignacion(operadorAsignacion, mapa);
-						}else {
+						} else {
 							reportarError("Un mapa solo se puede inicializar con un igual simple (=)");
 						}
 					}
-					
+
 					LecturaDatos lecturaDatos = esLecturaDatos();
-					if(lecturaDatos != null) {
-						if(operadorAsignacion.getCategoria() == Categoria.OPERADOR_ASIGNACION && operadorAsignacion.getPalabra().equals("=")) {
+					if (lecturaDatos != null) {
+						if (operadorAsignacion.getCategoria() == Categoria.OPERADOR_ASIGNACION
+								&& operadorAsignacion.getPalabra().equals("=")) {
 							return new Asignacion(operadorAsignacion, lecturaDatos);
-						}else {
+						} else {
 							reportarError("Una lectura de datos solo se puede inicializar con un igual simple (=)");
 						}
 					}
@@ -1373,6 +1394,11 @@ public class AnalizadorSintactico {
 		return null;
 	}
 
+	/**
+	 * <ExpresionCadena> ::= cadena "+" cadena | cadena
+	 * 
+	 * @return
+	 */
 	public ExpresionCadena esExpresionCadena() {
 
 		if (tokenActual.getCategoria() != Categoria.CADENA_CARACTERES) {
@@ -1401,8 +1427,8 @@ public class AnalizadorSintactico {
 
 	/**
 	 * <ExpresionLogica> ::= "(" <ExpresionLogica> ")" [<ExpresionAuxiliarLogica>] |
-	 * "!" "(" <ExpresionLogica> ")" [<ExpresionAuxiliarLogica>] | <ExpresionRelacional>
-	 * [<ExpresionAuxiliarLogica>]
+	 * "!" "(" <ExpresionLogica> ")" [<ExpresionAuxiliarLogica>] |
+	 * <ExpresionRelacional> [<ExpresionAuxiliarLogica>]
 	 * 
 	 * @return
 	 */
@@ -1435,19 +1461,19 @@ public class AnalizadorSintactico {
 		} else if (tokenActual.getCategoria() == Categoria.OPERADOR_LOGICO && tokenActual.getPalabra().equals("!")) {
 
 			obtenerTokenSiguiente();
-			
-			if(tokenActual.getCategoria() == Categoria.PARENTESIS_ABRE) {
+
+			if (tokenActual.getCategoria() == Categoria.PARENTESIS_ABRE) {
 				obtenerTokenSiguiente();
 				ExpresionLogica expresionLogica = esExpresionLogica();
 
 				if (expresionLogica != null) {
-					
-					if(tokenActual.getCategoria() == Categoria.PARENTESIS_CIERRA) {
+
+					if (tokenActual.getCategoria() == Categoria.PARENTESIS_CIERRA) {
 						obtenerTokenSiguiente();
 						ExpresionAuxiliarLogica expresionAuxiliarLogica = esExpresionAuxiliarLogica();
 
 						return new ExpresionLogica(expresionLogica, null, expresionAuxiliarLogica, true);
-					}else {
+					} else {
 						reportarError("Falta un parentesis que cierra en una expresion logica");
 					}
 
@@ -1455,8 +1481,8 @@ public class AnalizadorSintactico {
 					reportarError("Falta una expresion logica");
 					return null;
 				}
-				
-			}else {
+
+			} else {
 				reportarError("Falta un parentesis que abre en una expresion logica");
 			}
 
@@ -1478,7 +1504,7 @@ public class AnalizadorSintactico {
 	}
 
 	/**
-	 * <ExpresionLogicaAuxiliar> ::= operadorLogio <ExpresionLogica>
+	 * <ExpresionLogicaAuxiliar> ::= operadorLogico <ExpresionLogica>
 	 * [<ExpresionAuxiliarLogica>]
 	 * 
 	 * @return
@@ -1490,9 +1516,10 @@ public class AnalizadorSintactico {
 
 			ExpresionLogica expresionLogica = esExpresionLogica();
 
+			System.out.println("Q pASAS por gacer2");
 			if (expresionLogica != null) {
 				ExpresionAuxiliarLogica expresionAuxiliarLogica = esExpresionAuxiliarLogica();
-
+				System.out.println("Q pASAS por gacer");
 				return new ExpresionAuxiliarLogica(operadorLogico, expresionLogica, expresionAuxiliarLogica);
 			}
 		}
@@ -1559,6 +1586,7 @@ public class AnalizadorSintactico {
 					}
 
 				} else if (tokenActual.getCategoria() != Categoria.OPERADOR_LOGICO) {
+					System.out.println("tiej asdctaul " + tokenActual.getCategoria());
 					reportarError("Falta un operador relacional");
 					return null;
 				}
@@ -1572,6 +1600,7 @@ public class AnalizadorSintactico {
 	/**
 	 * <ExpresionAritmetica> ::= "(" <ExpresionAritmetica> ")" [<ExpresionAuxiliar>]
 	 * | <ValorNumerico>[<ExpresionAuxiliar>]
+	 * 
 	 * @return
 	 */
 	public ExpresionAritmetica esExpresionAritmetica() {
@@ -1616,7 +1645,7 @@ public class AnalizadorSintactico {
 			}
 		}
 		return null;
-		
+
 	}
 
 	/**

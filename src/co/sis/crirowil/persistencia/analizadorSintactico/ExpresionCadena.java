@@ -64,8 +64,20 @@ public class ExpresionCadena extends Expresion{
 	}
 
 	@Override
-	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito, String identificador) {
-		// TODO Auto-generated method stub
+	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito, String identificador, boolean declaracion) {
+		Simbolo s = tablaSimbolos.buscarSimboloVariable(identificador, ambito);
+		if(s != null) 
+		{
+			if(!s.getTipo().equals("cadena")) 
+			{
+				erroresSemanticos.add("Tipo incorrecto: No se puede convertir de cadena a " + s.getTipo());
+			}
+		}
+		else 
+		{
+			erroresSemanticos.add("La variable " + identificador
+					+ " no existe en el ambito actual");
+		}
 		
 	}
 	

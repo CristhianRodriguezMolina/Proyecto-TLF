@@ -2,17 +2,18 @@ package co.sis.crirowil.persistencia.analizadorSintactico;
 
 import java.util.ArrayList;
 
+import co.sis.crirowil.persistencia.analizadorLexico.Categoria;
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
 import co.sis.crirowil.persistencia.analizadorSemantico.Simbolo;
 import co.sis.crirowil.persistencia.analizadorSemantico.TablaSimbolos;
 import javafx.scene.control.TreeItem;
 
-public class ExpresionRelacional extends Expresion{
+public class ExpresionRelacional extends Expresion {
 
 	private ExpresionAritmetica expresionAritmetica, expresionAritmetica2;
 	private Token operadorRelacional;
 	private Token valorLogico;
-	
+
 	/**
 	 * 
 	 * @param expresionAritmetica
@@ -65,21 +66,21 @@ public class ExpresionRelacional extends Expresion{
 	public TreeItem<String> getArbolVisual() {
 
 		TreeItem<String> raiz = new TreeItem<String>("Expresion Relacional");
-		
-		if(valorLogico == null) {
-			if(getExpresionAritmetica() != null)
+
+		if (valorLogico == null) {
+			if (getExpresionAritmetica() != null)
 				raiz.getChildren().add(getExpresionAritmetica().getArbolVisual());
-			
+
 			raiz.getChildren().add(new TreeItem<String>("Operador relacional: " + operadorRelacional.getPalabra()));
-			
-			if(getExpresionAritmetica2() != null)
+
+			if (getExpresionAritmetica2() != null)
 				raiz.getChildren().add(getExpresionAritmetica2().getArbolVisual());
-		}else {
+		} else {
 			raiz.getChildren().add(new TreeItem<String>("Valor lógico: " + valorLogico.getPalabra()));
 		}
-		
+
 		return raiz;
-		
+
 	}
 
 	@Override
@@ -88,10 +89,25 @@ public class ExpresionRelacional extends Expresion{
 	}
 
 	@Override
-	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito, String identificador) {
-		// TODO Auto-generated method stub
-		
+	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito,
+			String identificador, boolean declaracion) {
+		Simbolo s = tablaSimbolos.buscarSimboloVariable(identificador, ambito);
+		if (s != null) {
+			if (!s.getTipo().equals("bool")) {
+				erroresSemanticos.add("No se puede convertir de bool a " + s.getTipo());
+			} else {
+				if (valorLogico == null) {
+					expresionAritmetica.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador,
+							true);
+					expresionAritmetica2.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador,
+							true);
+				}
+
+			}
+		} else {
+			erroresSemanticos.add("La variable " + identificador + " no existe en el ambito actual");
+		}
+
 	}
-	
-	
+
 }

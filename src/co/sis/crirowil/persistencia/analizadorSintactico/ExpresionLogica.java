@@ -68,14 +68,20 @@ public class ExpresionLogica extends Expresion{
 		
 		raiz.getChildren().add(new TreeItem<String>("Expresion negada: " + negacion));
 		
-		if(getExpresionLogica() != null)
+		if(getExpresionLogica() != null) {
+			System.out.println("ASQ#1");
 			raiz.getChildren().add(getExpresionLogica().getArbolVisual());
+		}
 		
-		if(getExpresionRelacional() != null)
+		if(getExpresionRelacional() != null) {
+			System.out.println("ASQ#2");
 			raiz.getChildren().add(getExpresionRelacional().getArbolVisual());
+		}
 		
-		if(getExpresionAuxiliarLogica() != null)
+		if(getExpresionAuxiliarLogica() != null) {
+			System.out.println("ASQ#3");
 			raiz.getChildren().add(getExpresionAuxiliarLogica().getArbolVisual());
+		}
 		
 		return raiz;
 		
@@ -87,9 +93,20 @@ public class ExpresionLogica extends Expresion{
 	}
 
 	@Override
-	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito, String identificador) {
-		// TODO Auto-generated method stub
-		
+	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito, String identificador, boolean relacional) {
+		if(expresionRelacional != null) 
+		{
+			System.out.println("hello weosad");
+			expresionRelacional.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador, false);
+			if(expresionAuxiliarLogica != null) 
+			{
+				expresionAuxiliarLogica.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador, false);
+			}
+		}
+		else
+		{
+			expresionLogica.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador, false);
+		}
 	}
 	
 	

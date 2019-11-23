@@ -111,7 +111,7 @@ public class InvocacionFuncion{
 		if(s != null) {
 			
 			for (Argumento argumento : listaArgumentos) {
-				argumento.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
+				argumento.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, null, false);
 			}
 			
 		}else {
