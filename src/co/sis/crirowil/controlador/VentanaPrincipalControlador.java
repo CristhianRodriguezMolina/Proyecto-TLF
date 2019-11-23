@@ -175,28 +175,37 @@ public class VentanaPrincipalControlador {
 				"\r\n" + 
 				"metodo main(cadena args, cadena resp)\r\n" + 
 				"{\r\n" + 
-				"	mapa b = mapDe(entero , cadena){ {a, v}, {b, d}, {g, we},{f , df}};\r\n" + 
+				"\r\n" + 
 				"	entero numero1 = 345;\r\n" + 
+				"	entero numero = 0;\r\n" + 
 				"	real numero2 = 5.63;\r\n" + 
 				"	real numero3 = .45;\r\n" + 
 				"	real numero4 = 456.;\r\n" + 
-				"	real numero5 *= numero1;\r\n" + 
-				"	real numero6 /= numero2;\r\n" + 
-				"	real numero7 -= numero3;\r\n" + 
-				"	real numero8 ^= numero4;\r\n" + 
+				"	entero numero5 = 3;\r\n" + 
+				"	numero5 *= numero1;\r\n" + 
+				"	real numero6 = 4.3;\r\n" + 
+				"	numero6 /= numero2;\r\n" + 
+				"	real numero7 = 312.2;\r\n" + 
+				"	numero7 -= numero3;\r\n" + 
+				"	real numero8 = numero2;\r\n" + 
+				"	numero8 ^= numero4;\r\n" + 
 				"	entero o = 1;\r\n" + 
 				"	entero y = 0 + o;\r\n" + 
-				"	entero numero9 = numero2 - numero3 % 2;\r\n" + 
+				"	real numero9 = numero2 - numero3 % 2.3;\r\n" + 
 				"	cadena d = \"hola mundo\";\r\n" + 
 				"	cadena temp = \"\";\r\n" + 
 				"	cadena res2 = \"hola\" + \"mundo\" + \"\";\r\n" + 
-				"	cadena a = {a, v, b};\r\n" + 
+				"	cadena a = \"hola\";\r\n" + 
+				"	cadena v = \"hola\";\r\n" + 
+				"	cadena b = \"hola\";\r\n" + 
+				"	cadena cad = {a, v, b};\r\n" + 
+				"	bool flag;\r\n" + 
 				"	switch 6+5:{\r\n" + 
 				"		caso 6:{\r\n" + 
 				"		}\r\n" + 
 				"		caso 89 + 9:{\r\n" + 
 				"			sisas 5>6:{\r\n" + 
-				"				numero = 3 < 4 yy 4>3;\r\n" + 
+				"				flag = 3 < 4 yy 4>3;\r\n" + 
 				"			} nonais 5 < 6 oo 4 <2: {\r\n" + 
 				"				numero++;\r\n" + 
 				"			}\r\n" + 
@@ -207,17 +216,21 @@ public class VentanaPrincipalControlador {
 				"	retorno nada;\r\n" + 
 				"}\r\n" + 
 				"\r\n" + 
-				"metodo sumar(entero n, entero n2): real\r\n" + 
+				"metodo sumar(bool numero, entero n2): real\r\n" + 
 				"{\r\n" + 
 				"	sisas 5>6:{\r\n" + 
 				"		numero = 3 < 4 yy 4>3;\r\n" + 
 				"	} nonais 5 < 6 oo 4 <2: {\r\n" + 
 				"		numero++;\r\n" + 
 				"	}nonais 4 > 3:{\r\n" + 
-				"		numero = holis();\r\n" + 
+				"#		numero = restar(n2, n2);\r\n" + 
 				"	}nonas{\r\n" + 
-				"		numero = 2 + numero;\r\n" + 
+				"		entero numero2 = 2 + n2;\r\n" + 
 				"\r\n" + 
+				"		cadena a = \"hola\";\r\n" + 
+				"		cadena v = \"hola\";\r\n" + 
+				"		cadena b = \"hola\";\r\n" + 
+				"		cadena arregloCadenas = {a, v, b};\r\n" + 
 				"		porcada cadena s : arregloCadenas {\r\n" + 
 				"\r\n" + 
 				"			ciclo entero i=0; a + b == 2; i++ : \r\n" + 
@@ -229,15 +242,15 @@ public class VentanaPrincipalControlador {
 				"	}\r\n" + 
 				"}\r\n" + 
 				"\r\n" + 
-				"metodo sumar(entero n, entero n2): real\r\n" + 
+				"metodo restar(entero n, entero n2): real\r\n" + 
 				"{\r\n" + 
 				"	real numero;\r\n" + 
-				"	real numero1 = 5 > 6;\r\n" + 
-				"	real numero3 = hola(5 + 6, numero);\r\n" + 
-				"	hola(1, 3,hola,d);\r\n" + 
+				"	bool numero1 = 5 > 6;\r\n" + 
+				"	#real numero3 = sumar(true, 3);\r\n" + 
+				"	#sumar(true, 3);\r\n" + 
 				"}\r\n" + 
 				"\r\n" + 
-				"metodo sumar(entero n, entero n2): real\r\n" + 
+				"metodo mult(entero a, entero hola): real\r\n" + 
 				"{\r\n" + 
 				"	ciclo a + b == 2: \r\n" + 
 				"	{\r\n" + 
@@ -250,13 +263,14 @@ public class VentanaPrincipalControlador {
 				"	}\r\n" + 
 				"}\r\n" + 
 				"\r\n" + 
-				"metodo main(cadena args, cadena resp)\r\n" + 
+				"metodo div(cadena args, cadena resp)\r\n" + 
 				"{\r\n" + 
 				"	entero a = 3;\r\n" + 
 				"	entero b = 3;\r\n" + 
 				"	entero c = 3;\r\n" + 
 				"	entero d = 3;\r\n" + 
 				"	entero e = 3;\r\n" + 
+				"	cadena v = \"viva del paro!\";\r\n" + 
 				"	real f = 3.3;\r\n" + 
 				"	entero g = 3;\r\n" + 
 				"	entero h = a + b - ((c * d) + e);\r\n" + 
@@ -264,6 +278,7 @@ public class VentanaPrincipalControlador {
 				"	real j = 3.4;\r\n" + 
 				"	cadena k = \"hola\";\r\n" + 
 				"	bool l = a + b - ((c * d) + e) > f;\r\n" + 
+				"	#mapa m = mapDe(entero , cadena){ {a, v}, {b, d}, {g, we},{f , df}};\r\n" + 
 				"}");
 	}
 	

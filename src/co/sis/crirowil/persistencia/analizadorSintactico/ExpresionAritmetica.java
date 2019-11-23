@@ -113,53 +113,94 @@ public class ExpresionAritmetica extends Expresion {
 		if (valorNumerico != null) {
 			// Me permite saber si se esta analizando una declaracion de variable
 			if (identificador != null) {
-				Simbolo s = tablaSimbolos.buscarSimboloVariable(identificador, ambito);
-				if (!relacional) {
-					if (s != null) {
+				if(!identificador.equals("/switch")) 
+				{
+					Simbolo s = tablaSimbolos.buscarSimboloVariable(identificador, ambito);
+					if (!relacional) {
+						if (s != null) {
+							if (valorNumerico.getTermino().getCategoria() == Categoria.IDENTIFICADOR) {
+								Simbolo var = tablaSimbolos.buscarSimboloVariable(valorNumerico.getTermino().getPalabra(),
+										ambito);
+								if (var != null) {
+									if (!var.getTipo().equals(s.getTipo())) {
+										erroresSemanticos.add("Tipo incorrecto: No se puede convertir de " + var.getTipo()
+										+ " a " + s.getTipo() + " en el ambito de " + ambito.getNombre());
+									}
+								} else {
+									erroresSemanticos.add("La variable " + valorNumerico.getTermino().getPalabra()
+											+ " no existe ene le ambito " + ambito.getNombre());
+								}
+							} else {
+								if (s.getTipo().equals("entero")) {
+									if (valorNumerico.getTermino().getCategoria() != Categoria.ENTERO) {
+										erroresSemanticos
+										.add("Tipo incorrecto: No se puede convertir de real a " + s.getTipo() + " en el ambito de " + ambito.getNombre());
+									}
+								} else {
+									if (valorNumerico.getTermino().getCategoria() != Categoria.REAL) {
+										erroresSemanticos
+										.add("Tipo incorrecto: No se puede convertir de entero a " + s.getTipo() + " en el ambito de " + ambito.getNombre());
+									}
+								}
+							}
+						} else {
+							erroresSemanticos.add("La variable " + valorNumerico.getTermino().getPalabra()
+									+ " no existe en el ambito actual");
+						}
+					} else {
 						if (valorNumerico.getTermino().getCategoria() == Categoria.IDENTIFICADOR) {
 							Simbolo var = tablaSimbolos.buscarSimboloVariable(valorNumerico.getTermino().getPalabra(),
 									ambito);
-							if (var != null) {
-								if (!var.getTipo().equals(s.getTipo())) {
-									System.out.println("3 sad");
-									erroresSemanticos.add("Tipo incorrecto: No se puede convertir de " + var.getTipo()
-											+ " a " + s.getTipo());
-								}
-							} else {
-								erroresSemanticos.add("La variable " + valorNumerico.getTermino().getPalabra()
-										+ " no existe ene le ambito actual");
-							}
-						} else {
-							if (s.getTipo().equals("entero")) {
-								if (valorNumerico.getTermino().getCategoria() != Categoria.ENTERO) {
-									System.out.println("2 sad");
-									erroresSemanticos
-											.add("Tipo incorrecto: No se puede convertir de real a " + s.getTipo());
-								}
-							} else {
-								if (valorNumerico.getTermino().getCategoria() != Categoria.REAL) {
-									System.out.println("1 sad");
-									erroresSemanticos
-											.add("Tipo incorrecto: No se puede convertir de entero a " + s.getTipo());
-								}
+							if (!var.getTipo().equals("entero") && !var.getTipo().equals("real")) {
+								erroresSemanticos.add("La variable debe ser de tipo real o entero para poder ser relacionada " + " en el ambito de " + ambito.getNombre());
 							}
 						}
-					} else {
-						erroresSemanticos.add("La variable " + valorNumerico.getTermino().getPalabra()
-								+ " no existe en el ambito actual");
 					}
-				} else {
-					if (valorNumerico.getTermino().getCategoria() == Categoria.IDENTIFICADOR) {
-						Simbolo var = tablaSimbolos.buscarSimboloVariable(valorNumerico.getTermino().getPalabra(),
-								ambito);
-						if (!var.getTipo().equals("entero") && !var.getTipo().equals("real")) {
-							erroresSemanticos.add("La variable debe ser de tipo real o entero para poder ser relacionada");
-						}
-					}
+					
 				}
 				if (expresionAuxiliar != null) {
 					expresionAuxiliar.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador,
 							relacional);
+				}
+			}
+			else 
+			{
+				if(!ambito.getNombre().equals("Switch") ) 
+				{
+					if(ambito.getTipo() != null) 
+					{
+						
+						if (valorNumerico.getTermino().getCategoria() == Categoria.IDENTIFICADOR) {
+							Simbolo var = tablaSimbolos.buscarSimboloVariable(valorNumerico.getTermino().getPalabra(),
+									ambito);
+							if (var != null) {
+								if (!var.getTipo().equals(ambito.getTipo())) {
+									erroresSemanticos.add("Tipo incorrecto: No se puede convertir de " + var.getTipo()
+									+ " a " + ambito.getTipo() + " en el ambito de " + ambito.getNombre());
+								}
+							} else {
+								erroresSemanticos.add("La variable " + valorNumerico.getTermino().getPalabra()
+										+ " no existe en el ambito " + ambito.getNombre());
+							}
+						} else {
+							if (ambito.getTipo().equals("entero")) {
+								if (valorNumerico.getTermino().getCategoria() != Categoria.ENTERO) {
+									erroresSemanticos
+									.add("Tipo incorrecto: No se puede convertir de real a " + ambito.getTipo() + " en el ambito de " + ambito.getNombre());
+								}
+							} else {
+								if (valorNumerico.getTermino().getCategoria() != Categoria.REAL) {
+									erroresSemanticos
+									.add("Tipo incorrecto: No se puede convertir de entero a " + ambito.getTipo() + " en el ambito de " + ambito.getNombre());
+								}
+							}
+						}
+					}
+					else 
+					{
+						System.out.println("No se puede retornar una expresion en un metodo sin tipo de retorno" + "en el ambito de " + ambito.getNombre());
+					}
+					
 				}
 			}
 		} else {
