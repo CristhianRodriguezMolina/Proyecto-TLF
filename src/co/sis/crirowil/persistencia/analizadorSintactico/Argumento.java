@@ -19,10 +19,8 @@ import javafx.scene.control.TreeItem;
 public class Argumento {
 
 	private Token nombre;
-	
+
 	private Expresion expresion;
-	
-	
 
 	/**
 	 * @param nombre
@@ -31,8 +29,6 @@ public class Argumento {
 		super();
 		this.nombre = nombre;
 	}
-	
-	
 
 	/**
 	 * @param expresion
@@ -41,8 +37,6 @@ public class Argumento {
 		super();
 		this.expresion = expresion;
 	}
-
-
 
 	/**
 	 * @return the nombre
@@ -72,65 +66,71 @@ public class Argumento {
 		this.expresion = expresion;
 	}
 
-
-
 	/**
-	 * Me obtiene una representacion grafica a modo de arbol de como esta compuesta la clase
+	 * Me obtiene una representacion grafica a modo de arbol de como esta compuesta
+	 * la clase
 	 */
 	public TreeItem<String> getArbolVisual() {
-		
-		if(nombre != null) {
-			return new TreeItem<String>("Nombre: "+nombre.getPalabra());
-		}else {
+
+		if (nombre != null) {
+			return new TreeItem<String>("Nombre: " + nombre.getPalabra());
+		} else {
 			return expresion.getArbolVisual();
 		}
-		
+
 	}
 
-	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito, String identificador, boolean declaracion) {
-		if(nombre != null) {
-			
+	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito,
+			String identificador, boolean declaracion) {
+		if (nombre != null) {
+
 			Simbolo s = tablaSimbolos.buscarSimboloVariable(nombre.getPalabra(), ambito);
 			Simbolo iden = tablaSimbolos.buscarSimboloVariable(identificador, ambito);
-			if(s == null) {
-				erroresSemanticos.add("La variable "+nombre.getPalabra()+" no existe.");
-			}
-			else 
-			{
-				if(!s.getTipo().equals(iden.getTipo())) 
-				{
-					erroresSemanticos.add("Tipo incorrecto: No se puede convertir de " + s.getTipo() + " a " + iden.getTipo());
+			if (s == null) {
+				erroresSemanticos.add("La variable " + nombre.getPalabra() + " no existe.");
+			} else {
+				if (!s.getTipo().equals(iden.getTipo())) {
+					erroresSemanticos
+							.add("Tipo incorrecto: No se puede convertir de " + s.getTipo() + " a " + iden.getTipo());
 				}
 			}
-			
-		}else if(expresion != null) {
-			
+
+		} else if (expresion != null) {
+
 			expresion.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador, declaracion);
-			
+
 		}
-		
+
 	}
-	
+
 	public String getTipo(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
-		
-		if(nombre != null) {
+
+		if (nombre != null) {
 			Simbolo s = tablaSimbolos.buscarSimboloVariable(nombre.getPalabra(), ambito);
-			if(s == null) {
-				erroresSemanticos.add("La variable "+nombre.getPalabra()+" no ha sido declarada anteriormente" + " en el ambito de " + ambito.getNombre());
-			}else {
-				if(nombre.getColumna()>s.getColumna() && nombre.getFila()>s.getFila()) {
-					return s.getTipo();					
-				}else {
-					erroresSemanticos.add("La variable "+nombre.getPalabra()+" no ha sido declarada anteriormente" + " en el ambito de " + ambito.getNombre());
+			if (s == null) {
+				erroresSemanticos.add("La variable " + nombre.getPalabra() + " no ha sido declarada anteriormente"
+						+ " en el ambito de " + ambito.getNombre());
+			} else {
+				if (nombre.getFila() > s.getFila()) {
+					return s.getTipo();
+				} else if (nombre.getFila() == s.getFila()) {
+					if (nombre.getColumna() > s.getColumna()) {
+						return s.getTipo();
+					} else {
+						erroresSemanticos.add("La variable " + nombre.getPalabra()
+								+ " no ha sido declarada anteriormente" + " en el ambito de " + ambito.getNombre());
+					}
+				} else {
+					erroresSemanticos.add("La variable " + nombre.getPalabra() + " no ha sido declarada anteriormente"
+							+ " en el ambito de " + ambito.getNombre());
 				}
-			}			
-		}else if(expresion != null) {
+			}
+		} else if (expresion != null) {
 			return expresion.obtenerTipo(tablaSimbolos, erroresSemanticos, ambito);
 		}
-		
+
 		return "nulo";
-		
+
 	}
-	
-	
+
 }
