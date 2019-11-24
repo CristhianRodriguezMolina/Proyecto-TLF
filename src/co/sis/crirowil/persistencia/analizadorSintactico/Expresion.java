@@ -14,7 +14,7 @@ public abstract class Expresion {
 	 * Metodo que me permite obtener el tipo de la expresion
 	 * @return
 	 */
-	public abstract String obtenerTipo();
+	public abstract String obtenerTipo(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito);
 
 	public abstract void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos,
 			Simbolo ambito, String identificador, boolean relacional);

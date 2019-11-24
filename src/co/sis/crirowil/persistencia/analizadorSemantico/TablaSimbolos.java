@@ -210,12 +210,9 @@ public class TablaSimbolos {
 	}
 	
 	public Simbolo buscarSimboloFuncion(String nombre, ArrayList<String> tiposParametros) {
-		
 		for (Simbolo simbolo : listaSimbolos) {
-			if(simbolo.getTipoParametros()!=null) {
-				if( nombre.equals(simbolo.getNombre()) && tiposParametros.equals(simbolo.getTipoParametros()) ) {
-					return simbolo;
-				}
+			if( nombre.equals(simbolo.getNombre()) && tiposParametros.equals(simbolo.getTipoParametros()) ) {
+				return simbolo;
 			}
 		}
 		

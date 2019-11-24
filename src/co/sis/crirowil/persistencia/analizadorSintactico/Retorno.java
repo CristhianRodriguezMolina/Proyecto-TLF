@@ -156,7 +156,7 @@ public class Retorno extends Sentencia
 		}else if(expresion != null) {
 			expresion.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, null, false);
 		}else if(invocacionFuncion != null) {
-			invocacionFuncion.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
+			invocacionFuncion.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, null);
 		}
 		
 	}

@@ -1183,7 +1183,6 @@ public class AnalizadorSintactico {
 				return new DeclaracionVariable(tipoDato, identificador, asignacion);
 			} else {
 				reportarError("Falta el terminal \";\"");
-				System.out.println(identificador.getPalabra() + " " + tokenActual.getPalabra());
 				return null;
 			}
 		}
@@ -1515,11 +1514,8 @@ public class AnalizadorSintactico {
 			obtenerTokenSiguiente();
 
 			ExpresionLogica expresionLogica = esExpresionLogica();
-
-			System.out.println("Q pASAS por gacer2");
 			if (expresionLogica != null) {
 				ExpresionAuxiliarLogica expresionAuxiliarLogica = esExpresionAuxiliarLogica();
-				System.out.println("Q pASAS por gacer");
 				return new ExpresionAuxiliarLogica(operadorLogico, expresionLogica, expresionAuxiliarLogica);
 			}
 		}
@@ -1586,7 +1582,6 @@ public class AnalizadorSintactico {
 					}
 
 				} else if (tokenActual.getCategoria() != Categoria.OPERADOR_LOGICO) {
-					System.out.println("tiej asdctaul " + tokenActual.getCategoria());
 					reportarError("Falta un operador relacional");
 					return null;
 				}

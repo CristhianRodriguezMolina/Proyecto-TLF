@@ -116,16 +116,16 @@ public class Argumento {
 		if(nombre != null) {
 			Simbolo s = tablaSimbolos.buscarSimboloVariable(nombre.getPalabra(), ambito);
 			if(s == null) {
-				erroresSemanticos.add("La variable "+nombre.getPalabra()+" no ha sido declarada anteriormente");
+				erroresSemanticos.add("La variable "+nombre.getPalabra()+" no ha sido declarada anteriormente" + " en el ambito de " + ambito.getNombre());
 			}else {
 				if(nombre.getColumna()>s.getColumna() && nombre.getFila()>s.getFila()) {
 					return s.getTipo();					
 				}else {
-					erroresSemanticos.add("La variable "+nombre.getPalabra()+" no ha sido declarada anteriormente");
+					erroresSemanticos.add("La variable "+nombre.getPalabra()+" no ha sido declarada anteriormente" + " en el ambito de " + ambito.getNombre());
 				}
 			}			
 		}else if(expresion != null) {
-			return expresion.obtenerTipo();
+			return expresion.obtenerTipo(tablaSimbolos, erroresSemanticos, ambito);
 		}
 		
 		return "nulo";

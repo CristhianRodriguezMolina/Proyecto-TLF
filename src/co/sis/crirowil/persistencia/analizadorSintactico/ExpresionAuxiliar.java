@@ -76,9 +76,13 @@ public class ExpresionAuxiliar extends Expresion{
 	}
 
 	@Override
-	public String obtenerTipo() {
-		// TODO Auto-generated method stub
-		return null;
+	public String obtenerTipo(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
+		String tipo = expresionAritmetica.obtenerTipo(tablaSimbolos, erroresSemanticos, ambito);
+		if(expresionAuxiliar != null) 
+		{
+			tipo = expresionAuxiliar.obtenerTipo(tablaSimbolos, erroresSemanticos, ambito);			
+		}
+		return tipo;
 	}
 	
 	

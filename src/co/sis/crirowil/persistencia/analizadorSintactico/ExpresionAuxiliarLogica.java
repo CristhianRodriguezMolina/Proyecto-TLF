@@ -89,7 +89,7 @@ public class ExpresionAuxiliarLogica extends Expresion{
 
 
 	@Override
-	public String obtenerTipo() {
+	public String obtenerTipo(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
 		// TODO Auto-generated method stub
 		return null;
 	}

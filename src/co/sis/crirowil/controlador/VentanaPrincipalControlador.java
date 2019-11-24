@@ -235,7 +235,7 @@ public class VentanaPrincipalControlador {
 				"\r\n" + 
 				"			ciclo entero i=0; a + b == 2; i++ : \r\n" + 
 				"			{\r\n" + 
-				"				#real mundo;\r\n" + 
+				"				real mundo;\r\n" + 
 				"			}\r\n" + 
 				"\r\n" + 
 				"		}\r\n" + 
@@ -246,8 +246,8 @@ public class VentanaPrincipalControlador {
 				"{\r\n" + 
 				"	real numero;\r\n" + 
 				"	bool numero1 = 5 > 6;\r\n" + 
-				"	#real numero3 = sumar(true, 3);\r\n" + 
-				"	#sumar(true, 3);\r\n" + 
+				"	real numero3 = sumar(true, 3);\r\n" + 
+				"	sumar(true, 3);\r\n" + 
 				"}\r\n" + 
 				"\r\n" + 
 				"metodo mult(entero a, entero hola): real\r\n" + 
@@ -271,6 +271,8 @@ public class VentanaPrincipalControlador {
 				"	entero d = 3;\r\n" + 
 				"	entero e = 3;\r\n" + 
 				"	cadena v = \"viva del paro!\";\r\n" + 
+				"	cadena vv = \"viva del paro!\";\r\n" + 
+				"	cadena vvv = \"viva del paro!\";\r\n" + 
 				"	real f = 3.3;\r\n" + 
 				"	entero g = 3;\r\n" + 
 				"	entero h = a + b - ((c * d) + e);\r\n" + 
@@ -278,7 +280,7 @@ public class VentanaPrincipalControlador {
 				"	real j = 3.4;\r\n" + 
 				"	cadena k = \"hola\";\r\n" + 
 				"	bool l = a + b - ((c * d) + e) > f;\r\n" + 
-				"	#mapa m = mapDe(entero , cadena){ {a, v}, {b, d}, {g, we},{f , df}};\r\n" + 
+				"	mapa m = mapDe(entero , cadena){ {a, v}, {b, k}, {c, vv},{d , vvv}};\r\n" + 
 				"}");
 	}
 	

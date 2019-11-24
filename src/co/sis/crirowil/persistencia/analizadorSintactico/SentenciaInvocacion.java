@@ -54,7 +54,7 @@ public class SentenciaInvocacion extends Sentencia {
 	@Override
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
 
-		invocacionFuncion.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
+		invocacionFuncion.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, null);
 		
 	}
 	

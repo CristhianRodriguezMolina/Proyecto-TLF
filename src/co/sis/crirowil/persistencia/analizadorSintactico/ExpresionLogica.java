@@ -69,17 +69,14 @@ public class ExpresionLogica extends Expresion{
 		raiz.getChildren().add(new TreeItem<String>("Expresion negada: " + negacion));
 		
 		if(getExpresionLogica() != null) {
-			System.out.println("ASQ#1");
 			raiz.getChildren().add(getExpresionLogica().getArbolVisual());
 		}
 		
 		if(getExpresionRelacional() != null) {
-			System.out.println("ASQ#2");
 			raiz.getChildren().add(getExpresionRelacional().getArbolVisual());
 		}
 		
 		if(getExpresionAuxiliarLogica() != null) {
-			System.out.println("ASQ#3");
 			raiz.getChildren().add(getExpresionAuxiliarLogica().getArbolVisual());
 		}
 		
@@ -88,7 +85,7 @@ public class ExpresionLogica extends Expresion{
 	}
 
 	@Override
-	public String obtenerTipo() {
+	public String obtenerTipo(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
 		return "bool";
 	}
 
@@ -96,7 +93,6 @@ public class ExpresionLogica extends Expresion{
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito, String identificador, boolean relacional) {
 		if(expresionRelacional != null) 
 		{
-			System.out.println("hello weosad");
 			expresionRelacional.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador, false);
 			if(expresionAuxiliarLogica != null) 
 			{

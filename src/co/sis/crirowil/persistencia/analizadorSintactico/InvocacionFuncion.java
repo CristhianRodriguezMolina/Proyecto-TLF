@@ -2,6 +2,8 @@ package co.sis.crirowil.persistencia.analizadorSintactico;
 
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
 import co.sis.crirowil.persistencia.analizadorSemantico.Simbolo;
 import co.sis.crirowil.persistencia.analizadorSemantico.TablaSimbolos;
@@ -103,19 +105,29 @@ public class InvocacionFuncion{
 	}
 
 
-	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
+	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito, String identificador) {
 
 		ArrayList<String> tipoParametros = getTiposParametros(tablaSimbolos, erroresSemanticos, ambito);
 		Simbolo s = tablaSimbolos.buscarSimboloFuncion(nombre.getPalabra(), tipoParametros);
-		
 		if(s != null) {
-			
-			for (Argumento argumento : listaArgumentos) {
-				argumento.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, null, false);
+			if(identificador != null)
+			{
+				Simbolo var = tablaSimbolos.buscarSimboloVariable(identificador, ambito);				
+				if(!s.getTipo().equals(var.getTipo())) 
+				{
+					erroresSemanticos.add("Tipo incorrecto: No se puede convertir de " + s.getTipo() + " a "
+							+ var.getTipo() + " en el ambito de " + ambito.getNombre());
+				}
 			}
 			
 		}else {
-			erroresSemanticos.add("La funcion que esta tratando de invocar \""+ nombre.getPalabra() +"\" no existe.");
+			String msj = "(";
+			for(String parametro: tipoParametros) 
+			{
+				msj += parametro + ", ";
+			}
+			msj = msj.substring(0, msj.length() - 2) + ")";
+			erroresSemanticos.add("La funcion que esta tratando de invocar \""+ nombre.getPalabra() + msj +"\" no existe.");
 		}
 		
 	}

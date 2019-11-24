@@ -2,6 +2,8 @@ package co.sis.crirowil.persistencia.analizadorSintactico;
 
 import java.util.ArrayList;
 
+import org.omg.CORBA.IdentifierHelper;
+
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
 import co.sis.crirowil.persistencia.analizadorSemantico.Simbolo;
 import co.sis.crirowil.persistencia.analizadorSemantico.TablaSimbolos;
@@ -134,24 +136,26 @@ public class SentenciaAsignacion extends Sentencia {
 				
 
 			} else if (asignacion.getInvocacionFuncion() != null) {
+				
+				asignacion.getInvocacionFuncion().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, nombre.getPalabra());
 
-				Simbolo funcionAux = tablaSimbolos.buscarSimboloFuncion(
-						asignacion.getInvocacionFuncion().getNombre().getPalabra(),
-						asignacion.getInvocacionFuncion().getTiposParametros(tablaSimbolos, erroresSemanticos, ambito));
-
-				if (funcionAux != null) {
-					asignacion.getInvocacionFuncion().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
-					if (!funcionAux.getTipo().equals(s.getTipo())) {
-
-						erroresSemanticos.add("Tipo incorrecto: No se puede convertir de " + funcionAux.getTipo()
-								+ " a " + s.getTipo());
-
-					}
-				} else {
-					erroresSemanticos.add("No existe la funcion " + asignacion.getInvocacionFuncion().getNombre()
-							+ asignacion.getInvocacionFuncion()
-									.getTiposParametros(tablaSimbolos, erroresSemanticos, ambito).toString());
-				}
+//				Simbolo funcionAux = tablaSimbolos.buscarSimboloFuncion(
+//						asignacion.getInvocacionFuncion().getNombre().getPalabra(),
+//						asignacion.getInvocacionFuncion().getTiposParametros(tablaSimbolos, erroresSemanticos, ambito));
+//
+//				if (funcionAux != null) {
+//					asignacion.getInvocacionFuncion().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, nombre.getPalabra());
+//					if (!funcionAux.getTipo().equals(s.getTipo())) {
+//
+//						erroresSemanticos.add("Tipo incorrecto: No se puede convertir de " + funcionAux.getTipo()
+//								+ " a " + s.getTipo());
+//
+//					}
+//				} else {
+//					erroresSemanticos.add("No existe la funcion " + asignacion.getInvocacionFuncion().getNombre()
+//							+ asignacion.getInvocacionFuncion()
+//									.getTiposParametros(tablaSimbolos, erroresSemanticos, ambito).toString());
+//				}
 
 			} else if (asignacion.getArreglo() != null) {
 
