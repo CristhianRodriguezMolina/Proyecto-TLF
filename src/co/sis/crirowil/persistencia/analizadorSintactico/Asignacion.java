@@ -197,7 +197,7 @@ public class Asignacion {
 
 		} else if (mapa != null) {
 //			codigo += mapa.getJavaCode();
-		} else {
+		} else if(lecturaDatos != null){
 			codigo += lecturaDatos.getJavaCode();
 		}
 		return codigo;

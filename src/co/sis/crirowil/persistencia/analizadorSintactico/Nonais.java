@@ -107,7 +107,7 @@ public class Nonais extends Sentencia {
 	@Override
 	public String getJavaCode() {
 
-		String javaCode = "else if("+condicion.getExpresion()+") {\n";
+		String javaCode = "else if("+condicion.getExpresion().getJavaCode()+") {\n";
 		
 		for (Sentencia sentencia : bloqueSentencia.getListaSentencias()) {
 			

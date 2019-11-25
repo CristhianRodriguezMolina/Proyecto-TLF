@@ -176,7 +176,7 @@ public class Sisas extends Sentencia{
 	@Override
 	public String getJavaCode() {
 
-		String javaCode = "if("+condicion.getExpresion()+"){\n";
+		String javaCode = "if("+condicion.getExpresion().getJavaCode()+"){\n";
 		
 		for (Sentencia sentencia : bloqueSentenciaSisas.getListaSentencias()) {
 			javaCode += sentencia.getJavaCode()+"\n";

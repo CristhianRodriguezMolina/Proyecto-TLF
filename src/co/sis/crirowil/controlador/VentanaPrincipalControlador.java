@@ -218,16 +218,16 @@ public class VentanaPrincipalControlador {
 				"\r\n" + 
 				"metodo sumar(bool numero, entero n2): real\r\n" + 
 				"{\r\n" + 
-				"	enteto n4 = 3;\r\n" + 
+				"	entero n4 = 3;\r\n" + 
 				"	restar(n2, n4);\r\n" + 
-				"\r\n" + 
+				"	real z = 0.3;\r\n" + 
 				"	sisas 5>6:{\r\n" + 
-				"	numero = restar(n2, n2);\r\n" + 
+				"		z = restar(n2, n2);\r\n" + 
 				"		numero = 3 < 4 yy 4>3;\r\n" + 
 				"	} nonais 5 < 6 oo 4 <2: {\r\n" + 
-				"		numero++;\r\n" + 
+				"		n4++;\r\n" + 
 				"	}nonais 4 > 3:{\r\n" + 
-				"		numero = restar(n2, n2);\r\n" + 
+				"		z = restar(n2, n2);\r\n" + 
 				"	}nonas{\r\n" + 
 				"		entero numero2 = 2 + n2;\r\n" + 
 				"\r\n" + 
@@ -240,7 +240,7 @@ public class VentanaPrincipalControlador {
 				"			ciclo entero i=0; a + b == 2; i++ : \r\n" + 
 				"			{\r\n" + 
 				"				real mundo;\r\n" + 
-				"				numero = restar(n2, n2);\r\n" + 
+				"				restar(n2, n2);\r\n" + 
 				"			}\r\n" + 
 				"\r\n" + 
 				"		}\r\n" + 
@@ -276,6 +276,8 @@ public class VentanaPrincipalControlador {
 				"	entero d = 3;\r\n" + 
 				"	entero e = 3;\r\n" + 
 				"	cadena v = \"viva del paro!\";\r\n" + 
+				"	cadena vv = \"viva del paro!\";\r\n" + 
+				"	cadena vvv = \"viva del paro!\";\r\n" + 
 				"	real f = 3.3;\r\n" + 
 				"	entero g = 3;\r\n" + 
 				"	entero h = a + b - ((c * d) + e);\r\n" + 
@@ -283,7 +285,7 @@ public class VentanaPrincipalControlador {
 				"	real j = 3.4;\r\n" + 
 				"	cadena k = \"hola\";\r\n" + 
 				"	bool l = a + b - ((c * d) + e) > f;\r\n" + 
-				"	mapa m = mapDe(entero , cadena){ {a, v}, {b, d}, {g, we},{f , df}};\r\n" + 
+				"	mapa m = mapDe(entero , cadena){ {a, v}, {b, vv}, {g, vvv},{d , k}};\r\n" + 
 				"}");
 	}
 	

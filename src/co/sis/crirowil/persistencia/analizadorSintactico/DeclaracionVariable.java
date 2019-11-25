@@ -2,6 +2,7 @@ package co.sis.crirowil.persistencia.analizadorSintactico;
 
 import java.util.ArrayList;
 
+import co.sis.crirowil.persistencia.analizadorLexico.Categoria;
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
 import co.sis.crirowil.persistencia.analizadorSemantico.Simbolo;
 import co.sis.crirowil.persistencia.analizadorSemantico.TablaSimbolos;
@@ -122,8 +123,13 @@ public class DeclaracionVariable extends Sentencia {
 			if (asignacion.getOperadorAsignacion().getPalabra().equals("=")) {
 
 				Simbolo s = tablaSimbolos.buscarSimboloVariable(identificador.getPalabra(), ambito);
-
-				if (asignacion.getArgumento() != null) {
+				if (asignacion.getOperadorAsignacion().getCategoria() == Categoria.INCREMENTO_DECREMENTO) {
+					if (!s.getTipo().equals("entero")) {
+						erroresSemanticos.add(
+								"no se puede usar un operador de incremento/decremento en un tipo variable diferente de entero en el ambito "
+										+ ambito.getNombre());
+					}
+				} else if (asignacion.getArgumento() != null) {
 
 					asignacion.getArgumento().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito,
 							identificador.getPalabra(), false);
@@ -140,7 +146,8 @@ public class DeclaracionVariable extends Sentencia {
 				} else if (asignacion.getLecturaDatos() != null) { // AQUIIIIII
 
 					if (!s.getTipo().equals("cadena")) {
-						erroresSemanticos.add("Tipo incorrecto: No se puede convertir de cadena a " + s.getTipo());
+						erroresSemanticos.add("Tipo incorrecto: No se puede convertir de cadena a " + s.getTipo()
+								+ " en el ambito " + ambito.getNombre());
 					}
 
 				} else if (asignacion.getMapa() != null) { // AQUIIIIII
@@ -165,12 +172,11 @@ public class DeclaracionVariable extends Sentencia {
 	public String getJavaCode() {
 		String codigo = "";
 		codigo = Util.traducirTipo(tipoDato.getPalabra()) + " " + identificador.getPalabra();
-		
-		if(asignacion != null) 
-		{
+
+		if (asignacion != null) {
 			codigo += asignacion.getJavaCode(Util.traducirTipo(tipoDato.getPalabra()), identificador.getPalabra());
 		}
-		
+
 		codigo += ";";
 		return codigo;
 	}

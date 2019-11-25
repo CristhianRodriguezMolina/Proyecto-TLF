@@ -78,9 +78,8 @@ public class UnidadDeCompilacion {
 		String codigo = "";
 		for(Funcion funcion : listaFunciones) 
 		{
-			codigo += funcion.getJavaCode();
+			codigo += funcion.getJavaCode() + "\n";
 		}
-		
 		return codigo;
 	}
 

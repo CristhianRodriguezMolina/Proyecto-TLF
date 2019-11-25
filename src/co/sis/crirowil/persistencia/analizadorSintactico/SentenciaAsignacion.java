@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 import org.omg.CORBA.IdentifierHelper;
 
+import co.sis.crirowil.persistencia.analizadorLexico.Categoria;
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
 import co.sis.crirowil.persistencia.analizadorSemantico.Simbolo;
 import co.sis.crirowil.persistencia.analizadorSemantico.TablaSimbolos;
+import co.sis.crirowil.util.Util;
 import javafx.scene.control.TreeItem;
 
 /**
@@ -92,9 +94,15 @@ public class SentenciaAsignacion extends Sentencia {
 
 		if (s != null) {
 
-			if (asignacion.getArgumento() != null) {
-				asignacion.getArgumento().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, s.getNombre(), false);
-
+			if (asignacion.getOperadorAsignacion().getCategoria() == Categoria.INCREMENTO_DECREMENTO) {
+				if (!s.getTipo().equals("entero")) {
+					erroresSemanticos.add(
+							"no se puede usar un operador de incremento/decremento en un tipo variable diferente de entero en el ambito "
+									+ ambito.getNombre());
+				}
+			} else if (asignacion.getArgumento() != null) {
+				asignacion.getArgumento().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, s.getNombre(),
+						false);
 
 				if (s.getTipo().equals("cadena")) {
 					if (!(asignacion.getOperadorAsignacion().getPalabra().equals("=")
@@ -109,12 +117,11 @@ public class SentenciaAsignacion extends Sentencia {
 					}
 
 				}
-				
-				
 
 			} else if (asignacion.getInvocacionFuncion() != null) {
-				
-				asignacion.getInvocacionFuncion().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, nombre.getPalabra());
+
+				asignacion.getInvocacionFuncion().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito,
+						nombre.getPalabra());
 
 			} else if (asignacion.getArreglo() != null) {
 
@@ -123,7 +130,8 @@ public class SentenciaAsignacion extends Sentencia {
 			} else if (asignacion.getLecturaDatos() != null) {
 
 				if (!s.getTipo().equals("cadena")) {
-					erroresSemanticos.add("Tipo incorrecto: No se puede convertir de cadena a " + s.getTipo());
+					erroresSemanticos.add("Tipo incorrecto: No se puede convertir de cadena a " + s.getTipo()
+							+ " en el ambito " + ambito.getNombre());
 				}
 
 			} else if (asignacion.getMapa() != null) {
@@ -136,8 +144,15 @@ public class SentenciaAsignacion extends Sentencia {
 
 	@Override
 	public String getJavaCode() {
-		// TODO Auto-generated method stub
-		return null;
+		String codigo = "";
+		codigo = nombre.getPalabra();
+
+		if (asignacion != null) {
+			codigo += asignacion.getJavaCode(null, nombre.getPalabra());
+		}
+
+		codigo += ";";
+		return codigo;
 	}
 
 }

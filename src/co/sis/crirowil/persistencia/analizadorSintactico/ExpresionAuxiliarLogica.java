@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
 import co.sis.crirowil.persistencia.analizadorSemantico.Simbolo;
 import co.sis.crirowil.persistencia.analizadorSemantico.TablaSimbolos;
+import co.sis.crirowil.util.Util;
 import javafx.scene.control.TreeItem;
 
 /**
@@ -112,7 +113,7 @@ public class ExpresionAuxiliarLogica extends Expresion{
 
 	@Override
 	public String getJavaCode() {
-		String codigo = expresionLogica.getJavaCode();
+		String codigo = Util.traducirOperadorLogico(operadorLogico.getPalabra()) + expresionLogica.getJavaCode();
 		if(expresionAuxiliarLogica != null) 
 		{
 			codigo += expresionAuxiliarLogica.getJavaCode();
