@@ -75,6 +75,22 @@ public class Nonas extends Sentencia {
 		}
 		
 	}
+
+	@Override
+	public String getJavaCode() {
+
+		String javaCode = "else {\n";
+		
+		for (Sentencia sentencia : bloqueSentencia.getListaSentencias()) {
+			
+			javaCode += sentencia.getJavaCode()+"\n";
+			
+		}
+		
+		javaCode += "}";
+		
+		return javaCode;
+	}
 	
 	
 	

@@ -88,4 +88,26 @@ public class Caso extends Sentencia {
 		
 	}
 
+	@Override
+	public String getJavaCode() {
+
+		String javaCode = "";
+		
+		if(tipoCaso.getPalabra().equals("caso")) {
+			
+			javaCode = "case "+expresion.getJavaCode()+":\n";
+			
+		}else if(tipoCaso.getPalabra().equals("defecto")) {
+			
+			javaCode = "default :\n";
+			
+		}
+		
+		for (Sentencia sentencia : listaSentencias) {
+			javaCode += sentencia.getJavaCode()+"\n";
+		}
+		
+		return javaCode;
+	}
+
 }
