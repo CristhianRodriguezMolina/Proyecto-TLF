@@ -84,7 +84,11 @@ public class PorCada extends Sentencia {
 		
 		Simbolo s = tablaSimbolos.buscarSimboloVariable(lista.getPalabra(), ambito);
 		if(s == null) {
-			erroresSemanticos.add("La lista " + lista.getPalabra() + " no existe."); //AQUIIIIIII	
+			erroresSemanticos.add("La variable " + lista.getPalabra() + " no existe."); 
+		}else if(s.getArreglo()==null && (s.getExpresion()!=null || s.getInvocacionFuncion()!=null || s.getMapa()!=null || s.getArgumento()!=null)) {
+			erroresSemanticos.add("La variable " + lista.getPalabra() + " no es una lista");
+		}else if(s.getArgumento()==null && s.getExpresion()==null && s.getInvocacionFuncion()==null && s.getMapa()==null && s.getArreglo()==null) {
+			erroresSemanticos.add("La variable " + lista.getPalabra() + " no ha sido declarada anteriormente.");
 		}
 		
 		for(Sentencia sentencia: bloqueSentencia.getListaSentencias()) 

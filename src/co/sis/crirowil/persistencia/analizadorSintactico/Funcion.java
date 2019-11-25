@@ -178,6 +178,19 @@ public class Funcion {
 			sentencia.analizarSemantica(tablaSimbolos, erroresSemanticos, tablaSimbolos.buscarSimboloFuncion(nombre.getPalabra(), getTiposParametros()));
 		}
 		
+		if(retorno != null) {
+			if(!(bloqueSentencias.getListaSentencias().get(bloqueSentencias.getListaSentencias().size()-1) instanceof Retorno)) {
+				erroresSemanticos.add("El metodo "+nombre.getPalabra()+getTiposParametros().toString()+" no tiene retorno.");
+			}else {
+				String tipoRetorno = ((Retorno)bloqueSentencias.getListaSentencias().get(bloqueSentencias.getListaSentencias().size()-1)).getTipoRetorno(tablaSimbolos, erroresSemanticos, tablaSimbolos.buscarSimboloFuncion(nombre.getPalabra(), getTiposParametros()));
+				
+				if(!tipoRetorno.equals(retorno.getPalabra())) {
+					erroresSemanticos.add("Tipo incorrecto: No se puede convertir el tipo de retorno " +retorno.getPalabra()+ " a " + tipoRetorno);
+				}
+			}
+		}
+		
+		
 	}
 
 	public String getJavaCode() {

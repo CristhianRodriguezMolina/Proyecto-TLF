@@ -216,14 +216,14 @@ public class VentanaPrincipalControlador {
 				"	retorno nada;\r\n" + 
 				"}\r\n" + 
 				"\r\n" + 
-				"metodo sumar(bool numero, entero n2): real\r\n" + 
+				"metodo sumar(real numero, entero n2): real\r\n" + 
 				"{\r\n" + 
-				"	enteto n4 = 3;\r\n" + 
+				"	entero n4 = 3;\r\n" + 
 				"	restar(n2, n4);\r\n" + 
 				"\r\n" + 
 				"	sisas 5>6:{\r\n" + 
-				"	numero = restar(n2, n2);\r\n" + 
-				"		numero = 3 < 4 yy 4>3;\r\n" + 
+				"		numero = restar(n2, n2);\r\n" + 
+				"		numero = 3.;\r\n" + 
 				"	} nonais 5 < 6 oo 4 <2: {\r\n" + 
 				"		numero++;\r\n" + 
 				"	}nonais 4 > 3:{\r\n" + 
@@ -245,6 +245,8 @@ public class VentanaPrincipalControlador {
 				"\r\n" + 
 				"		}\r\n" + 
 				"	}\r\n" + 
+				"	\r\n" + 
+				"	retorno numero;\r\n" + 
 				"}\r\n" + 
 				"\r\n" + 
 				"metodo restar(entero n, entero n2): real\r\n" + 

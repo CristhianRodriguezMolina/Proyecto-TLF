@@ -1,6 +1,8 @@
 package co.sis.crirowil.persistencia.analizadorSintactico;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
 import co.sis.crirowil.persistencia.analizadorSemantico.Simbolo;
@@ -191,12 +193,10 @@ public class Asignacion {
 			codigo += argumento.getJavaCode();
 		} else if (invocacionFuncion != null) {
 			codigo += invocacionFuncion.getJavaCode();
-
 		} else if (arreglo != null) {
 			codigo += arreglo.getJavaCode(tipo, nombre);
-
 		} else if (mapa != null) {
-//			codigo += mapa.getJavaCode();
+			codigo += mapa.getJavaCode(nombre);
 		} else {
 			codigo += lecturaDatos.getJavaCode();
 		}

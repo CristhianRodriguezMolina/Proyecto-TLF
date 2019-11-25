@@ -57,6 +57,13 @@ public class SentenciaInvocacion extends Sentencia {
 		invocacionFuncion.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, null);
 		
 	}
+
+	@Override
+	public String getJavaCode() {
+
+		return invocacionFuncion.getJavaCode()+";";
+		
+	}
 	
 	
 

@@ -136,7 +136,41 @@ public class Retorno extends Sentencia
 		
 	}
 
+	public String getTipoRetorno(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
+		
+		if (identificador != null) {
+			Simbolo s = tablaSimbolos.buscarSimboloVariable(identificador.getPalabra(), ambito);
+			if (s == null) {
+				erroresSemanticos.add("La variable " + identificador.getPalabra() + " no ha sido declarada anteriormente"
+						+ " en el ambito de " + ambito.getNombre());
+			} else {
+				if (identificador.getFila() > s.getFila()) {
+					return s.getTipo();
+				} else if (identificador.getFila() == s.getFila()) {
+					if (identificador.getColumna() > s.getColumna()) {
+						return s.getTipo();
+					} else {
+						erroresSemanticos.add("La variable " + identificador.getPalabra()
+								+ " no ha sido declarada anteriormente" + " en el ambito de " + ambito.getNombre());
+					}
+				} else {
+					erroresSemanticos.add("La variable " + identificador.getPalabra() + " no ha sido declarada anteriormente"
+							+ " en el ambito de " + ambito.getNombre());
+				}
+			}
+		} else if(expresion != null) {
+			return expresion.obtenerTipo(tablaSimbolos, erroresSemanticos, ambito);
+		} else if(invocacionFuncion != null) {
+			
+			Simbolo s = tablaSimbolos.buscarSimboloFuncion(invocacionFuncion.getNombre().getPalabra(), invocacionFuncion.getTiposParametros(tablaSimbolos, erroresSemanticos, ambito));
+			
+			return s.getTipo();
+			
+		}
 
+		return "nulo";
+		
+	}
 
 	@Override
 	public void llenarTablaSimbolos(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {

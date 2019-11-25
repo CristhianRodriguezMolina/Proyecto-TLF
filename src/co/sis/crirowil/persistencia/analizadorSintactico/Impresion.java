@@ -2,6 +2,8 @@ package co.sis.crirowil.persistencia.analizadorSintactico;
 
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import co.sis.crirowil.persistencia.analizadorSemantico.Simbolo;
 import co.sis.crirowil.persistencia.analizadorSemantico.TablaSimbolos;
 import javafx.scene.control.TreeItem;
@@ -47,6 +49,13 @@ public class Impresion extends Sentencia {
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
 
 		argumento.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, null, false);
+		
+	}
+
+	@Override
+	public String getJavaCode() {
+
+		return "JOptionPane.showMessageDialog(null, "+argumento.getJavaCode()+");";
 		
 	}
 

@@ -47,4 +47,9 @@ public class LecturaDatos extends Sentencia {
 		
 	}
 
+	@Override
+	public String getJavaCode() {
+		return expresionCadena.getJavaCode();
+	}
+
 }

@@ -133,17 +133,17 @@ public class DeclaracionVariable extends Sentencia {
 					asignacion.getInvocacionFuncion().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito,
 							identificador.getPalabra());
 
-				} else if (asignacion.getArreglo() != null) { // AQUIIIIII
+				} else if (asignacion.getArreglo() != null) {
 
 					asignacion.getArreglo().analizarSemantica(s.getTipo(), tablaSimbolos, erroresSemanticos, ambito);
 
-				} else if (asignacion.getLecturaDatos() != null) { // AQUIIIIII
+				} else if (asignacion.getLecturaDatos() != null) {
 
 					if (!s.getTipo().equals("cadena")) {
 						erroresSemanticos.add("Tipo incorrecto: No se puede convertir de cadena a " + s.getTipo());
 					}
 
-				} else if (asignacion.getMapa() != null) { // AQUIIIIII
+				} else if (asignacion.getMapa() != null) {
 
 					asignacion.getMapa().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
 					;
