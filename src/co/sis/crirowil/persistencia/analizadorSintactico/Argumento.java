@@ -91,7 +91,7 @@ public class Argumento {
 			} else {
 				if (!s.getTipo().equals(iden.getTipo())) {
 					erroresSemanticos
-							.add("Tipo incorrecto: No se puede convertir de " + s.getTipo() + " a " + iden.getTipo());
+							.add("Tipo incorrecto: No se puede convertir de " + s.getTipo() + " a " + iden.getTipo() + " en el ambito " + ambito.getNombre());
 				}
 			}
 

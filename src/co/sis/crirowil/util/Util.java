@@ -1,6 +1,7 @@
 package co.sis.crirowil.util;
 
 public class Util {
+	
 	public static String traducirTipo(String tipo) 
 	{
 		String tipoTraducido = "";
@@ -22,6 +23,20 @@ public class Util {
 			tipoTraducido = "char";
 		}
 		return tipoTraducido;
+	}
+	
+	public static String traducirOperadorLogico(String operador) 
+	{
+		String operadorTraducido = "";
+		if(operador.equals("yy")) 
+		{
+			operadorTraducido = "&&";
+		}
+		else 
+		{
+			operadorTraducido = "||";
+		}
+		return operadorTraducido;
 	}
 	
 }

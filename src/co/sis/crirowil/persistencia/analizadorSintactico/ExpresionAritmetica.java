@@ -247,7 +247,7 @@ public class ExpresionAritmetica extends Expresion {
 		}
 		else 
 		{
-			String temp = expresionAritmetica.getJavaCode();
+			String temp = "(" + expresionAritmetica.getJavaCode() + ")";
 			if(expresionAuxiliar != null) 
 			{
 				temp +=expresionAuxiliar.getJavaCode();

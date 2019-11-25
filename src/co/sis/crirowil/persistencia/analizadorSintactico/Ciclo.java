@@ -153,7 +153,9 @@ public class Ciclo extends Sentencia
 
 		if(declaracionVariable != null) {
 			declaracionVariable.analizarSemantica(tablaSimbolos, erroresSemanticos, tablaSimbolos.buscarSimboloSentencia(this, ambito));			
-		}else if(sentenciaAsignacion != null) {
+		}
+		
+		if(sentenciaAsignacion != null) {
 			sentenciaAsignacion.analizarSemantica(tablaSimbolos, erroresSemanticos, tablaSimbolos.buscarSimboloSentencia(this, ambito));			
 		}
 		condicion.analizarSemantica(tablaSimbolos, erroresSemanticos, tablaSimbolos.buscarSimboloSentencia(this, ambito));
@@ -168,8 +170,25 @@ public class Ciclo extends Sentencia
 
 	@Override
 	public String getJavaCode() {
-		// TODO Auto-generated method stub
-		return null;
+		String codigo = "";
+		
+		if(declaracionVariable != null)
+		{
+			String senteAsig = sentenciaAsignacion.getJavaCode();
+			String decVar = declaracionVariable.getJavaCode();
+			codigo = "for(" + decVar.substring(0, decVar.length() - 1) + "; " + condicion.getExpresion().getJavaCode() + "; " + senteAsig.substring(0, senteAsig.length() - 1) + "){\r\n";
+		}
+		else 
+		{
+			codigo = "while(" + condicion.getExpresion().getJavaCode() + "){\r\n";
+		}
+		
+		for(Sentencia sentencia: bloqueSentencia.getListaSentencias()) 
+		{
+			codigo += sentencia.getJavaCode() + "\r\n";
+		}
+		codigo += "\n}";
+		return codigo;
 	}
 	
 	

@@ -57,7 +57,12 @@ public class Arreglo {
 	}
 
 	public String getJavaCode(String tipo, String nombre) {
-		String codigo = "new " + tipo + "[" + listaArgumentos.size() + "];\n";
+		
+		String codigo = "";
+		if(tipo != null) 
+		{
+			codigo = "new " + tipo + "[" + listaArgumentos.size() + "];\n";			
+		}
 		int i = 0;
 		for(Argumento argumento: listaArgumentos) 
 		{

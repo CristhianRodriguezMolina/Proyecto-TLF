@@ -123,7 +123,7 @@ public class ExpresionLogica extends Expresion{
 		}
 		else 
 		{
-			String temp = expresionLogica.getJavaCode();
+			String temp = "(" + expresionLogica.getJavaCode() + ")";
 			if(expresionAuxiliarLogica != null) 
 			{
 				temp += expresionAuxiliarLogica.getJavaCode();
