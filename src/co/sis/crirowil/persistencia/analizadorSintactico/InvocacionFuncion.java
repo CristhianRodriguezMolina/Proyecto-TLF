@@ -78,7 +78,7 @@ public class InvocacionFuncion{
 
 	public TreeItem<String> getArbolVisual() {
 
-		TreeItem<String> raiz = new TreeItem<>("Invocacion función");
+		TreeItem<String> raiz = new TreeItem<>("Invocacion funciï¿½n");
 		
 		raiz.getChildren().add(new TreeItem<>("Nombre: "+nombre.getPalabra()));
 		

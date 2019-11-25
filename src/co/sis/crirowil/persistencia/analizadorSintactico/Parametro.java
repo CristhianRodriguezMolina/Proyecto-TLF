@@ -1,6 +1,7 @@
 package co.sis.crirowil.persistencia.analizadorSintactico;
 
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
+import co.sis.crirowil.util.Util;
 import javafx.scene.control.TreeItem;
 
 /**
@@ -67,5 +68,11 @@ public class Parametro {
 
 	public String obtenerTipo() {
 		return retorno.getPalabra();
+	}
+
+	public String getJavaCode() {
+		String codigo = Util.traducirTipo(retorno.getPalabra()) + " " + nombre.getPalabra();
+		return codigo;
+		
 	}
 }

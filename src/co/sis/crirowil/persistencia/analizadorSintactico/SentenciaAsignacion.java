@@ -101,30 +101,7 @@ public class SentenciaAsignacion extends Sentencia {
 							|| asignacion.getOperadorAsignacion().getPalabra().equals("+="))) {
 						erroresSemanticos.add(
 								"No es posible usar este tipo de operador de asignacion con expresion de tipo cadena");
-					} 
-//					else {
-//						String tipoArgumentoAux = asignacion.getArgumento().getTipo(tablaSimbolos, erroresSemanticos, ambito);
-//						String tipo = "";
-//						if (s.getTipo().equals("entero") || s.getTipo().equals("real")) {
-//							tipo = "aritmetica";
-//						} else {
-//							tipo = s.getTipo();
-//						}
-//
-//						if (!tipoArgumentoAux.equals(tipo)) {
-//
-//							erroresSemanticos.add("Tipo incorrecto: No se puede convertir de " + tipoArgumentoAux
-//									+ " a " + s.getTipo());
-//
-//						}
-//
-//						if (!tipoArgumentoAux.equals(s.getTipo())) {
-//
-//							erroresSemanticos.add("Tipo incorrecto: No se puede convertir de " + tipoArgumentoAux
-//									+ " a " + s.getTipo());
-//
-//						}
-//					}
+					}
 				} else if (s.getTipo().equals("bool")) {
 					if (!(asignacion.getOperadorAsignacion().getPalabra().equals("="))) {
 						erroresSemanticos.add(
@@ -139,24 +116,6 @@ public class SentenciaAsignacion extends Sentencia {
 				
 				asignacion.getInvocacionFuncion().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, nombre.getPalabra());
 
-//				Simbolo funcionAux = tablaSimbolos.buscarSimboloFuncion(
-//						asignacion.getInvocacionFuncion().getNombre().getPalabra(),
-//						asignacion.getInvocacionFuncion().getTiposParametros(tablaSimbolos, erroresSemanticos, ambito));
-//
-//				if (funcionAux != null) {
-//					asignacion.getInvocacionFuncion().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, nombre.getPalabra());
-//					if (!funcionAux.getTipo().equals(s.getTipo())) {
-//
-//						erroresSemanticos.add("Tipo incorrecto: No se puede convertir de " + funcionAux.getTipo()
-//								+ " a " + s.getTipo());
-//
-//					}
-//				} else {
-//					erroresSemanticos.add("No existe la funcion " + asignacion.getInvocacionFuncion().getNombre()
-//							+ asignacion.getInvocacionFuncion()
-//									.getTiposParametros(tablaSimbolos, erroresSemanticos, ambito).toString());
-//				}
-
 			} else if (asignacion.getArreglo() != null) {
 
 				asignacion.getArreglo().analizarSemantica(s.getTipo(), tablaSimbolos, erroresSemanticos, ambito);
@@ -170,11 +129,15 @@ public class SentenciaAsignacion extends Sentencia {
 			} else if (asignacion.getMapa() != null) {
 
 				asignacion.getMapa().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
-				;
-
 			}
 		}
 
+	}
+
+	@Override
+	public String getJavaCode() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

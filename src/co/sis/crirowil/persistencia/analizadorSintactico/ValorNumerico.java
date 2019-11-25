@@ -62,6 +62,15 @@ public class ValorNumerico {
 		}
 		
 	}
+	public String getJavaCode() {
+		String codigo = "";
+		if(signo != null) 
+		{
+			codigo = signo.getPalabra();
+		}
+		codigo += termino.getPalabra();
+		return codigo;
+	}
 	
 	
 }

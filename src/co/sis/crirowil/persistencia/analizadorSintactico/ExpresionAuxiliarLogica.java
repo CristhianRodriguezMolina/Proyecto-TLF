@@ -107,4 +107,16 @@ public class ExpresionAuxiliarLogica extends Expresion{
 		}
 		
 	}
+
+
+
+	@Override
+	public String getJavaCode() {
+		String codigo = expresionLogica.getJavaCode();
+		if(expresionAuxiliarLogica != null) 
+		{
+			codigo += expresionAuxiliarLogica.getJavaCode();
+		}
+		return codigo;
+	}
 }

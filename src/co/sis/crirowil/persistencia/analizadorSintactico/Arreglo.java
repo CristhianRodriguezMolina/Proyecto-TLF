@@ -55,6 +55,17 @@ public class Arreglo {
 		}
 		
 	}
+
+	public String getJavaCode(String tipo, String nombre) {
+		String codigo = "new " + tipo + "[" + listaArgumentos.size() + "];\n";
+		int i = 0;
+		for(Argumento argumento: listaArgumentos) 
+		{
+			codigo += nombre + "[" + i + "] = " + argumento.getJavaCode() + ";\n";
+			i++;
+		}
+		return codigo.substring(0, codigo.length() - 2);
+	}
 		
 	
 }

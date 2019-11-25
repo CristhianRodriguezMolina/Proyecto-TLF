@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
 import co.sis.crirowil.persistencia.analizadorSemantico.TablaSimbolos;
+import co.sis.crirowil.util.Util;
 import javafx.scene.control.TreeItem;
 
 /**
@@ -164,7 +165,7 @@ public class Funcion {
 		}
 
 		
-		for(Sentencia sentencia: bloqueSentencias.listaSentencias) 
+		for(Sentencia sentencia: bloqueSentencias.getListaSentencias()) 
 		{
 			sentencia.llenarTablaSimbolos(tablaSimbolos, erroresSemanticos, tablaSimbolos.buscarSimboloFuncion(nombre.getPalabra(), tipoParametros));
 		}
@@ -172,10 +173,34 @@ public class Funcion {
 
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos) {
 
-		for(Sentencia sentencia: bloqueSentencias.listaSentencias) 
+		for(Sentencia sentencia: bloqueSentencias.getListaSentencias()) 
 		{
 			sentencia.analizarSemantica(tablaSimbolos, erroresSemanticos, tablaSimbolos.buscarSimboloFuncion(nombre.getPalabra(), getTiposParametros()));
 		}
 		
+	}
+
+	public String getJavaCode() {
+		String codigo = "";
+		if(retorno != null) 
+		{
+			codigo = "public static " + Util.traducirTipo(retorno.getPalabra()) + " " + nombre.getPalabra() + "(";
+		}
+		else
+		{
+			codigo = "public static void " + nombre.getPalabra() + "(";
+		}
+		for(Parametro parametro: listaParametros) 
+		{
+			codigo += parametro.getJavaCode() + ", ";
+		}
+		
+		codigo = codigo.substring(0, codigo.length() - 2) + ") {\r\n";
+		for(Sentencia sentencia : bloqueSentencias.getListaSentencias()) 
+		{
+			codigo += sentencia.getJavaCode() + "\r\n";
+		}
+		codigo += "\n}";
+		return codigo;
 	}
 }

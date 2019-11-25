@@ -80,6 +80,17 @@ public class ExpresionCadena extends Expresion{
 		}
 		
 	}
+
+	@Override
+	public String getJavaCode() {
+		String codigo = "";
+		codigo += cadenaCaracteres.getPalabra();
+		if(expresion != null) 
+		{
+			codigo += expresion.getJavaCode();
+		}
+		return codigo;
+	}
 	
 	
 }

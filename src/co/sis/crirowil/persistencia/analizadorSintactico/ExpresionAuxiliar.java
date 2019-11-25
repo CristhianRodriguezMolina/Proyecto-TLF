@@ -84,6 +84,16 @@ public class ExpresionAuxiliar extends Expresion{
 		}
 		return tipo;
 	}
+
+	@Override
+	public String getJavaCode() {
+		String codigo = operadorAritmetico.getPalabra() + expresionAritmetica.getJavaCode();
+		if(expresionAuxiliar != null) 
+		{
+			codigo += expresionAuxiliar.getJavaCode();
+		}
+		return codigo;
+	}
 	
 	
 }

@@ -72,6 +72,17 @@ public class UnidadDeCompilacion {
 		}
 		
 	}
+	
+	public String getJavaCode() 
+	{
+		String codigo = "";
+		for(Funcion funcion : listaFunciones) 
+		{
+			codigo += funcion.getJavaCode();
+		}
+		
+		return codigo;
+	}
 
 
 }
