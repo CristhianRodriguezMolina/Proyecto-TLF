@@ -161,4 +161,22 @@ public class Retorno extends Sentencia
 		
 	}
 
+	@Override
+	public String getJavaCode() {
+
+		String javaCode = "";
+		
+		if(identificador != null) {			
+			javaCode += identificador.getPalabra()+";";			
+		}else if(expresion != null) {
+			javaCode += expresion.getJavaCode()+";";
+		}else if(invocacionFuncion != null) {
+			javaCode += invocacionFuncion.getJavaCode()+";";
+		}
+		
+		return javaCode;
+	}
+	
+	
+
 }

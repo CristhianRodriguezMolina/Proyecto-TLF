@@ -132,5 +132,20 @@ public class InvocacionFuncion{
 		
 	}
 
+	public String getJavaCode() {
+
+		String javaCode = nombre+"(";
+		
+		for (Argumento argumento : listaArgumentos) {
+			javaCode += argumento.getJavaCode()+",";
+		}
+		
+		javaCode = javaCode.substring(0, javaCode.length()-2);
+		
+		javaCode += ")";
+		
+		return javaCode;
+	}
+
 	
 }
