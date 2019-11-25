@@ -74,4 +74,20 @@ public class Switch extends Sentencia {
 		
 	}
 
+	@Override
+	public String getJavaCode() {
+
+		String javaCode = "switch("+expresion.getJavaCode()+"){\n";
+		
+		for (Caso caso : listaCasos) {
+			
+			javaCode += caso.getJavaCode()+"\n";
+			
+		}
+		
+		javaCode += "}\n";
+		
+		return javaCode;
+	}
+
 }

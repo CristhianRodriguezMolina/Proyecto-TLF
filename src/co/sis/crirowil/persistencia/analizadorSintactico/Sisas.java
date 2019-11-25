@@ -172,6 +172,36 @@ public class Sisas extends Sentencia{
 		}
 		
 	}
+
+	@Override
+	public String getJavaCode() {
+
+		String javaCode = "if("+condicion.getExpresion()+"){\n";
+		
+		for (Sentencia sentencia : bloqueSentenciaSisas.getListaSentencias()) {
+			javaCode += sentencia.getJavaCode()+"\n";
+		}
+		
+		javaCode += "}";
+		
+		if(listaNonais.size() > 0) {
+			
+			for (Nonais nonais : listaNonais) {
+				
+				javaCode += nonais.getJavaCode();
+				
+			}
+			
+		}
+		
+		if(nonas != null) {
+			
+			javaCode += nonas.getJavaCode();	
+			
+		}
+		
+		return javaCode+"\n";
+	}
 	
 	
 
