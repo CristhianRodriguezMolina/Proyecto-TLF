@@ -78,7 +78,7 @@ public class InvocacionFuncion{
 
 	public TreeItem<String> getArbolVisual() {
 
-		TreeItem<String> raiz = new TreeItem<>("Invocacion función");
+		TreeItem<String> raiz = new TreeItem<>("Invocacion funciï¿½n");
 		
 		raiz.getChildren().add(new TreeItem<>("Nombre: "+nombre.getPalabra()));
 		
@@ -132,18 +132,19 @@ public class InvocacionFuncion{
 		
 	}
 
-
-
-
 	public String getJavaCode() {
-		String codigo = nombre.getPalabra() + "(";
-		for(Argumento argumento: listaArgumentos) 
-		{
-			codigo += argumento.getJavaCode() + ", ";
+
+		String javaCode = nombre+"(";
+		
+		for (Argumento argumento : listaArgumentos) {
+			javaCode += argumento.getJavaCode()+",";
 		}
-		codigo = codigo.substring(0, codigo.length() - 2);
-		codigo += ")";
-		return codigo;
+		
+		javaCode = javaCode.substring(0, javaCode.length()-2);
+		
+		javaCode += ")";
+		
+		return javaCode;
 	}
 
 	

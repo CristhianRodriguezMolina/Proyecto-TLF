@@ -6,6 +6,7 @@ import co.sis.crirowil.persistencia.analizadorLexico.Token;
 import co.sis.crirowil.persistencia.analizadorSemantico.Simbolo;
 import co.sis.crirowil.persistencia.analizadorSemantico.TablaSimbolos;
 import javafx.scene.control.TreeItem;
+import co.sis.crirowil.util.Util;
 
 public class Mapa {
 
@@ -87,6 +88,18 @@ public class Mapa {
 				}
 			}
 		}
+		
+	}
+	
+	public String getJavaCode(String nombre) {
+		
+		String javaCode = "new HashMap<"+Util.traducirTipo(tipoLlave.getPalabra())+","+Util.traducirTipo(tipoDato.getPalabra())+">();\n";
+		
+		for (ArgumentoMapa argumentoMapa : listaArgumentos) {
+			javaCode += nombre + ".put("+argumentoMapa.getLlave().getPalabra()+","+argumentoMapa.getDato()+");\n";
+		}
+		
+		return javaCode.substring(0, javaCode.length() - 2);
 		
 	}
 }

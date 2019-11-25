@@ -107,6 +107,8 @@ public class Caso extends Sentencia {
 			javaCode += sentencia.getJavaCode()+"\n";
 		}
 		
+		javaCode += "break;";
+		
 		return javaCode;
 	}
 

@@ -52,4 +52,11 @@ public class Impresion extends Sentencia {
 		
 	}
 
+	@Override
+	public String getJavaCode() {
+
+		return "JOptionPane.showMessageDialog(null, "+argumento.getJavaCode()+");";
+		
+	}
+
 }
