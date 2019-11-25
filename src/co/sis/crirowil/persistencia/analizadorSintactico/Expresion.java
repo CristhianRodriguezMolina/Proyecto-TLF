@@ -18,6 +18,8 @@ public abstract class Expresion {
 
 	public abstract void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos,
 			Simbolo ambito, String identificador, boolean relacional);
+
+	public abstract String getJavaCode();
 	
 	
 	

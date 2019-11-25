@@ -125,12 +125,24 @@ public class Argumento {
 							+ " en el ambito de " + ambito.getNombre());
 				}
 			}
-		} else if (expresion != null) {
+		} else {
 			return expresion.obtenerTipo(tablaSimbolos, erroresSemanticos, ambito);
 		}
 
 		return "nulo";
 
+	}
+
+	public String getJavaCode() {
+		String codigo = ""; 
+		if(nombre != null) 
+		{
+			codigo += nombre.getPalabra();
+		}else 
+		{
+			codigo += expresion.getJavaCode();
+		}
+		return codigo;
 	}
 
 }

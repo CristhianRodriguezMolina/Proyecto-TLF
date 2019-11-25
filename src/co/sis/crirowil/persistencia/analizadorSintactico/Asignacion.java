@@ -34,11 +34,11 @@ public class Asignacion {
 	public Asignacion(Token operadorAsignacion) {
 		super();
 		this.operadorAsignacion = operadorAsignacion;
-		
+
 		String s = "";
 		s += "s";
 	}
-	
+
 	/**
 	 * @param operadorAsignacion
 	 * @param expresion
@@ -150,54 +150,56 @@ public class Asignacion {
 	}
 
 	public TreeItem<String> getArbolVisual() {
-		
+
 		TreeItem<String> raiz = new TreeItem<>("Asignación");
-		
+
 		raiz.getChildren().add(new TreeItem<>("Operador de asignacion: " + operadorAsignacion.getPalabra()));
-		
-		if(argumento != null) {
+
+		if (argumento != null) {
 			raiz.getChildren().add(argumento.getArbolVisual());
-		}else if (invocacionFuncion != null){
+		} else if (invocacionFuncion != null) {
 			raiz.getChildren().add(invocacionFuncion.getArbolVisual());
-		}else if(arreglo != null) {
+		} else if (arreglo != null) {
 			raiz.getChildren().add(arreglo.getArbolVisual());
-		}else if(mapa != null) {
+		} else if (mapa != null) {
 			raiz.getChildren().add(mapa.getArbolVisual());
-		}else if(lecturaDatos != null) {
+		} else if (lecturaDatos != null) {
 			raiz.getChildren().add(lecturaDatos.getArbolVisual());
-		}		
-		
+		}
+
 		return raiz;
-		
+
 	}
-	
+
 	public void llenarTablaSimbolos(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
-		
+
 	}
 
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
-		
-//		Simbolo s = tablaSimbolos.buscarSimboloVariable(nombre.getPa, ambito, identificador.getFila(), identificador.getColumna());
-//		
-//		if(s==null) {
-//			erroresSemanticos.add("La variable no existe");
-//		}else {
-//			
-//			Expresion expresion = 
-//			
-//			if(expresion!=null) {
-//				
-//				if( !s.getTipo().equals( expresion.obtenerTipo() )) {
-//					erroresSemanticos.add("El tipo de la expresión no es correcto");
-//				}
-//			}
-//		}
-//		
-//		
-//		if(expresion!=null) {
-//			expresion.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
-//		}
-		
-		
+
+	}
+
+	public String getJavaCode(String tipo, String nombre) {
+		String codigo = "";
+		if (arreglo != null) {
+			codigo = "[] " + operadorAsignacion.getPalabra();
+		} else {
+			codigo = operadorAsignacion.getPalabra();
+		}
+
+		if (argumento != null) {
+			codigo += argumento.getJavaCode();
+		} else if (invocacionFuncion != null) {
+			codigo += invocacionFuncion.getJavaCode();
+
+		} else if (arreglo != null) {
+			codigo += arreglo.getJavaCode(tipo, nombre);
+
+		} else if (mapa != null) {
+//			codigo += mapa.getJavaCode();
+		} else {
+			codigo += lecturaDatos.getJavaCode();
+		}
+		return codigo;
 	}
 }

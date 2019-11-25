@@ -232,4 +232,27 @@ public class ExpresionAritmetica extends Expresion {
 			}
 		}
 	}
+
+	@Override
+	public String getJavaCode() {
+		
+		if(valorNumerico != null) 
+		{
+			String temp = valorNumerico.getJavaCode();
+			if(expresionAuxiliar != null) 
+			{
+				temp +=expresionAuxiliar.getJavaCode();
+			}
+			return temp;
+		}
+		else 
+		{
+			String temp = expresionAritmetica.getJavaCode();
+			if(expresionAuxiliar != null) 
+			{
+				temp +=expresionAuxiliar.getJavaCode();
+			}
+			return temp;
+		}
+	}
 }

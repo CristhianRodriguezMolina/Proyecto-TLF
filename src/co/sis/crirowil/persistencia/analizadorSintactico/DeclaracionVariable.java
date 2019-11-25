@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import co.sis.crirowil.persistencia.analizadorLexico.Token;
 import co.sis.crirowil.persistencia.analizadorSemantico.Simbolo;
 import co.sis.crirowil.persistencia.analizadorSemantico.TablaSimbolos;
+import co.sis.crirowil.util.Util;
 import javafx.scene.control.TreeItem;
 
 /**
@@ -115,67 +116,38 @@ public class DeclaracionVariable extends Sentencia {
 
 	@Override
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
-		
+
 		if (asignacion != null) {
 
 			if (asignacion.getOperadorAsignacion().getPalabra().equals("=")) {
-				
+
 				Simbolo s = tablaSimbolos.buscarSimboloVariable(identificador.getPalabra(), ambito);
-				
-				if(asignacion.getArgumento() != null){
-					
-					asignacion.getArgumento().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador.getPalabra(), false);
-					
-//					String tipoArgumentoAux = asignacion.getArgumento().getTipo(tablaSimbolos, erroresSemanticos, ambito);
-//					
-//					String tipo = "";
-//					if(s.getTipo().equals("entero") || s.getTipo().equals("real")) 
-//					{
-//						tipo = "aritmetica";
-//					}
-//					else 
-//					{
-//						tipo = s.getTipo();
-//					}
-//					
-//					if(!tipoArgumentoAux.equals(tipo)) {
-//						
-//						erroresSemanticos.add("Tipo incorrecto: No se puede convertir de "+tipoArgumentoAux+" a "+s.getTipo());
-//						
-//					}
-					
-					
-					
-				}else if(asignacion.getInvocacionFuncion() != null) {
-					
-					asignacion.getInvocacionFuncion().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador.getPalabra());
-//					Simbolo funcionAux = tablaSimbolos.buscarSimboloFuncion(asignacion.getInvocacionFuncion().getNombre().getPalabra(), asignacion.getInvocacionFuncion().getTiposParametros(tablaSimbolos, erroresSemanticos, ambito));
-//					
-//					if(funcionAux != null) {
-//						asignacion.getInvocacionFuncion().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador.getPalabra());
-//						if(!funcionAux.getTipo().equals(s.getTipo())) {
-//							
-//							erroresSemanticos.add("Tipo incorrecto: No se puede convertir de "+funcionAux.getTipo()+" a "+s.getTipo());
-//							
-//						}						
-//					}else {
-//						erroresSemanticos.add("No existe la funcion "+asignacion.getInvocacionFuncion().getNombre()+asignacion.getInvocacionFuncion().getTiposParametros(tablaSimbolos, erroresSemanticos, ambito).toString());
-//					}
-					
-				}else if(asignacion.getArreglo() != null) { //AQUIIIIII
-					
+
+				if (asignacion.getArgumento() != null) {
+
+					asignacion.getArgumento().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito,
+							identificador.getPalabra(), false);
+
+				} else if (asignacion.getInvocacionFuncion() != null) {
+
+					asignacion.getInvocacionFuncion().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito,
+							identificador.getPalabra());
+
+				} else if (asignacion.getArreglo() != null) { // AQUIIIIII
+
 					asignacion.getArreglo().analizarSemantica(s.getTipo(), tablaSimbolos, erroresSemanticos, ambito);
-					
-				}else if(asignacion.getLecturaDatos() != null) { //AQUIIIIII 
-					
-					if(!s.getTipo().equals("cadena")) {
-						erroresSemanticos.add("Tipo incorrecto: No se puede convertir de cadena a "+s.getTipo());
+
+				} else if (asignacion.getLecturaDatos() != null) { // AQUIIIIII
+
+					if (!s.getTipo().equals("cadena")) {
+						erroresSemanticos.add("Tipo incorrecto: No se puede convertir de cadena a " + s.getTipo());
 					}
-					
-				}else if(asignacion.getMapa() != null) { //AQUIIIIII
-					
-					asignacion.getMapa().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);;
-					
+
+				} else if (asignacion.getMapa() != null) { // AQUIIIIII
+
+					asignacion.getMapa().analizarSemantica(tablaSimbolos, erroresSemanticos, ambito);
+					;
+
 				}
 
 			} else {
@@ -187,5 +159,19 @@ public class DeclaracionVariable extends Sentencia {
 
 		}
 
+	}
+
+	@Override
+	public String getJavaCode() {
+		String codigo = "";
+		codigo = Util.traducirTipo(tipoDato.getPalabra()) + " " + identificador.getPalabra();
+		
+		if(asignacion != null) 
+		{
+			codigo += asignacion.getJavaCode(Util.traducirTipo(tipoDato.getPalabra()), identificador.getPalabra());
+		}
+		
+		codigo += ";";
+		return codigo;
 	}
 }

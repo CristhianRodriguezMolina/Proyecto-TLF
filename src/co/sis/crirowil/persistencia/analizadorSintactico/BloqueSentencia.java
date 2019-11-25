@@ -14,7 +14,7 @@ public class BloqueSentencia {
 	/**
 	 * lista de sentencias del bloque
 	 */
-	ArrayList<Sentencia> listaSentencias;
+	private ArrayList<Sentencia> listaSentencias;
 
 	/**
 	 * Constructor principal

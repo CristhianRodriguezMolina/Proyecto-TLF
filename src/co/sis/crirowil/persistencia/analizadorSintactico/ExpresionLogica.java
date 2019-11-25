@@ -102,6 +102,33 @@ public class ExpresionLogica extends Expresion{
 		else
 		{
 			expresionLogica.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador, false);
+			if(expresionAuxiliarLogica != null) 
+			{
+				expresionAuxiliarLogica.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador, false);
+			}
+		}
+	}
+
+	@Override
+	public String getJavaCode() {
+		
+		if(expresionRelacional != null) 
+		{
+			String temp = expresionRelacional.getJavaCode();
+			if(expresionAuxiliarLogica != null) 
+			{
+				temp += expresionAuxiliarLogica.getJavaCode();
+			}
+			return temp;
+		}
+		else 
+		{
+			String temp = expresionLogica.getJavaCode();
+			if(expresionAuxiliarLogica != null) 
+			{
+				temp += expresionAuxiliarLogica.getJavaCode();
+			}
+			return temp;
 		}
 	}
 	

@@ -13,4 +13,6 @@ public abstract class Sentencia {
 	public abstract void llenarTablaSimbolos(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito);
 	
 	public abstract void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito);
+
+	public abstract String getJavaCode();
 }

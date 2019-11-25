@@ -110,4 +110,18 @@ public class ExpresionRelacional extends Expresion {
 
 	}
 
+	@Override
+	public String getJavaCode() {
+		String codigo = "";  
+		if(valorLogico != null) 
+		{
+			codigo = valorLogico.getPalabra();
+		}
+		else 
+		{
+			codigo += expresionAritmetica.getJavaCode() + operadorRelacional.getPalabra() + expresionAritmetica2.getJavaCode();
+		}
+		return codigo;
+	}
+
 }
