@@ -18,9 +18,13 @@ public class Util {
 		{
 			tipoTraducido = "Boolean";
 		}
-		else
+		else if(tipo.equals("char"))
 		{
 			tipoTraducido = "Character";
+		}
+		else 
+		{
+			tipoTraducido = "HashMap";
 		}
 		return tipoTraducido;
 	}

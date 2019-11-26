@@ -1,23 +1,26 @@
-public static void main(String args, String resp) {
-int numero1=345;
-int numero=0;
-double numero2=5.63;
-double numero3=.45;
-double numero4=456.;
-int numero5=3;
+import java.util.HashMap;
+import javax.swing.JOptionPane;
+public class Main {
+public static void main(String[] args) {
+Integer numero1=345;
+Integer numero=0;
+Double numero2=5.63;
+Double numero3=.45;
+Double numero4=456.;
+Integer numero5=3;
 numero5*=numero1;
-double numero6=4.3;
+Double numero6=4.3;
 numero6/=numero2;
-double numero7=312.2;
+Double numero7=312.2;
 numero7-=numero3;
-double numero8=numero2;
-numero8^=numero4;
-int o=1;
-int y=0+o;
-double numero9=numero2-numero3%2.3;
+Double numero8=numero2;
+numero8 = Math.pow(numero8, numero4);
+Integer o=1;
+Integer y=0+o;
+Double numero9=numero2-numero3%2.3;
 String d="hola mundo";
 String temp="";
-String res2="hola""mundo""";
+String res2="hola"+"mundo"+"";
 String a="hola";
 String v="hola";
 String b="hola";
@@ -25,10 +28,10 @@ String cad[] =new String[3];
 cad[0] = a;
 cad[1] = v;
 cad[2] = b;
-boolean flag;
+Boolean flag;
 switch(6+5){
 case 6:
-
+break;
 case 89+9:
 if(5>6){
 flag=3<4&&4>3;
@@ -36,30 +39,27 @@ flag=3<4&&4>3;
 numero++;
 }
 
-
+break;
 default :
-
+break;
 }
 
-
+return ;
 
 }
-public static double sumar(boolean numero, int n2) {
-int n4=3;
-Token [categoria=IDENTIFICADOR, palabra=restar, fila=51, columna=1]
-(n2,n);
-double z=0.3;
+public static Double sumar(Boolean numero, Integer n2) {
+Integer n4=3;
+restar(n2, n4);
+Double z=0.3;
 if(5>6){
-z=Token [categoria=IDENTIFICADOR, palabra=restar, fila=54, columna=6]
-(n2,n);
+z=restar(n2, n2);
 numero=3<4&&4>3;
 }else if(5<6||4<2) {
 n4++;
 }else if(4>3) {
-z=Token [categoria=IDENTIFICADOR, palabra=restar, fila=59, columna=6]
-(n2,n);
+z=restar(n2, n2);
 }else {
-int numero2=2+n2;
+Integer numero2=2+n2;
 String a="hola";
 String v="hola";
 String b="hola";
@@ -67,61 +67,61 @@ String arregloCadenas[] =new String[3];
 arregloCadenas[0] = a;
 arregloCadenas[1] = v;
 arregloCadenas[2] = b;
-for(String s; : arregloCadenas){
-for(int i=0; a+b==2; i++){
-double mundo;
-Token [categoria=IDENTIFICADOR, palabra=restar, fila=72, columna=4]
-(n2,n);
+for(String s : arregloCadenas){
+for(Integer i=0; n2+n4==2; i++){
+Double mundo;
+restar(n2, n2);
 
 }
 }
 
 }
 
-z;
+return 4.5;
 
 }
-public static double restar(int n, int n2) {
-double numero;
-boolean numero1=5>6;
-double numero3=Token [categoria=IDENTIFICADOR, palabra=sumar, fila=84, columna=16]
-(true,);
-numero;
+public static Double restar(Integer n, Integer n2) {
+Double numero;
+Boolean numero1=5>6;
+Double numero3=sumar(true, 3);
+sumar(true, 3);
+return 3.3;
 
 }
-public static double mult(int a, int hola) {
-while(a+b==2){
-hola;
+public static Double mult(Integer a, Integer hola) {
+Double holaa=3.3;
+while(a+2==2){
+hola=3;
 
 }
-for(int i=0; a+b==2; i++){
-double mundo;
+for(Integer i=0; a+2==2; i++){
+Double mundo;
 
 }
-double mundo;
-mundo;
+return holaa;
 
 }
 public static void div(String args, String resp) {
-int a=3;
-int b=3;
-int c=3;
-int d=3;
-int e=3;
+Integer a=3;
+Integer b=3;
+Integer c=3;
+Integer d=3;
+Integer e=3;
 String v="viva del paro!";
 String vv="viva del paro!";
 String vvv="viva del paro!";
-double f=3.3;
-int g=3;
-int h=a+b-((c*d)+e);
-boolean i=true;
-double j=3.4;
+Double f=3.3;
+Integer g=3;
+Integer h=a+b-((c*d)+e);
+Boolean i=true;
+Double j=3.4;
 String k="hola";
-boolean l=a+b-((c*d)+e)>f;
-char m=new HashMap<int,String>();
+Boolean l=a+b-((c*d)+e)>f;
+HashMap m=new HashMap<Integer,String>();
 m.put(a,v);
 m.put(b,vv);
 m.put(g,vvv);
 m.put(d,k);
 
+}
 }
