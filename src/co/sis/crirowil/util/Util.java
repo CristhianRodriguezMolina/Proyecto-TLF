@@ -10,19 +10,19 @@ public class Util {
 			tipoTraducido = "String";
 		} else if(tipo.equals("real")) 
 		{
-			tipoTraducido = "double";
+			tipoTraducido = "Double";
 		}else if(tipo.equals("entero")) 
 		{
-			tipoTraducido = "int";
+			tipoTraducido = "Integer";
 		}else if(tipo.equals("bool")) 
 		{
-			tipoTraducido = "boolean";
+			tipoTraducido = "Boolean";
 		}else if(tipo.equals("mapa")) 
 		{
-			tipoTraducido = "map";
+			tipoTraducido = "Map";
 		}else
 		{
-			tipoTraducido = "char";
+			tipoTraducido = "Character";
 		}
 		return tipoTraducido;
 	}

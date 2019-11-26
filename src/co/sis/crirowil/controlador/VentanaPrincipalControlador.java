@@ -181,7 +181,7 @@ public class VentanaPrincipalControlador {
 				"	$Esto es un comentario de bloque\r\n" + 
 				"$$\r\n" + 
 				"\r\n" + 
-				"metodo main(cadena args, cadena resp)\r\n" + 
+				"metodo main()\r\n" + 
 				"{\r\n" + 
 				"\r\n" + 
 				"	entero numero1 = 345;\r\n" + 
@@ -245,7 +245,7 @@ public class VentanaPrincipalControlador {
 				"		cadena arregloCadenas = {a, v, b};\r\n" + 
 				"		porcada cadena s : arregloCadenas {\r\n" + 
 				"\r\n" + 
-				"			ciclo entero i=0; a + b == 2; i++ : \r\n" + 
+				"			ciclo entero i=0; n2 + n4 == 2; i++ : \r\n" + 
 				"			{\r\n" + 
 				"				real mundo;\r\n" + 
 				"				restar(n2, n2);\r\n" + 
@@ -253,6 +253,7 @@ public class VentanaPrincipalControlador {
 				"\r\n" + 
 				"		}\r\n" + 
 				"	}\r\n" + 
+				"	retorno 4.5;\r\n" + 
 				"}\r\n" + 
 				"\r\n" + 
 				"metodo restar(entero n, entero n2): real\r\n" + 
@@ -261,19 +262,22 @@ public class VentanaPrincipalControlador {
 				"	bool numero1 = 5 > 6;\r\n" + 
 				"	real numero3 = sumar(true, 3);\r\n" + 
 				"	sumar(true, 3);\r\n" + 
+				"	retorno 3.3;\r\n" + 
 				"}\r\n" + 
 				"\r\n" + 
 				"metodo mult(entero a, entero hola): real\r\n" + 
 				"{\r\n" + 
-				"	ciclo a + b == 2: \r\n" + 
+				" 	real holaa = 3.3;\r\n" + 
+				"	ciclo a + 2 == 2: \r\n" + 
 				"	{\r\n" + 
-				"		 retorno hola;\r\n" + 
+				"		hola = 3;\r\n" + 
 				"	}\r\n" + 
 				"\r\n" + 
-				"	ciclo entero i=0; a + b == 2; i++ : \r\n" + 
+				"	ciclo entero i=0; a + 2 == 2; i++ : \r\n" + 
 				"	{\r\n" + 
 				"		real mundo;\r\n" + 
 				"	}\r\n" + 
+				"	retorno holaa;\r\n" + 
 				"}\r\n" + 
 				"\r\n" + 
 				"metodo div(cadena args, cadena resp)\r\n" + 

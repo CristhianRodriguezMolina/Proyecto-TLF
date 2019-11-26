@@ -76,11 +76,12 @@ public class UnidadDeCompilacion {
 	public String getJavaCode() 
 	{
 		String codigo = "";
+		codigo = "public class Main {\r\n";
 		for(Funcion funcion : listaFunciones) 
 		{
 			codigo += funcion.getJavaCode() + "\n";
 		}
-		return codigo;
+		return codigo + "}";
 	}
 
 

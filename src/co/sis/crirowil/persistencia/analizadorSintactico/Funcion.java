@@ -208,7 +208,14 @@ public class Funcion {
 			codigo += parametro.getJavaCode() + ", ";
 		}
 		
-		codigo = codigo.substring(0, codigo.length() - 2) + ") {\r\n";
+		if(listaParametros.size() > 0) 
+		{
+			codigo = codigo.substring(0, codigo.length() - 2) + ") {\r\n";			
+		}
+		else 
+		{
+			codigo += ") {\r\n";
+		}
 		for(Sentencia sentencia : bloqueSentencias.getListaSentencias()) 
 		{
 			codigo += sentencia.getJavaCode() + "\r\n";

@@ -87,7 +87,7 @@ public class ExpresionCadena extends Expresion{
 		codigo += cadenaCaracteres.getPalabra();
 		if(expresion != null) 
 		{
-			codigo += expresion.getJavaCode();
+			codigo += "+" + expresion.getJavaCode();
 		}
 		return codigo;
 	}

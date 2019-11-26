@@ -209,6 +209,10 @@ public class Retorno extends Sentencia
 		}else {
 			javaCode += "null;";
 		}
+		else 
+		{
+			javaCode += ";";
+		}
 		
 		return javaCode;
 	}
