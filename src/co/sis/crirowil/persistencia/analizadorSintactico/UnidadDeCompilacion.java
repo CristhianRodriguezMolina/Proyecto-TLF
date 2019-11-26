@@ -77,7 +77,8 @@ public class UnidadDeCompilacion {
 	{
 		String codigo = "";
 		codigo += "import java.util.HashMap;\r\n" + 
-				"import javax.swing.JOptionPane;\r\n";
+				"import javax.swing.JOptionPane;\r\n"
+				+ "import java.util.Map;\\r\\n";
 		codigo += "public class Principal {\r\n";
 		for(Funcion funcion : listaFunciones) 
 		{
