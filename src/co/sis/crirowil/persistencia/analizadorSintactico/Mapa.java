@@ -96,7 +96,7 @@ public class Mapa {
 		String javaCode = "new HashMap<"+Util.traducirTipo(tipoLlave.getPalabra())+","+Util.traducirTipo(tipoDato.getPalabra())+">();\n";
 		
 		for (ArgumentoMapa argumentoMapa : listaArgumentos) {
-			javaCode += nombre + ".put("+argumentoMapa.getLlave().getPalabra()+","+argumentoMapa.getDato()+");\n";
+			javaCode += nombre + ".put("+argumentoMapa.getLlave().getPalabra()+","+argumentoMapa.getDato().getPalabra()+");\n";
 		}
 		
 		return javaCode.substring(0, javaCode.length() - 2);

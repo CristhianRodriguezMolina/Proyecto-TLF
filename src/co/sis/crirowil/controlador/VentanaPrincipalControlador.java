@@ -1,5 +1,9 @@
 package co.sis.crirowil.controlador;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+
 import co.sis.crirowil.modelo.ErrorLexicoObservable;
 import co.sis.crirowil.modelo.ErrorSintacticoObservable;
 import co.sis.crirowil.modelo.TokenObservable;
@@ -26,7 +30,11 @@ public class VentanaPrincipalControlador {
 	 */
     @FXML
     private TextArea textArea;
-    
+    /**
+     * Text area donde se muestra la traduccion del codigo en nuestro lenguaje a lengiaje Java
+     */
+    @FXML
+    private TextArea txtATraduccion;
     /**
 	 * Tabla donde se almacena la informacion de los tokens
 	 */
@@ -329,6 +337,45 @@ public class VentanaPrincipalControlador {
 		tablaErrores.getColumns().get(0).setVisible(true);
 	}
 
+	@FXML
+	public void traducir(){	
+
+		if(manejador.getErroresObservables().size() == 0 && manejador.getErroresSintacticosObservables().size() == 0 
+				&& manejador.getErroresSemanticosObservables().size() == 0) {
+			//Validar que las listas de errores del análisis estén vacías
+
+		    String codigo = manejador.getUnidadDeCompilacion().getJavaCode();
+
+		    txtATraduccion.setText(codigo);
+		    
+		    try{
+
+		        crearArchivo(codigo);			
+		    
+		        //Invocar el compilador de Java
+		        Process p = Runtime.getRuntime().exec("javac src/Principal.java");
+				p.waitFor();
+						
+				//Se ejecuta el .class 
+				Runtime.getRuntime().exec("java Principal.java", null, new File("src"));
+
+			}catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}	    
+
+	}
+
+	public void crearArchivo(String codigo)throws Exception{		
+
+	    FileWriter fw = new FileWriter("src/Principal.java");
+		BufferedWriter bw = new BufferedWriter(fw);
+
+		bw.write(codigo);
+		bw.flush();
+		bw.close();
+
+	}
 	
 	/**
 	 * Este metodo captura el codigo ingresado y lo pasa al manejador de escenarios.

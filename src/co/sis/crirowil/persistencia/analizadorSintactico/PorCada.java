@@ -103,7 +103,7 @@ public class PorCada extends Sentencia {
 	@Override
 	public String getJavaCode() {
 
-		String javaCode = "for("+declaracionVariable.getJavaCode()+" : "+lista.getPalabra()+"){\n";
+		String javaCode = "for("+declaracionVariable.getJavaCode().substring(declaracionVariable.getJavaCode().length()-2)+" : "+lista.getPalabra()+"){\n";
 		
 		for (Sentencia sentencia : bloqueSentencia.getListaSentencias()) {
 			javaCode += sentencia.getJavaCode()+"\n";

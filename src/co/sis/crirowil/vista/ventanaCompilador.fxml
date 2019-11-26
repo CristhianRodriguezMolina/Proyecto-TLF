@@ -15,9 +15,20 @@
       <BorderPane prefHeight="362.0" prefWidth="825.0" BorderPane.alignment="CENTER">
          <bottom>
             <BorderPane prefHeight="48.0" prefWidth="825.0" BorderPane.alignment="CENTER">
-               <center>
-                  <Button mnemonicParsing="false" onAction="#analizar" prefHeight="45.0" prefWidth="185.0" text="Analizar" BorderPane.alignment="CENTER" />
-               </center>
+               <left>
+                  <BorderPane prefHeight="48.0" prefWidth="399.0" BorderPane.alignment="CENTER">
+                     <center>
+                        <Button mnemonicParsing="false" onAction="#analizar" prefHeight="45.0" prefWidth="185.0" text="Analizar" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+               </left>
+               <right>
+                  <BorderPane prefHeight="48.0" prefWidth="414.0" BorderPane.alignment="CENTER">
+                     <center>
+                        <Button mnemonicParsing="false" onAction="#traducir" prefHeight="45.0" prefWidth="166.0" text="Traducir" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+               </right>
             </BorderPane>
          </bottom>
          <center>
@@ -101,7 +112,7 @@
                                     </BorderPane>
                                  </content>
                               </Tab>
-                              <Tab text="Simbolos">
+                              <Tab text="    Simbolos    ">
                                  <content>
                                     <BorderPane prefHeight="200.0" prefWidth="200.0">
                                        <center>
@@ -114,6 +125,15 @@
                                                 <TableColumn fx:id="columnaColumnaSimbolos" prefWidth="164.0" text="Columna" />
                                              </columns>
                                           </TableView>
+                                       </center>
+                                    </BorderPane>
+                                 </content>
+                              </Tab>
+                              <Tab text="Traduccion (Java)">
+                                 <content>
+                                    <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                       <center>
+                                          <TextArea fx:id="txtATraduccion" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
                                        </center>
                                     </BorderPane>
                                  </content>
