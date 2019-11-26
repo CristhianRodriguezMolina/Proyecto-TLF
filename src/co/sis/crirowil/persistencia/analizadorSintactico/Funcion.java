@@ -203,26 +203,34 @@ public class Funcion {
 
 	public String getJavaCode() {
 		String codigo = "";
-		if(retorno != null) 
-		{
-			codigo = "public static " + Util.traducirTipo(retorno.getPalabra()) + " " + nombre.getPalabra() + "(";
-		}
-		else
-		{
-			codigo = "public static void " + nombre.getPalabra() + "(";
-		}
-		for(Parametro parametro: listaParametros) 
-		{
-			codigo += parametro.getJavaCode() + ", ";
-		}
 		
-		if(listaParametros.size() > 0) 
+		if(nombre.getPalabra().equals("main")) 
 		{
-			codigo = codigo.substring(0, codigo.length() - 2) + ") {\r\n";			
+			codigo = "public static void main(String[] args) {\r\n";
 		}
 		else 
 		{
-			codigo += ") {\r\n";
+			if(retorno != null) 
+			{
+				codigo = "public static " + Util.traducirTipo(retorno.getPalabra()) + " " + nombre.getPalabra() + "(";
+			}
+			else
+			{
+				codigo = "public static void " + nombre.getPalabra() + "(";
+			}			
+			for(Parametro parametro: listaParametros) 
+			{
+				codigo += parametro.getJavaCode() + ", ";
+			}
+			
+			if(listaParametros.size() > 0) 
+			{
+				codigo = codigo.substring(0, codigo.length() - 2) + ") {\r\n";			
+			}
+			else 
+			{
+				codigo += ") {\r\n";
+			}
 		}
 		for(Sentencia sentencia : bloqueSentencias.getListaSentencias()) 
 		{

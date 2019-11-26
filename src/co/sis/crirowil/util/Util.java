@@ -17,12 +17,14 @@ public class Util {
 		}else if(tipo.equals("bool")) 
 		{
 			tipoTraducido = "Boolean";
-		}else if(tipo.equals("mapa")) 
-		{
-			tipoTraducido = "Map";
-		}else
+		}
+		else if(tipo.equals("char"))
 		{
 			tipoTraducido = "Character";
+		}
+		else 
+		{
+			tipoTraducido = "HashMap";
 		}
 		return tipoTraducido;
 	}

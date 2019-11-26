@@ -207,7 +207,7 @@ public class Retorno extends Sentencia
 		}else if(invocacionFuncion != null) {
 			javaCode += invocacionFuncion.getJavaCode()+";";
 		}else {
-			javaCode += "null;";
+			javaCode += ";";
 		}
 		
 		return javaCode;

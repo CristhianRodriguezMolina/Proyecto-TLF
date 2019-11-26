@@ -76,7 +76,9 @@ public class UnidadDeCompilacion {
 	public String getJavaCode() 
 	{
 		String codigo = "";
-		codigo = "public class Main {\r\n";
+		codigo += "import java.util.HashMap;\r\n" + 
+				"import javax.swing.JOptionPane;\r\n";
+		codigo += "public class Principal {\r\n";
 		for(Funcion funcion : listaFunciones) 
 		{
 			codigo += funcion.getJavaCode() + "\n";
