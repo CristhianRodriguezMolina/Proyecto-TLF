@@ -188,8 +188,16 @@ public class Funcion {
 					erroresSemanticos.add("Tipo incorrecto: No se puede convertir el tipo de retorno " +retorno.getPalabra()+ " a " + tipoRetorno);
 				}
 			}
+		}else {
+			
+			for(Sentencia sentencia: bloqueSentencias.getListaSentencias()) 
+			{
+				if(sentencia instanceof Retorno) {
+					erroresSemanticos.add("El metodo void "+nombre.getPalabra()+getTiposParametros()+" no puede retornar un valor.");
+				}
+			}
+			
 		}
-		
 		
 	}
 
