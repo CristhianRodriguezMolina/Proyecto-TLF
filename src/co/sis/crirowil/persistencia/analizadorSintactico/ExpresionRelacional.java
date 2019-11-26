@@ -91,21 +91,24 @@ public class ExpresionRelacional extends Expresion {
 	@Override
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito,
 			String identificador, boolean declaracion) {
-		Simbolo s = tablaSimbolos.buscarSimboloVariable(identificador, ambito);
-		if (s != null) {
-			if (!s.getTipo().equals("bool")) {
-				erroresSemanticos.add("No se puede convertir de bool a " + s.getTipo());
-			} else {
-				if (valorLogico == null) {
-					expresionAritmetica.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador,
-							true);
-					expresionAritmetica2.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador,
-							true);
+		if(identificador == null) 
+		{
+			Simbolo s = tablaSimbolos.buscarSimboloVariable(identificador, ambito);
+			if (s != null) {
+				if (!s.getTipo().equals("bool")) {
+					erroresSemanticos.add("No se puede convertir de bool a " + s.getTipo());
+				} else {
+					if (valorLogico == null) {
+						expresionAritmetica.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador,
+								true);
+						expresionAritmetica2.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador,
+								true);
+					}
+					
 				}
-
-			}
-		} else {
-			erroresSemanticos.add("La variable " + identificador + " no existe en el ambito actual");
+			} else {
+				erroresSemanticos.add("La variable " + identificador + " no existe en el ambito actual");
+			}			
 		}
 
 	}

@@ -134,13 +134,17 @@ public class InvocacionFuncion{
 
 	public String getJavaCode() {
 
-		String javaCode = nombre+"(";
+		String javaCode = nombre.getPalabra()+"(";
 		
 		for (Argumento argumento : listaArgumentos) {
-			javaCode += argumento.getJavaCode()+",";
+			javaCode += argumento.getJavaCode()+", ";
 		}
 		
-		javaCode = javaCode.substring(0, javaCode.length()-2);
+		if(listaArgumentos.size() > 0) 
+		{
+			javaCode = javaCode.substring(0, javaCode.length()-2);			
+		}
+		
 		
 		javaCode += ")";
 		

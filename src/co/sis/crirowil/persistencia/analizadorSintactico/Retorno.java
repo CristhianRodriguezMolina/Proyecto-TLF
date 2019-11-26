@@ -198,7 +198,7 @@ public class Retorno extends Sentencia
 	@Override
 	public String getJavaCode() {
 
-		String javaCode = "";
+		String javaCode = "return ";
 		
 		if(identificador != null) {			
 			javaCode += identificador.getPalabra()+";";			
@@ -206,6 +206,10 @@ public class Retorno extends Sentencia
 			javaCode += expresion.getJavaCode()+";";
 		}else if(invocacionFuncion != null) {
 			javaCode += invocacionFuncion.getJavaCode()+";";
+		}
+		else 
+		{
+			javaCode += ";";
 		}
 		
 		return javaCode;

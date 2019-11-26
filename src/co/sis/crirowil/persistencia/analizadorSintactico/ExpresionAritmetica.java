@@ -114,7 +114,7 @@ public class ExpresionAritmetica extends Expresion {
 			{
 				return "entero";
 			}
-			if(valorNumerico.getTermino().getCategoria() == Categoria.ENTERO) 
+			if(valorNumerico.getTermino().getCategoria() == Categoria.REAL) 
 			{
 				return "real";
 			}

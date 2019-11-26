@@ -183,7 +183,12 @@ public class Asignacion {
 
 	public String getJavaCode(String tipo, String nombre) {
 		String codigo = "";
-		if (arreglo != null) {
+
+		boolean pow = false; 
+		if (operadorAsignacion.getPalabra().equals("^=")) {
+			codigo = " = Math.pow(" + nombre + ", ";
+			pow = true;
+		} else if (arreglo != null) {
 			codigo = "[] " + operadorAsignacion.getPalabra();
 		} else {
 			codigo = operadorAsignacion.getPalabra();
@@ -197,9 +202,14 @@ public class Asignacion {
 			codigo += arreglo.getJavaCode(tipo, nombre);
 		} else if (mapa != null) {
 			codigo += mapa.getJavaCode(nombre);
-		} else if(lecturaDatos != null){
+		} else if (lecturaDatos != null) {
 			codigo += lecturaDatos.getJavaCode();
-			
+
+		}
+		
+		if(pow) 
+		{
+			codigo += ")";
 		}
 		return codigo;
 	}
