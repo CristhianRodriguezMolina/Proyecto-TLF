@@ -167,7 +167,7 @@ public class ManejadorEscenarios {
 		setErroresSemanticosObservables(erroresSemanticosObservablesTemp);
 		
 		//TRADUCCION A JAVA CODE
-		System.out.println(unidadDeCompilacion.getJavaCode());
+//		System.out.println(unidadDeCompilacion.getJavaCode());
 				
 	}
 

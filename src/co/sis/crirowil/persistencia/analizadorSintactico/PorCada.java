@@ -89,6 +89,8 @@ public class PorCada extends Sentencia {
 			erroresSemanticos.add("La variable " + lista.getPalabra() + " no es una lista");
 		}else if(s.getArgumento()==null && s.getExpresion()==null && s.getInvocacionFuncion()==null && s.getMapa()==null && s.getArreglo()==null) {
 			erroresSemanticos.add("La variable " + lista.getPalabra() + " no ha sido declarada anteriormente.");
+		}else if(!s.getTipo().equals(declaracionVariable.getTipoRetorno().getPalabra())) {
+			erroresSemanticos.add("Tipo incorrecto: No se puede convertir de "+declaracionVariable.getTipoRetorno().getPalabra()+" a " + s.getTipo());
 		}
 		
 		for(Sentencia sentencia: bloqueSentencia.getListaSentencias()) 
@@ -100,7 +102,6 @@ public class PorCada extends Sentencia {
 
 	@Override
 	public String getJavaCode() {
-
 		String dec = declaracionVariable.getJavaCode();
 		String javaCode = "for(" + dec.substring(0, dec.length() - 1) + " : "+lista.getPalabra()+"){\n";
 		
