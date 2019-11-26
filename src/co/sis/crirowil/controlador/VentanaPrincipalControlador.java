@@ -8,6 +8,7 @@ import co.sis.crirowil.modelo.ErrorLexicoObservable;
 import co.sis.crirowil.modelo.ErrorSintacticoObservable;
 import co.sis.crirowil.modelo.TokenObservable;
 import co.sis.crirowil.persistencia.analizadorSemantico.Simbolo;
+import co.sis.crirowil.util.Util;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -357,16 +358,28 @@ public class VentanaPrincipalControlador {
 		        crearArchivo(codigo);			
 		    
 		        //Invocar el compilador de Java
-		        Process p = Runtime.getRuntime().exec("javac src/Principal.java");
-				p.waitFor();
+		        ProcessBuilder builder = new ProcessBuilder("javac", "src/Principal.java");
+	            builder.redirectErrorStream(true);
+	            builder.inheritIO();
+	            Process process = builder.start();
+	            int errCode = process.waitFor();
+	            System.out.println("Error al ejecutar el comando? " + (errCode == 0 ? "No" : "Sí"));
 						
 				//Se ejecuta el .class 
-				Runtime.getRuntime().exec("java Principal.java", null, new File("src"));
+				ProcessBuilder builder2 = new ProcessBuilder("java", "src/Principal");
+	            builder2.redirectErrorStream(true);
+	            builder2.inheritIO();
+	            Process process2 = builder2.start();
+	            int errCode2 = process2.waitFor();
+	            System.out.println("Error al ejecutar el comando? " + (errCode2 == 0 ? "No" : "Sí"));
+
 
 			}catch (Exception e2) {
 				e2.printStackTrace();
 			}
-		}	    
+		}else {
+			Util.mostrarMensaje("Codigo erroneo", "Aun hay errores, debe corregirlos antes de continuar ");
+		}
 
 	}
 

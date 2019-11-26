@@ -85,10 +85,11 @@ public class Argumento {
 		if (nombre != null) {
 
 			Simbolo s = tablaSimbolos.buscarSimboloVariable(nombre.getPalabra(), ambito);
-			Simbolo iden = tablaSimbolos.buscarSimboloVariable(identificador, ambito);
+			
 			if (s == null) {
 				erroresSemanticos.add("La variable " + nombre.getPalabra() + " no existe.");
-			} else {
+			} else if(identificador != null) {
+				Simbolo iden = tablaSimbolos.buscarSimboloVariable(identificador, ambito);
 				if (!s.getTipo().equals(iden.getTipo())) {
 					erroresSemanticos
 							.add("Tipo incorrecto: No se puede convertir de " + s.getTipo() + " a " + iden.getTipo() + " en el ambito " + ambito.getNombre());

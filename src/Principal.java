@@ -49,12 +49,15 @@ break;
 }
 public static Double sumar(Boolean numero, Integer n2) {
 Integer n4=3;
+restar(n2, n4);
 Double z=0.3;
 if(5>6){
+z=restar(n2, n2);
 numero=3<4&&4>3;
 }else if(5<6||4<2) {
 n4++;
 }else if(4>3) {
+z=restar(n2, n2);
 }else {
 Integer numero2=2+n2;
 String a="hola";
@@ -65,31 +68,37 @@ arregloCadenas[0] = a;
 arregloCadenas[1] = v;
 arregloCadenas[2] = b;
 for(String s : arregloCadenas){
-for(Integer i=0; n4+n2==2; i++){
+for(Integer i=0; n2+n4==2; i++){
 Double mundo;
+restar(n2, n2);
 
 }
 }
 
 }
 
-return z;
+return 4.5;
 
 }
 public static Double restar(Integer n, Integer n2) {
-return sumar(4>5, 3);
+Double numero;
+Boolean numero1=5>6;
+Double numero3=sumar(true, 3);
+sumar(true, 3);
+return 3.3;
 
 }
-public static Double mult(Integer a, Double hola) {
+public static Double mult(Integer a, Integer hola) {
+Double holaa=3.3;
 while(a+2==2){
-return hola;
+hola=3;
 
 }
 for(Integer i=0; a+2==2; i++){
 Double mundo;
 
 }
-return 3.;
+return holaa;
 
 }
 public static void div(String args, String resp) {
