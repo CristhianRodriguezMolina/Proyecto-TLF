@@ -171,13 +171,27 @@ public class Retorno extends Sentencia
 		return "nulo";
 		
 	}
+	
+	public String obtenerRetornoMetodo(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
+		
+		Simbolo ambitoActual = ambito;
+		String retorno = "void";
+		do {
+			if(!ambitoActual.getAmbito().getNombre().equals("Unidad de compilacion")) {
+				ambitoActual = ambitoActual.getAmbito();
+			}
+			if(ambitoActual.getAmbito().getNombre().equals("Unidad de compilacion")) {
+				retorno = ambitoActual.getTipo();
+			}
+		}while(!ambitoActual.getAmbito().getNombre().equals("Unidad de compilacion"));
+		return retorno;
+	
+	}
 
 	@Override
 	public void llenarTablaSimbolos(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
 		return;		
 	}
-
-
 
 	@Override
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
@@ -186,7 +200,11 @@ public class Retorno extends Sentencia
 			Simbolo s = tablaSimbolos.buscarSimboloVariable(identificador.getPalabra(), ambito);
 			if(s == null) {
 				erroresSemanticos.add("La variable "+identificador.getPalabra()+" no existe.");
-			} 
+			}else {
+				if(!s.getTipo().equals(obtenerRetornoMetodo(tablaSimbolos, erroresSemanticos, ambito))) {
+					erroresSemanticos.add("Tipo incorrecto: No se puede convertir el tipo de retorno " +s.getTipo()+ " a " + obtenerRetornoMetodo(tablaSimbolos, erroresSemanticos, ambito));
+				}
+			}			
 		}else if(expresion != null) {
 			expresion.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, null, false);
 		}else if(invocacionFuncion != null) {

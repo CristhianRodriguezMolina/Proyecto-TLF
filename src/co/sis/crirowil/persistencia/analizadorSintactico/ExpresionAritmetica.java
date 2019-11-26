@@ -233,10 +233,7 @@ public class ExpresionAritmetica extends Expresion {
 									}
 								}
 							}
-						} else {
-							erroresSemanticos.add("No se puede retornar una expresion en un metodo sin tipo de retorno"
-									+ "en el ambito de " + ambito.getNombre());
-						}
+						} 
 
 					}
 				}

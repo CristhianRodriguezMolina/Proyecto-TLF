@@ -817,6 +817,7 @@ public class AnalizadorSintactico {
 			}
 			if (tokenActual.getCategoria() == Categoria.IDENTIFICADOR) {
 				Token identificador = tokenActual;
+				int posAux = posActual;
 				obtenerTokenSiguiente();
 				if (tokenActual.getCategoria() == Categoria.TERMINAL) {
 					obtenerTokenSiguiente();
@@ -824,6 +825,7 @@ public class AnalizadorSintactico {
 
 				} else {
 					tokenActual = identificador;
+					posActual = posAux;
 
 					InvocacionFuncion invocacionFuncion = esInvocacionFuncion();
 					if (invocacionFuncion != null) {
