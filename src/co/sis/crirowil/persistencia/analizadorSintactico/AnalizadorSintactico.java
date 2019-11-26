@@ -832,11 +832,11 @@ public class AnalizadorSintactico {
 							return new Retorno(invocacionFuncion);
 
 						} else {
-							reportarError("falta el terminal de la sentecia");
+							reportarError("Falta el terminal de la sentecia");
 						}
 					}
 				}
-				reportarError("falta el terminal de la sentecia");
+				reportarError("Falta el terminal de la sentecia");
 
 			} else {
 				Expresion expresion = esExpresion();
@@ -846,7 +846,7 @@ public class AnalizadorSintactico {
 						return new Retorno(expresion);
 
 					} else {
-						reportarError("falta el terminal de la sentecia");
+						reportarError("Falta el terminal de la sentecia");
 					}
 				} else {
 					reportarError("Sentencia de retorno erronea");

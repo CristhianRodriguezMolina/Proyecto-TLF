@@ -198,7 +198,7 @@ public class Retorno extends Sentencia
 	@Override
 	public String getJavaCode() {
 
-		String javaCode = "";
+		String javaCode = "return ";
 		
 		if(identificador != null) {			
 			javaCode += identificador.getPalabra()+";";			
