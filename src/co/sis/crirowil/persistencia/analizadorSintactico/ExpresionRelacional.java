@@ -91,8 +91,9 @@ public class ExpresionRelacional extends Expresion {
 	@Override
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito,
 			String identificador, boolean declaracion) {
-		if(identificador == null) 
+		if(identificador != null) 
 		{
+			System.out.println("no es nullo");
 			Simbolo s = tablaSimbolos.buscarSimboloVariable(identificador, ambito);
 			if (s != null) {
 				if (!s.getTipo().equals("bool")) {
@@ -109,6 +110,14 @@ public class ExpresionRelacional extends Expresion {
 			} else {
 				erroresSemanticos.add("La variable " + identificador + " no existe en el ambito actual");
 			}			
+		}
+		else 
+		{
+			System.out.println("es nullo");
+			expresionAritmetica.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador,
+					true);
+			expresionAritmetica2.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, identificador,
+					true);
 		}
 
 	}

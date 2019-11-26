@@ -44,6 +44,7 @@ public class Condicion {
 	}
 	
 	public void analizarSemantica(TablaSimbolos tablaSimbolos, ArrayList<String> erroresSemanticos, Simbolo ambito) {
+		expresion.analizarSemantica(tablaSimbolos, erroresSemanticos, ambito, null, true);
 	}
 
 }
