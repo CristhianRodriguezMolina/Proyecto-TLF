@@ -1,6 +1,6 @@
 import java.util.HashMap;
 import javax.swing.JOptionPane;
-public class Main {
+public class Principal {
 public static void main(String[] args) {
 Integer numero1=345;
 Integer numero=0;
